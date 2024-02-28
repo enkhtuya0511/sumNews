@@ -3,6 +3,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Example from "@/components/example";
+import NavBar from "@/components/NavBar";
 
 export default function Home() {
   const router = useRouter();
@@ -36,26 +37,9 @@ export default function Home() {
 
   return (
     <main className="flex flex-col min-h-screen min-w-screen bg-[#f6f7fb]">
-      <div className="h-[10%] w-[100%] flex justify-between p-[15px] bg-[#4d648d]">
-        <h1 className="flex items-center text-[48px] font-bold text-[#FFFFFF]">
-          NEWS
-        </h1>
-        <div className="flex items-center gap-[30px]">
-          <a
-            href="#"
-            className="w-[40px] h-[40px] flex justify-center items-center p-[5px] border-2 rounded-[50%] text-[25px]"
-          >
-            +
-          </a>
-          <button
-            onClick={() => router.push("/login")}
-            className="p-[5px] border-2 "
-          >
-            Нэвтрэх
-          </button>
-        </div>
-      </div>
-      <div className="flex items-center ml-[30px] h-[5%]">
+      <NavBar />
+      <div>homepage</div>
+      {/* <div className="flex items-center m-[30px] h-[5%]">
         <input placeholder="email" />
         <button>subscribe</button>
       </div>
@@ -72,9 +56,9 @@ export default function Home() {
               хөдөлж өгдөггүй гачлантай.
             </p>
           </div>
-          {/* <Example /> */}
+          <Example />
         </div>
-        {/* <div className="h-[50%]">
+        <div className="h-[50%]">
           <div>
             <img src="" />
             <h1></h1>
@@ -83,8 +67,8 @@ export default function Home() {
             <h1></h1>
             <img />
           </div>
-        </div> */}
-      </div>
+        </div>
+      </div> */}
     </main>
   );
 }

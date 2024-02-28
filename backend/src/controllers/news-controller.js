@@ -1,4 +1,4 @@
-import { NewsModel } from "../models/newsModel.js";
+import { NewsModel } from "../models/news-models.js";
 import nodemailer from "nodemailer"
 
 export const getAllNews = async (req, res) => {
@@ -22,6 +22,32 @@ export const createNews = async (req, res) => {
             description: body.description,
             createdOn: new Date()
         })
+
+        //mail
+        // const transporter = nodemailer.createTransport({
+        //   service: 'gmail',
+        //   auth: {
+        //     user: 'enkhtuya.b2051@gmail.com',
+        //     pass: 'xzdw koit uffg otpr'
+        //   }
+        // });
+        
+        // const mailOptions = {
+        //   from: 'enkhtuya.b2051@gmail.com',
+        //   to: 'reciever@gmail.com',
+        //   subject: 'Subject',
+        //   text: 'Email content'
+        // };
+        
+        // transporter.sendMail(mailOptions, function(error, info){
+        //   if (error) {
+        //  console.log(error);
+        //   } else {
+        //     console.log('Email sent: ' + info.response);
+        //     // do something useful
+        //   }
+        // });
+
         res.status(201).json({ status: "success", data: newData})
     } catch(err) {
         console.log(err)

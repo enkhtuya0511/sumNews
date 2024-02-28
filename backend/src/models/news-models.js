@@ -4,7 +4,7 @@ const newsSchema = new mongoose.Schema({
     title: { type: String, required: true},
     category: {
         type: String, required: true,
-        enum: { values: ["Health", "Sports", "Tech", "Entertainment"]}
+        enum: { values: ["Health", "Sports", "Tech", "Entertainment", "Other"]}
     },
     image: String,
     author: {
