@@ -1,22 +1,22 @@
 "use client";
 import axios from "axios";
-import { useState, useEffect } from "react";
-import { initializeApp } from "firebase/app";
-import { getApp } from "firebase/app";
-import { getStorage } from "firebase/storage";
+import { useState, useEffect, useRef } from "react";
 import NavBar from "@/components/NavBar";
 import Button from "@/components/Button";
+// import { storage } from "@/firebase/firebase";
+// import { getDownloadURL, ref, uploadString } from "firebase/storage";
 
 export default function CreateNews() {
   const category = ["Health", "Sports", "Tech", "Entertainment", "Other"];
   const [newData, setNewData] = useState({});
   const [img, setImg] = useState(null);
+  const fileRef = useRef(null);
   const handleSubmit = async () => {
     try {
       const data = axios.post("http://localhost:7000/news", {
         title: newData.title,
         category: newData.category,
-        // image:
+        // image: URL
         author: newData.author,
         description: newData.description,
         createdOn: new Date(),
@@ -26,19 +26,36 @@ export default function CreateNews() {
       console.log(err);
     }
   };
-  const firebaseConfig = {
-    apiKey: "AIzaSyBGlmc-ELFCwl4-SzXa2POPkyPCuuZnT1M",
-    authDomain: "news-fab3a.firebaseapp.com",
-    projectId: "news-fab3a",
-    storageBucket: "news-fab3a.appspot.com",
-    messagingSenderId: "532352840559",
-    appId: "1:532352840559:web:8c93c73430e34e8f08ae9a",
-    measurementId: "G-CG473HW27S",
+
+  const handleImageChange = async (input) => {
+    const file = input;
+    console.log("input", input);
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        setImg(reader.result);
+        console.log("img", reader.result);
+      };
+
+      reader.readAsDataURL(file);
+
+      //storage->> img
+      // const storageRef = ref(storage, `newsImg/${newData.title}`);
+      // let URL = "";
+      // try {
+      //   if (img) {
+      //     await uploadString(storageRef, img, "data_url");
+      //     URL = await getDownloadURL(ref(storage, `newsImg/${newData.title}`));
+      //   }
+      // } catch (err) {
+      //   console.log(err);
+      // }
+    } else {
+      alert("Please select an image file");
+      setImg(null);
+    }
   };
-//   const app = initializeApp(firebaseConfig);
-//   const db = getFirestore(app);
-  const firebaseApp = getApp();
-  const storage = getStorage(firebaseApp, "gs://my-custom-bucket");
   return (
     <div className="flex flex-col min-h-screen min-w-screen bg-[#f6f7fb] justify-center items-center">
       <NavBar />
@@ -46,21 +63,14 @@ export default function CreateNews() {
         {/*Title/Category*/}
         <div className="w-full flex gap-[50px]">
           {/* {newData.image && <img src={URL.createObjectURL(newData.image)} width={30} height={30}/>} */}
-          {img && <img src={URL.createObjectURL(img)} width={30} height={30} />}
+          {/* {img && <img src={URL.createObjectURL(img)} width={30} height={30} />} */}
           <input
-            onChange={(e) =>
-              setNewData((prev) => ({ ...prev, title: e.target.value }))
-            }
+            onChange={(e) => setNewData((prev) => ({ ...prev, title: e.target.value }))}
             placeholder="title"
             className="p-[10px] outline-none"
             type="text"
           />
-          <select
-            className="p-[10px]"
-            onChange={(e) =>
-              setNewData((prev) => ({ ...prev, category: e.target.value }))
-            }
-          >
+          <select className="p-[10px]" onChange={(e) => setNewData((prev) => ({ ...prev, category: e.target.value }))}>
             {category.map((el, id) => (
               <option key={id} value={el}>
                 {el}
@@ -70,20 +80,22 @@ export default function CreateNews() {
         </div>
         {/*Img/Author*/}
         <div className="w-full flex gap-[40px]">
+          <button onClick={() => fileRef.current.click()}>Picture</button>
           <input
+            hidden
+            ref={fileRef}
             type="file"
             accept="image/*"
             id="newsImage"
             onChange={(e) => {
-              console.log(e.target.files[0]),
-                // newData((prev) => ({...prev, image: e.target.files[0]})),
-                setImg(e.target.files[0]);
+              // console.log(e.target.files[0]),
+              // newData((prev) => ({...prev, image: e.target.files[0]})),
+              // setImg(e.target.files[0]);
+              handleImageChange(e.target.files[0]);
             }}
           />
           <input
-            onChange={(e) =>
-              setNewData((prev) => ({ ...prev, author: e.target.value }))
-            }
+            onChange={(e) => setNewData((prev) => ({ ...prev, author: e.target.value }))}
             type="text"
             placeholder="author"
             className="p-[10px] outline-none"
@@ -92,9 +104,7 @@ export default function CreateNews() {
         {/*desc*/}
         <div className="w-full flex">
           <input
-            onChange={(e) =>
-              setNewData((prev) => ({ ...prev, description: e.target.value }))
-            }
+            onChange={(e) => setNewData((prev) => ({ ...prev, description: e.target.value }))}
             type="text"
             placeholder="desc"
             className="p-[10px] outline-none w-[700px] h-[300px] flex "
