@@ -15,7 +15,7 @@ export default function Home() {
   const router = useRouter();
 
   const handleSignup = async () => {
-    const { data } = await axios.post(`http://localhost:8000/user`, {
+    const { data } = await axios.post(`http://localhost:7000/signup`, {
       name: signData.name,
       email: signData.email,
       password: signData.password,
@@ -67,7 +67,7 @@ export default function Home() {
               />
             </div>
             <button className="button login__submit">
-              <Link href="login">
+              <Link href="/login">
                 <span onClick={() => handleSignup()} className="button__text">
                   SignUp
                 </span>

@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import axios from "axios";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Example from "@/components/example";
@@ -7,39 +8,43 @@ import NavBar from "@/components/NavBar";
 
 export default function Home() {
   const router = useRouter();
-  // const [loading, setloading] = useState([false]);
-  // const [user, setUser] = useState([]);
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   const fetchData = async () => {
-  //     setloading(true);
-  //     try {
-  //       const response = await axios.get(`http://localhost:8000/user`, {
-  //         headers: { "x-access-token": token },
-  //       });
+  const [loading, setloading] = useState([false]);
+  const [user, setUser] = useState([]);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const fetchData = async () => {
+      setloading(true);
+      try {
+        if (token) {
+          const response = await axios.post(`http://localhost:7000/user`, {
+            headers: { "x-access-token": token },
+          });
 
-  //       setUser(response.data.user);
-  //     } catch (error) {
-  //       alert("Error fetching data:", error);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
-  // console.log(user);
-  // const logoutlogin = () => {
-  //   try {
-  //     localStorage.removeItem("token");
-  //     router.push("/login");
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
+          setUser(response.data.user);
+        } else {
+          router.push("/login");
+        }
+      } catch (error) {
+        alert("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
+  console.log(user);
+  const logoutlogin = () => {
+    try {
+      localStorage.removeItem("token");
+      router.push("/login");
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <main className="flex flex-col min-h-screen min-w-screen bg-[#f6f7fb]">
       <NavBar />
       <div>homepage</div>
-      {/* <div className="flex items-center m-[30px] h-[5%]">
+      <div className="flex items-center m-[30px] h-[5%]">
         <input placeholder="email" />
         <button>subscribe</button>
       </div>
@@ -68,7 +73,7 @@ export default function Home() {
             <img />
           </div>
         </div>
-      </div> */}
+      </div>
     </main>
   );
 }

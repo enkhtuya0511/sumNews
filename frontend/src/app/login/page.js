@@ -1,18 +1,14 @@
 "use client";
-
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import style from "./login.css";
 import Link from "next/link";
 
 export default function Home() {
   const [loginData, setLoginData] = useState({});
   const router = useRouter();
-  const routers = useRouter();
   const handleLogin = async () => {
-    const { data } = await axios.post(`http://localhost:8000/login`, {
-      name: loginData.name,
+    const { data } = await axios.post(`http://localhost:7000/login`, {
       email: loginData.email,
       password: loginData.password,
     });
@@ -20,9 +16,6 @@ export default function Home() {
       localStorage.setItem("token", data.token);
       router.push("/");
     }
-  };
-  const Click = () => {
-    routers.push("../../components/signup");
   };
   return (
     <div className="main-login">
@@ -35,9 +28,9 @@ export default function Home() {
               <input
                 type="text"
                 className="login__input"
-                placeholder="User name / Email"
+                placeholder="Email"
                 onChange={(e) =>
-                  setLoginData((prev) => ({ ...prev, name: e.target.value }))
+                  setLoginData((prev) => ({ ...prev, email: e.target.value }))
                 }
               />
             </div>
@@ -48,21 +41,7 @@ export default function Home() {
                 className="login__input"
                 placeholder="Password"
                 onChange={(e) =>
-                  setLoginData((prev) => ({ ...prev, email: e.target.value }))
-                }
-              />
-            </div>
-            <div className="login__field">
-              <i className="login__icon fas fa-lock"></i>
-              <input
-                type="password"
-                className="login__input"
-                placeholder="Password"
-                onChange={(e) =>
-                  setLoginData((prev) => ({
-                    ...prev,
-                    password: e.target.value,
-                  }))
+                  setLoginData((prev) => ({ ...prev, password: e.target.value }))
                 }
               />
             </div>
@@ -75,7 +54,7 @@ export default function Home() {
             <div className="signUp">
               <p>
                 Don't have an account? <br></br>
-                <Link href="../../components/signup">
+                <Link href="/signup">
                   <span>Sign Up?</span>
                 </Link>
               </p>
