@@ -15,6 +15,8 @@ export const getAllUsers = async (req, res) => {
 
 export const getUser = async (req, res) => {
   try {
+    console.log("params", req.params.id);
+    
     const filteredUser = await UserModel.findById(req.params.id);
     res.status(200).json({ status: "success", data: filteredUser });
   } catch (err) {

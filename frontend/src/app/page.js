@@ -8,38 +8,27 @@ import NavBar from "@/components/NavBar";
 
 export default function Home() {
   const router = useRouter();
-  const [loading, setloading] = useState([false]);
   const [user, setUser] = useState([]);
   useEffect(() => {
     const token = localStorage.getItem("token");
     const fetchData = async () => {
-      setloading(true);
       try {
         if (token) {
-          const response = await axios.post(`http://localhost:7000/user`, {
+          const response = await axios.get(`http://localhost:7000/user`, {
             headers: { "x-access-token": token },
           });
 
-          setUser(response.data.user);
+          setUser(response);
         } else {
           router.push("/login");
         }
       } catch (error) {
-        alert("Error fetching data:", error);
+        console.log(error)
       }
     };
     fetchData();
   }, []);
-  console.log(user);
-  const logoutlogin = () => {
-    try {
-      localStorage.removeItem("token");
-      router.push("/login");
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
+  console.log("user", user)
   return (
     <main className="flex flex-col min-h-screen min-w-screen bg-[#f6f7fb]">
       <NavBar />

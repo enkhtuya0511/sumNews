@@ -5,7 +5,6 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const ImgInput = ({ img, setImg }) => {
   const fileRef = useRef(null);
-
   const handleImageChange = async (input) => {
     const file = input;
     console.log("input", input);
@@ -46,8 +45,8 @@ const ImgInput = ({ img, setImg }) => {
     }
   };
   return (
-    <>
-      <button onClick={() => fileRef.current.click()}>Picture</button>
+    <div className="w-[50%] flex justify-between gap-[40px]">
+      <button className="bg-[#FFF] w-[30%] h-[50px]" onClick={() => fileRef.current.click()}>Picture</button>
       <input
         hidden
         ref={fileRef}
@@ -55,12 +54,11 @@ const ImgInput = ({ img, setImg }) => {
         accept="image/*"
         id="newsImage"
         onChange={(e) => {
-          // newData((prev) => ({...prev, image: e.target.files[0]})),
           handleImageChange(e.target.files[0]);
         }}
       />
-      {img && <div>{img}</div>}
-    </>
+      {img && <img src={img} width={200} height={100}/>}
+    </div>
   );
 };
 
