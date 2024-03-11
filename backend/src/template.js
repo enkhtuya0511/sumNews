@@ -8,7 +8,7 @@ export const generateHtml = ({
   audio,
 }) => {
   return `
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -21,69 +21,107 @@ export const generateHtml = ({
       min-height: 100vh;
       min-width: 100vw;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
+      background-color: #eff2f3;
     }
     .container {
       padding: 20px;
-      background-color: plum;
+      background-color: #ffffff;
       height: 80vh;
-      width: 50vw;
+      width: 560px;
       display: flex;
       flex-direction: column;
-    }
-    h3 {
-      margin: 0;
-      font-weight: bold;
     }
     .textCon {
       display: flex;
       flex-direction: column;
-      justify-content: space-evenly;
-      background-color: blanchedalmond;
       padding: 10px;
-      height: 100%;
+      height: auto;
     }
     h5 {
       margin: 0;
-    }
-    span {
-      color: blue;
-      font-weight: bold;
+      color: gray;
     }
     p {
       margin: 0;
     }
+    header {
+      background-color: #ffffff;
+      width: 560px;
+      height: 70px;
+      margin-bottom: 10px;
+      padding: 20px;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+    }
+    .title-author-date {
+      font-family: Arial, Helvetica, sans-serif;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 20px;
+      padding-top: 40px;
+    }
+    h1 {
+      margin: 0;
+      text-align: left;
+    }
+    .desc {
+      font-family: Arial, Helvetica, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 500px;
+      padding: 20px;
+      padding-top: 0;
+    }
   </style>
   <body>
+    <header>
+      <h1>newsletter.</h1>
+    </header>
     <div class="container">
       <div class="textCon">
-        <h3><span>TITLE: </span>${title}</h3>
-        <h5>
-          <span>author: </span> ${author} | <span>category: </span> ${category}
-        </h5>
-        <h5><span>date: </span> ${createdOn}</h5>
-        <img src=${image} alt="nyanCat" height="50%" width="50%" />
-        <p>
-          <span>desc: </span> ${text}
+        <div class="title-author-date">
+          <h1>${title}</h1>
+          <h5>By ${author} * ${createdOn}</h5>
+        </div>
+
+        <audio controls style="padding-left: 20px;">
+          <source src="${audio}" type="audio/mpeg" />
+        </audio>
+
+        <div
+          style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 25px;
+            margin-bottom: 40px;
+          "
+        >
+          <img src=${image} alt="picture" width="400px" height="250px" />
+        </div>
+        <p class="desc">
+          ${text}
         </p>
-        <p>
-          <span
+        <p style="padding: 20px; padding-top: 0px;">
+          <span 
             >source:
             <a
-              href="https://www.npr.org/2024/02/26/1232986212/leap-day-explained"
+              href="https://newsapi.org/docs/endpoints/top-headlines"
             >
               ${title}
             </a></span
           >
         </p>
-        <p>${audio}</p>
-        <audio controls>
-  <source src=${audio} type="audio/mpeg">
-</audio>
       </div>
     </div>
   </body>
 </html>
-    `;
+
+  `
 };

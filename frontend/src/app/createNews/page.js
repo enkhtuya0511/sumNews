@@ -1,12 +1,20 @@
 "use client";
 import axios from "axios";
 import { useState } from "react";
-import NavBar from "@/components/NavBar";
-import Button from "@/components/Button";
+import { useRouter } from "next/navigation";
+// import Button from "@/components/Button";
 import ImgInput from "@/components/ImgInput";
 
 export default function CreateNews() {
-  const category = ["Health", "Sports", "Tech", "Entertainment", "Other"];
+  const router = useRouter();
+  const category = [
+    "Choose a Category",
+    "Health",
+    "Sports",
+    "Tech",
+    "Entertainment",
+    "Other",
+  ];
   const [newData, setNewData] = useState({});
   const [img, setImg] = useState(null);
   const handleSubmit = async () => {
@@ -25,32 +33,41 @@ export default function CreateNews() {
     }
   };
   return (
-    <div className="flex flex-col min-h-screen min-w-screen bg-[#f6f7fb] justify-center items-center">
-      <NavBar />
-      <div className="h-[50%] w-[60%] flex flex-col justify-center  bg-zinc-400 p-[40px] gap-[40px]">
-        {/*Title*/}
-        <input
-          onChange={(e) =>
-            setNewData((prev) => ({ ...prev, title: e.target.value }))
-          }
-          placeholder="Title"
-          className="p-[10px] outline-none w-[90%]"
-          type="text"
-        />
-        {/*Img/Author/Category*/}
-        <div className="w-[90%] flex gap-[40px] justify-between">
-          <ImgInput title={newData.title} img={img} setImg={setImg} />
-          <div className="flex flex-col gap-[10px]">
+    <div className="flex min-h-screen min-w-screen bg-[#f0ede6] justify-center items-center">
+      <div className="h-[85vh] w-[50vw] flex flex-col bg-[#f9f8f6] p-[40px] gap-[40px]">
+        <div className="flex justify-between ">
+          <h1 className="font-bold text-[25px] pl-[10px]">Create new...</h1>
+          <button onClick={() => router.push('/')} className="w-[30px] h-[30px] bg-[plum] rounded">x</button>
+        </div>
+
+        <div className="flex flex-col gap-[5px]">
+          <h5 className="ml-[5px]">Title</h5>
+          <input
+            onChange={(e) =>
+              setNewData((prev) => ({ ...prev, title: e.target.value }))
+            }
+            placeholder="title"
+            className="p-[10px] outline-none w-[100%] rounded-[10px]"
+            type="text"
+          />
+        </div>
+
+        <div className="flex justify-between">
+          <div className="flex flex-col gap-[5px]">
+            <h5 className="ml-[5px]">Author</h5>
             <input
               onChange={(e) =>
                 setNewData((prev) => ({ ...prev, author: e.target.value }))
               }
               type="text"
               placeholder="author"
-              className="p-[10px] outline-none"
+              className="p-[10px] outline-none rounded-[10px] w-[20vw] "
             />
+          </div>
+          <div className="flex flex-col gap-[5px]">
+            <h5 className="ml-[5px]">Category</h5>
             <select
-              className="p-[10px]"
+              className="p-[10px] rounded-[10px] w-[20vw]"
               onChange={(e) =>
                 setNewData((prev) => ({ ...prev, category: e.target.value }))
               }
@@ -63,23 +80,39 @@ export default function CreateNews() {
             </select>
           </div>
         </div>
-        {/*desc*/}
-        <div className="w-[90%] flex">
+
+        <ImgInput title={newData.title} img={img} setImg={setImg} />
+
+        <div className="flex flex-col gap-[5px]">
+          <h5 className="ml-[5px]">Summary</h5>
           <textarea
             onChange={(e) =>
               setNewData((prev) => ({ ...prev, description: e.target.value }))
             }
             type="text"
             placeholder="desc"
-            className="p-[10px] outline-none w-[700px] h-[300px] flex "
+            className="p-[10px] outline-none w-full h-[300px] flex rounded"
           />
         </div>
-        {/**Send->>> */}
-        <div className="w-full flex flex-end">
-          <Button onClick={() => handleSubmit()}>Send</Button>
+
+        <div className="flex flex-col gap-[5px]">
+          <h5 className="ml-[5px]">Source</h5>
+          <input
+            type="text"
+            placeholder="source/url"
+            className="p-[10px] outline-none w-[100%] rounded-[10px]"
+          />
+        </div>
+
+        <div className="flex justify-end pr-[10px] mb-[10px]">
+          <button
+            onClick={() => handleSubmit()}
+            className="w-[65px] h-[30px] bg-[plum] rounded"
+          >
+            Send
+          </button>
         </div>
       </div>
     </div>
   );
 }
-//<div className="w-full h-full flex flex-col justify-center items-center gap-[40px]">

@@ -35,7 +35,7 @@ export const createNews = async (req, res) => {
       image: body.image,
       author: body.author,
       description: body.description,
-      createdOn: new Date(),
+      createdOn: new Date().toISOString(),
     });
 
     const subUsers = await UserModel.find({ role: "user" });
@@ -90,13 +90,13 @@ export const createNews = async (req, res) => {
       const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-          user: "enkhtuya.b2051@gmail.com",
-          pass: "xzdw koit uffg otpr",
+          user: "newsletter.project03@gmail.com",
+          pass: "uncj scwg whbb fhxh",
         },
       });
 
       const mailOptions = {
-        from: "enkhtuya.b2051@gmail.com",
+        from: "newsletter.project03@gmail.com",
         to: user.email,
         subject: "Subject",
         text: "testMail",
