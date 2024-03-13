@@ -13,6 +13,9 @@ const newsSchema = new mongoose.Schema({
     description: {
         type: String, required: true
     },
+    source: {
+        type:String
+    },
     createdOn: Date
 });
 

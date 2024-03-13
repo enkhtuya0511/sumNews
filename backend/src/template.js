@@ -6,6 +6,7 @@ export const generateHtml = ({
   text,
   createdOn,
   audio,
+  source,
 }) => {
   return `
   <!DOCTYPE html>
@@ -90,10 +91,6 @@ export const generateHtml = ({
           <h5>By ${author} * ${createdOn}</h5>
         </div>
 
-        <audio controls style="padding-left: 20px;">
-          <source src="${audio}" type="audio/mpeg" />
-        </audio>
-
         <div
           style="
             display: flex;
@@ -112,7 +109,7 @@ export const generateHtml = ({
           <span 
             >source:
             <a
-              href="https://newsapi.org/docs/endpoints/top-headlines"
+              href=${source}
             >
               ${title}
             </a></span
@@ -123,5 +120,9 @@ export const generateHtml = ({
   </body>
 </html>
 
-  `
+  `;
 };
+
+{/* <audio controls style="padding-left: 20px;">
+  <source src="${audio}" type="audio/mpeg" />
+</audio>; */}

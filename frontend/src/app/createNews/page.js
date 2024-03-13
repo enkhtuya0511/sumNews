@@ -25,6 +25,7 @@ export default function CreateNews() {
         image: img,
         author: newData.author,
         description: newData.description,
+        source: newData.source,
         createdOn: new Date(),
       });
       console.log(data);
@@ -98,6 +99,9 @@ export default function CreateNews() {
         <div className="flex flex-col gap-[5px]">
           <h5 className="ml-[5px]">Source</h5>
           <input
+          onChange={(e) =>
+            setNewData((prev) => ({ ...prev, source: e.target.value }))
+          }
             type="text"
             placeholder="source/url"
             className="p-[10px] outline-none w-[100%] rounded-[10px]"
