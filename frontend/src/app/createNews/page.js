@@ -7,19 +7,12 @@ import ImgInput from "@/components/ImgInput";
 
 export default function CreateNews() {
   const router = useRouter();
-  const category = [
-    "Choose a Category",
-    "Health",
-    "Sports",
-    "Tech",
-    "Entertainment",
-    "Other",
-  ];
+  const category = ["Choose a Category", "Health", "Sports", "Tech", "Entertainment", "Other"];
   const [newData, setNewData] = useState({});
   const [img, setImg] = useState(null);
   const handleSubmit = async () => {
     try {
-      const data = await axios.post("http://localhost:7000/news", {
+      const data = await axios.post("http://localhost:7001/news", {
         title: newData.title,
         category: newData.category,
         image: img,
@@ -38,15 +31,15 @@ export default function CreateNews() {
       <div className="h-[85vh] w-[50vw] flex flex-col bg-[#f9f8f6] p-[40px] gap-[40px]">
         <div className="flex justify-between ">
           <h1 className="font-bold text-[25px] pl-[10px]">Create new...</h1>
-          <button onClick={() => router.push('/')} className="w-[30px] h-[30px] bg-[plum] rounded">x</button>
+          <button onClick={() => router.push("/")} className="w-[30px] h-[30px] bg-[plum] rounded">
+            x
+          </button>
         </div>
 
         <div className="flex flex-col gap-[5px]">
           <h5 className="ml-[5px]">Title</h5>
           <input
-            onChange={(e) =>
-              setNewData((prev) => ({ ...prev, title: e.target.value }))
-            }
+            onChange={(e) => setNewData((prev) => ({ ...prev, title: e.target.value }))}
             placeholder="title"
             className="p-[10px] outline-none w-[100%] rounded-[10px]"
             type="text"
@@ -57,9 +50,7 @@ export default function CreateNews() {
           <div className="flex flex-col gap-[5px]">
             <h5 className="ml-[5px]">Author</h5>
             <input
-              onChange={(e) =>
-                setNewData((prev) => ({ ...prev, author: e.target.value }))
-              }
+              onChange={(e) => setNewData((prev) => ({ ...prev, author: e.target.value }))}
               type="text"
               placeholder="author"
               className="p-[10px] outline-none rounded-[10px] w-[20vw] "
@@ -69,9 +60,7 @@ export default function CreateNews() {
             <h5 className="ml-[5px]">Category</h5>
             <select
               className="p-[10px] rounded-[10px] w-[20vw]"
-              onChange={(e) =>
-                setNewData((prev) => ({ ...prev, category: e.target.value }))
-              }
+              onChange={(e) => setNewData((prev) => ({ ...prev, category: e.target.value }))}
             >
               {category.map((el, id) => (
                 <option key={id} value={el}>
@@ -87,9 +76,7 @@ export default function CreateNews() {
         <div className="flex flex-col gap-[5px]">
           <h5 className="ml-[5px]">Summary</h5>
           <textarea
-            onChange={(e) =>
-              setNewData((prev) => ({ ...prev, description: e.target.value }))
-            }
+            onChange={(e) => setNewData((prev) => ({ ...prev, description: e.target.value }))}
             type="text"
             placeholder="desc"
             className="p-[10px] outline-none w-full h-[300px] flex rounded"
@@ -99,9 +86,7 @@ export default function CreateNews() {
         <div className="flex flex-col gap-[5px]">
           <h5 className="ml-[5px]">Source</h5>
           <input
-          onChange={(e) =>
-            setNewData((prev) => ({ ...prev, source: e.target.value }))
-          }
+            onChange={(e) => setNewData((prev) => ({ ...prev, source: e.target.value }))}
             type="text"
             placeholder="source/url"
             className="p-[10px] outline-none w-[100%] rounded-[10px]"
@@ -109,10 +94,7 @@ export default function CreateNews() {
         </div>
 
         <div className="flex justify-end pr-[10px] mb-[10px]">
-          <button
-            onClick={() => handleSubmit()}
-            className="w-[65px] h-[30px] bg-[plum] rounded"
-          >
+          <button onClick={() => handleSubmit()} className="w-[65px] h-[30px] bg-[plum] rounded">
             Send
           </button>
         </div>

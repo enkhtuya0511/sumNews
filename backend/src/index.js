@@ -5,7 +5,7 @@ import { userRouter } from "./routes/user-routes.js";
 import { newsRouter } from "./routes/newsRoutes.js";
 
 const app = express();
-const port = 7000;
+const port = 7001;
 
 app.use(express.json());
 app.use(cors());
@@ -15,9 +15,7 @@ app.use(userRouter);
 app.use(newsRouter);
 
 const connectDB = async () => {
-  await mongoose.connect(
-    `mongodb+srv://bettasTeam:223344@bettas.iihrfvz.mongodb.net/`
-  );
+  await mongoose.connect(`mongodb+srv://enkhe:20050511131Enkhe@cluster0.knivtsw.mongodb.net/news`);
   console.log("database connected!");
 };
 

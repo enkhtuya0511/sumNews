@@ -15,7 +15,7 @@ export default function Home() {
   const router = useRouter();
 
   const handleSignup = async () => {
-    const { data } = await axios.post(`http://localhost:7000/signup`, {
+    const { data } = await axios.post(`http://localhost:7001/signup`, {
       name: signData.name,
       email: signData.email,
       password: signData.password,
@@ -36,9 +36,7 @@ export default function Home() {
                 type="text"
                 className="login__input"
                 placeholder="User name / Email"
-                onChange={(e) =>
-                  setSignData((prev) => ({ ...prev, name: e.target.value }))
-                }
+                onChange={(e) => setSignData((prev) => ({ ...prev, name: e.target.value }))}
               />
             </div>
             <div className="login__field">
@@ -47,9 +45,7 @@ export default function Home() {
                 type="text"
                 className="login__input"
                 placeholder="Password"
-                onChange={(e) =>
-                  setSignData((prev) => ({ ...prev, email: e.target.value }))
-                }
+                onChange={(e) => setSignData((prev) => ({ ...prev, email: e.target.value }))}
               />
             </div>
             <div className="login__field">
