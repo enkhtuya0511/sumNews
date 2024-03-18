@@ -4,14 +4,25 @@ import Button from "./Button";
 import { IoSearch } from "react-icons/io5";
 
 export default function NavBar() {
-  const categories = ["News", "Science", "Business", "Health", "Entertainment", "Tech", "About Us"];
+  const categories = [
+    "News",
+    "Science",
+    "Business",
+    "Health",
+    "Entertainment",
+    "Tech",
+    "About Us",
+  ];
   return (
     <header className="bg-[plum] w-full">
       <div className="flex justify-between max-w-[1288px] w-[90vw] m-auto py-[24px]">
-        <h1 className="font-black text-[35px] text-[#000000]">NEWSLETTERS</h1>
+        <a href="/">
+          <h1 className="font-black text-[35px] text-[#000000]">NEWSLETTERS</h1>
+        </a>
         <div className="flex gap-[20px]">
           <div className="flex items-center text-[#000000] gap-[10px]">
-            <a href="/login">Log In</a> <span> / </span> <a href="/signup">Sign Up</a>
+            <a href="/login">Log In</a> <span> / </span>{" "}
+            <a href="/signup">Sign Up</a>
           </div>
           <Button>Subscribe to Our newsletter</Button>
         </div>
