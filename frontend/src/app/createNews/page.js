@@ -2,7 +2,6 @@
 import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-// import Button from "@/components/Button";
 import ImgInput from "@/components/ImgInput";
 
 export default function CreateNews() {
@@ -71,7 +70,7 @@ export default function CreateNews() {
           </div>
         </div>
 
-        <ImgInput title={newData.title} img={img} setImg={setImg} />
+        <ImgInput img={img} setImg={setImg} />
 
         <div className="flex flex-col gap-[5px]">
           <h5 className="ml-[5px]">Summary</h5>

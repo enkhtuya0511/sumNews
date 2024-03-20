@@ -1,18 +1,8 @@
 import nodemailer from "nodemailer";
-// import axios from "axios";
+import axios from "axios";
 import { NewsModel } from "../models/news-models.js";
 import { UserModel } from "../models/user-models.js";
 import { generateHtml } from "../template.js";
-
-// import * as PlayHT from "playht";
-
-// PlayHT.init({
-//   apiKey: "2e18cf5d9e834214af36bd57c917c60f",
-//   userId: "4Xhi8cgpveee2EMY6uZVCmKYTyE2",
-//   defaultVoiceId:
-//     "s3://voice-cloning-zero-shot/d9ff78ba-d016-47f6-b0ef-dd630f59414e/female-cs/manifest.json",
-//   defaultVoiceEngine: "PlayHT2.0",
-// });
 
 export const getAllNews = async (req, res) => {
   try {
@@ -29,12 +19,28 @@ export const getAllNews = async (req, res) => {
 export const createNews = async (req, res) => {
   try {
     const body = req.body;
+
+    //summarizer
+    const options = {
+      method: "POST",
+      url: "https://tldrthis.p.rapidapi.com/v1/model/abstractive/summarize-text/",
+      headers: {
+        "content-type": "application/json",
+        "X-RapidAPI-Key": "9044b65ef6msh161e4b8397cde59p1ce13ejsn4d3175aaaae7",
+        "X-RapidAPI-Host": "tldrthis.p.rapidapi.com",
+      },
+      data: { text: body.description, min_length: 150, max_length: 300 },
+    };
+
+    const textSum = await axios.request(options);
+    console.log(textSum.data.summary);
+
     const newData = await NewsModel.create({
       title: body.title,
       category: body.category,
       image: body.image,
       author: body.author,
-      description: body.description,
+      description: textSum.data.summary,
       source: body.source,
       createdOn: new Date().toISOString(),
     });
@@ -42,19 +48,7 @@ export const createNews = async (req, res) => {
     const subUsers = await UserModel.find({ role: "user" });
     console.log("users", subUsers);
 
-
-    // const generated = await PlayHT.generate(newData.description);
-
-    // // Grab the generated file URL
-    // const { audioUrl } = generated;
-    // // console.log("while", audio.data.event);
-
-    // console.log("before text transform");
-    // console.log("after text transform");
-
-    // console.log("audio", audioUrl);
-    // nodemailer
-
+    //nodemailer
     subUsers.forEach((user) => {
       const transporter = nodemailer.createTransport({
         service: "gmail",
@@ -75,8 +69,8 @@ export const createNews = async (req, res) => {
           category: newData.category,
           image: newData.image,
           author: newData.author,
-          // audio: audioUrl,
-          source: newData.source
+          createdOn: newData.createdOn,
+          source: newData.source,
         }),
       };
 
@@ -96,37 +90,3 @@ export const createNews = async (req, res) => {
     res.status(400).json({ status: "error", message: err });
   }
 };
-
-   //audio
-    // const options = {
-    //   method: "POST",
-    //   url: "https://api.play.ht/api/v2/tts",
-    //   headers: {
-    //     // accept: "application/json",
-    //     accept: "text/event-stream",
-    //     "content-type": "application/json",
-    //     AUTHORIZATION: "39fa14c819d64815a8f4bcad18f2d970",
-    //     "X-USER-ID": "35Zbz2LgmBPQ1HINztTuKEkbr8K2",
-    //   },
-    //   data: {
-    //     text: newData.description,
-    //     voice:
-    //       "s3://voice-cloning-zero-shot/d9ff78ba-d016-47f6-b0ef-dd630f59414e/female-cs/manifest.json",
-    //     output_format: "mp3",
-    //     voice_engine: "PlayHT2.0",
-    //   },
-    // };
-
-    // const audioUrl = "";
-    // const audio = await axios.request(options);
-
-        // console.log(audio.data);
-    // const audioUrl = audio.data.url;
-    // .then(function (response) {
-    //   console.log(response.data);
-    //   audioUrl = response.data.url;
-    //   console.log("audioUrl", audioUrl);
-    // })
-    // .catch(function (error) {
-    //   console.error(error);
-    // });

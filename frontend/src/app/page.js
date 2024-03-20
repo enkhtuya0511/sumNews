@@ -2,7 +2,6 @@
 import React from "react";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import NavBar from "@/components/NavBar";
 import News1 from "@/components/News1";
 import News2 from "@/components/News2";
@@ -12,7 +11,6 @@ import Footer from "@/components/Footer";
 import CarouselSlider from "@/components/CarouselSlider";
 
 export default function Home() {
-  const router = useRouter();
   // const [user, setUser] = useState([]);
   // useEffect(() => {
   //   const token = localStorage.getItem("token");

@@ -15,7 +15,7 @@ export const verifyToken = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, "MeAndBrother");
     req.user = decoded;
-    return res.status(200).json({ status: "success", data: req.user})
+    // return res.status(200).json({ status: "success", data: req.user})
   } catch (err) {
     return res
       .status(401)
