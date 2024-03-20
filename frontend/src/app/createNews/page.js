@@ -27,8 +27,8 @@ export default function CreateNews() {
     }
   };
   return (
-    <div className="flex min-h-screen min-w-screen bg-[#f0ede6] justify-center items-center">
-      <div className="h-[85vh] w-[50vw] flex flex-col bg-[#f9f8f6] p-[40px] gap-[40px]">
+    <div className="flex min-h-screen min-w-screen bg-[#f0ede6] justify-center items-center text-black">
+      <div className="h-auto w-[50vw] flex flex-col bg-[#f9f8f6] p-[40px] gap-[40px]">
         <div className="flex justify-between ">
           <h1 className="font-bold text-[25px] pl-[10px]">Create new...</h1>
           <button onClick={() => router.push("/")} className="w-[30px] h-[30px] bg-[plum] rounded">

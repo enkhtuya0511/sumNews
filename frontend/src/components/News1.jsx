@@ -38,7 +38,9 @@ const News1 = () => {
           </div>
         </article>
       </div>
-      <div className="bg-rose-300 min-w-[25%] basis-[25%]">column3</div>
+      <div className="bg-rose-300 min-w-[25%] basis-[25%] text-black">
+        <a href="/createNews">write</a>
+      </div>
     </div>
   );
 };

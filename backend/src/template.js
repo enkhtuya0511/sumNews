@@ -1,128 +1,51 @@
-export const generateHtml = ({
-  title,
-  category,
-  image,
-  author,
-  text,
-  createdOn,
-  audio,
-  source,
-}) => {
+export const generateHtml = ({ title, category, image, author, text, createdOn, audio, source }) => {
   return `
   <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>test</title>
-  </head>
-  <style>
-    body {
-      margin: 0;
-      min-height: 100vh;
-      min-width: 100vw;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background-color: #eff2f3;
-    }
-    .container {
-      padding: 20px;
-      background-color: #ffffff;
-      height: 80vh;
-      width: 560px;
-      display: flex;
-      flex-direction: column;
-    }
-    .textCon {
-      display: flex;
-      flex-direction: column;
-      padding: 10px;
-      height: auto;
-    }
-    h5 {
-      margin: 0;
-      color: gray;
-    }
-    p {
-      margin: 0;
-    }
-    header {
-      background-color: #ffffff;
-      width: 560px;
-      height: 70px;
-      margin-bottom: 10px;
-      padding: 20px;
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-    }
-    .title-author-date {
-      font-family: Arial, Helvetica, sans-serif;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      padding: 20px;
-      padding-top: 40px;
-    }
-    h1 {
-      margin: 0;
-      text-align: left;
-    }
-    .desc {
-      font-family: Arial, Helvetica, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 500px;
-      padding: 20px;
-      padding-top: 0;
-    }
-  </style>
-  <body>
-    <header>
-      <h1>newsletter.</h1>
-    </header>
-    <div class="container">
-      <div class="textCon">
-        <div class="title-author-date">
-          <h1>${title}</h1>
-          <h5>By ${author} * ${createdOn}</h5>
-        </div>
-
-        <div
-          style="
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 25px;
-            margin-bottom: 40px;
-          "
-        >
-          <img src=${image} alt="picture" width="400px" height="250px" />
-        </div>
-        <p class="desc">
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Newsletter</title>
+    </head>
+    <body style="margin: 0; padding: 0; background-color: #eff2f3">
+      <div style="margin: 0 auto; background-color: #ffffff; max-width: 600px; height: 70px; margin-bottom: 10px; padding: 20px; color: black">
+        <h1>newsletter.</h1>
+      </div>
+      <div
+        class="container"
+        style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #ffffff; margin-bottom: 20px"
+      >
+        <h1 class="title" style="font-size: 24px; font-weight: bold; margin-bottom: 10px; color: black">
+          ${title}
+        </h1>
+        <p class="author-date" style="font-size: 14px; color: gray; margin-bottom: 20px">
+          By ${author} * ${createdOn}
+        </p>
+        <img
+          class="image"
+          src=${image}
+          alt="picture"
+          style="width: 100%; max-width: 560px; height: auto; margin-bottom: 20px"
+        />
+        <p class="description" style="font-size: 16px; line-height: 1.6; margin-bottom: 20px; color: black">
           ${text}
         </p>
-        <p style="padding: 20px; padding-top: 0px;">
-          <span 
-            >source:
-            <a
-              href=${source}
-            >
-              ${title}
-            </a></span
+        <p style="font-size: 14px; color: black">
+          source:
+          <a
+            href=${source}
+            style="color: #007bff"
+            >${title}</a
           >
         </p>
       </div>
-    </div>
-  </body>
-</html>
-
+    </body>
+  </html>
   `;
 };
 
-{/* <audio controls style="padding-left: 20px;">
+{
+  /* <audio controls style="padding-left: 20px;">
   <source src="${audio}" type="audio/mpeg" />
-</audio>; */}
+</audio>; */
+}
