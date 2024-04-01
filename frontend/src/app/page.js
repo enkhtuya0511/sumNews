@@ -11,26 +11,23 @@ import Footer from "@/components/Footer";
 import CarouselSlider from "@/components/CarouselSlider";
 
 export default function Home() {
-  // const [user, setUser] = useState([]);
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   const fetchData = async () => {
-  //     try {
-  //       if (token) {
-  //         const response = await axios.get(`http://localhost:7001/user`, {
-  //           headers: { "x-access-token": token },
-  //         });
-  //         setUser(response);
-  //       } else {
-  //         router.push("/login");
-  //       }
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
-  // console.log("user", user);
+  const [allNews, setAllNews] = useState([mostViewed, world]);
+  useEffect(() => {
+    const fetchAllNews = async () => {
+      try {
+        const response = await axios.get(`http://localhost:7001/news`);
+        const newsData = response.data.data;
+        // newsData?.filter((article) => {
+        //   if (article.section === "mostViewed")
+        //     setAllNews((prev) => ());
+        // });
+        // console.log(response.data.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchAllNews();
+  }, []);
   return (
     <div className="min-h-screen flex flex-col bg-[#f9f8f6]">
       <NavBar />

@@ -8,7 +8,9 @@ import PQueue from "p-queue";
 export const getAllNews = async (req, res) => {
   try {
     const news = await NewsModel.find({});
-    res.status(200).json({ status: "success", results: news.length, data: news });
+    res
+      .status(200)
+      .json({ status: "success", results: news.length, data: news });
   } catch (err) {
     console.log(err);
     res.status(204).json({ status: "error" });
@@ -36,12 +38,12 @@ export const createNews = async (req, res) => {
 
     const newData = await NewsModel.create({
       title: body.title,
-      category: body.category,
-      image: body.image,
+      section: body.category,
+      imageUrl: body.image,
       author: body.author,
-      description: textSum.data.summary,
+      summary: textSum.data.summary,
       source: body.source,
-      createdOn: new Date().toISOString(),
+      publishedDate: new Date().toISOString(),
     });
 
     const subUsers = await UserModel.find({ role: "user" });
@@ -64,11 +66,11 @@ export const createNews = async (req, res) => {
         text: "testMail",
         html: generateHtml({
           title: newData.title,
-          text: newData.description,
-          category: newData.category,
-          image: newData.image,
+          text: newData.summary,
+          category: newData.section,
+          image: newData.imageUrl,
           author: newData.author,
-          createdOn: newData.createdOn,
+          createdOn: newData.publishedDate,
           source: newData.source,
         }),
       };
@@ -90,7 +92,7 @@ export const createNews = async (req, res) => {
   }
 };
 
-const summarizeArticle = async (url) => {
+const summarizeArticle = async (url, section, subsection, newsSite) => {
   const options = {
     method: "POST",
     url: "https://tldrthis.p.rapidapi.com/v1/model/abstractive/summarize-url/",
@@ -115,21 +117,27 @@ const summarizeArticle = async (url) => {
 
     if (response.data) {
       // Destructuring data
-      const data = {
+      const newData = await NewsModel.create({
         title: response.data.article_title,
-        author: response.data.article_authors,
+        section,
+        subsection,
+        author:
+          response.data.article_authors === null
+            ? newsSite
+            : response.data.article_authors,
         summary: response.data.summary,
         imageUrl: response.data.article_image,
         publishedDate: response.data.article_pub_date,
-        url: response.data.article_url,
-      };
-      return data;
+        source: response.data.article_url,
+      });
+
+      return newData;
     } else {
       console.log(url, "data is null or undefined");
       return null;
     }
   } catch (err) {
-    console.log(url, err.response.data);
+    console.log(url, err.response.data.detail);
     return null;
   }
 };
@@ -138,25 +146,44 @@ export const fetchNews = async (req, res) => {
   try {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-
     const yesterday = new Date(today);
     yesterday.setDate(today.getDate());
     yesterday.setUTCHours(0, 0, 0, 0);
+    // console.log("today", today.getDate());
+    // console.log("yesterday", yesterday.getDate());
+    const { section } = req.body;
+    let apiUrl;
+    let newsArr = [];
 
-    let mostViewed = [];
-    const response = await axios.get(
-      `https://api.nytimes.com/svc/mostpopular/v2/viewed/1.json?api-key=XJQaY2RQ1ooOkfGGlZjAyCmBeMozzZn6`
-    );
+    if (section === "mostViewed")
+      apiUrl = `https://api.nytimes.com/svc/mostpopular/v2/viewed/1.json?api-key=XJQaY2RQ1ooOkfGGlZjAyCmBeMozzZn6`;
+    else if (section === "space") {
+      apiUrl = `https://api.spaceflightnewsapi.net/v4/articles?published_at_gte=${yesterday.toISOString()}`;
+    } else
+      apiUrl = `https://api.nytimes.com/svc/news/v3/content/all/${section}.json?limit=50&api-key=XJQaY2RQ1ooOkfGGlZjAyCmBeMozzZn6`;
+
+    const response = await axios.get(apiUrl);
 
     //getting urls
     if (response.data && response.data.results) {
       const articles = response.data.results;
-      mostViewed = articles
+      newsArr = articles
         .filter((article) => {
-          const articleDate = new Date(article.published_date);
-          return articleDate.getTime() === today.getTime() || articleDate.getTime() === yesterday.getTime();
+          const articleDate =
+            section === "space"
+              ? new Date(article.published_at)
+              : new Date(article.published_date);
+          // console.log("articleDate", articleDate.getDate(), articleDate);
+          return (
+            articleDate.getDate() === today.getDate() ||
+            articleDate.getDate() === yesterday.getDate()
+          );
         })
-        .map((el) => el.url);
+        .map((el) => ({
+          url: el.url,
+          subsection: el.subsection,
+          newsSite: el.news_site,
+        }));
     } else {
       console.error("No results found");
     }
@@ -164,7 +191,7 @@ export const fetchNews = async (req, res) => {
     // summarizing articles
     const queue = new PQueue({ concurrency: 1 });
     let summarizedNews = await queue.addAll(
-      mostViewed.map((cur, index) => {
+      newsArr.map((cur, index) => {
         return async () => {
           if (index % 5 === 0 && index !== 0) {
             const time = new Promise((resolve, reject) => {
@@ -172,7 +199,12 @@ export const fetchNews = async (req, res) => {
             });
             await time;
           }
-          return await summarizeArticle(cur);
+          return await summarizeArticle(
+            cur.url,
+            section,
+            cur.subsection,
+            cur.newsSite
+          );
         };
       })
     );

@@ -2,25 +2,27 @@ import mongoose from "mongoose";
 
 const newsSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  category: {
+  section: {
     type: String,
     required: true,
-    enum: { values: ["Health", "Sports", "Tech", "Entertainment", "Other"] },
+    enum: { values: ["health", "technology", "science", "education", "mostViewed", "world", "travel", "space", "well", "upshot"] },
   },
-  image: String,
+  imageUrl: String,
   author: {
-    type: String,
+    type: Array,
     required: true,
   },
-  description: {
-    type: String,
+  summary: {
+    type: Array,
     required: true,
   },
   source: {
     type: String,
     required: true,
   },
-  createdOn: Date,
+  publishedDate: Date,
+  subsection: String,
+  newsSite: String
 });
 
 export const NewsModel = mongoose.model("news", newsSchema);

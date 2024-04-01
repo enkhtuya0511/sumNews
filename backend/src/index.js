@@ -25,4 +25,3 @@ app.listen(port, () => {
   console.log(`Your server is running on: http://localhost:${port}`);
 });
 
-//NewsApiKey = 34323febc0ac4438992528def0ce62cf

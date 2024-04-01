@@ -4,4 +4,4 @@ import { getAllNews, createNews, fetchNews } from "../controllers/news-controlle
 export const newsRouter = express.Router();
 
 newsRouter.route("/news").get(getAllNews).post(createNews);
-newsRouter.route("/testAPI").get(fetchNews);
+newsRouter.route("/testAPI").post(fetchNews);
