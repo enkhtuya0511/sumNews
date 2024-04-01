@@ -38,8 +38,9 @@ const News1 = () => {
           </div>
         </article>
       </div>
-      <div className="bg-rose-300 min-w-[25%] basis-[25%] text-black">
+      <div className="bg-rose-300 min-w-[25%] basis-[25%] text-black flex flex-col gap-[5px]">
         <a href="/createNews">write</a>
+        <a href="/testApi">fetchNews</a>
       </div>
     </div>
   );

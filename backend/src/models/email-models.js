@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 
-const quizSchema = new mongoose.Schema({
+const emailSchema = new mongoose.Schema({
   Email: [
     {
       email: String,
     },
   ],
 });
-export const Email = mongoose.model("Email", quizSchema);
+export const Email = mongoose.model("Email", emailSchema);
