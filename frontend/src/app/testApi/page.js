@@ -25,10 +25,8 @@ const page = () => {
   return (
     <div className="bg-gray-400 min-h-screen flex justify-center items-center gap-[20px]">
       <select
-        className="p-[10px] rounded-[5px] w-[200px bg-[#FFFFFF] text-[black]"
-        onChange={(e) =>
-          setInputData((prev) => ({ ...prev, section: e.target.value }))
-        }
+        className="p-[10px] rounded-[5px] w-[200px bg-[#FFFFFF] text-[black] appearance-none outline-none"
+        onChange={(e) => setInputData((prev) => ({ ...prev, section: e.target.value }))}
       >
         {section.map((el, id) => (
           <option key={id} value={el}>
@@ -36,10 +34,7 @@ const page = () => {
           </option>
         ))}
       </select>
-      <button
-        className="py-[5px] px-[10px] border-2 bg-white text-[black]"
-        onClick={handleClick}
-      >
+      <button className="py-[5px] px-[10px] border-2 bg-white text-[black]" onClick={handleClick}>
         datadata
       </button>
     </div>

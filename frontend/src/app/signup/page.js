@@ -2,17 +2,14 @@
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import Link from "next/link";
 import NavBar from "@/components/NavBar";
+import Checkbox from "@/components/Checkbox";
+import { MdKeyboardArrowRight } from "react-icons/md";
+import Footer from "@/components/Footer";
 
 export default function Home() {
-  const [signData, setSignData] = useState({});
-  const [showPass, setShowPass] = useState();
-  const pressShow = (e) => {
-    e.preventDefault();
-    setShowPass(!showPass);
-  };
   const router = useRouter();
+  const [signData, setSignData] = useState({});
 
   const handleSignup = async () => {
     const { data } = await axios.post(`http://localhost:7001/signup`, {
@@ -25,8 +22,8 @@ export default function Home() {
     }
   };
   return (
-    <main className="min-h-screen flex flex-col bg-green-300">
+    <div className="min-h-screen flex flex-col bg-[#f9f8f6]">
       <NavBar />
-    </main>
+    </div>
   );
 }

@@ -1,11 +1,13 @@
 "use client";
 import React from "react";
+import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Button from "./Button";
 import { IoSearch } from "react-icons/io5";
-import { usePathname } from "next/navigation";
 
 export default function NavBar() {
   const pathname = usePathname();
+  const router = useRouter();
   const categories = ["News", "Science", "Business", "Health", "Entertainment", "Tech", "About Us"];
   return (
     <header className="bg-[plum] w-full">
@@ -23,7 +25,7 @@ export default function NavBar() {
               Sign Up
             </a>
           </div>
-          <Button>Subscribe to Our newsletter</Button>
+          <Button onClick={() => router.push("/subscribe")}>Subscribe to Our newsletter</Button>
         </div>
       </div>
 

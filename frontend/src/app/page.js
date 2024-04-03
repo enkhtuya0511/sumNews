@@ -11,17 +11,22 @@ import Footer from "@/components/Footer";
 import CarouselSlider from "@/components/CarouselSlider";
 
 export default function Home() {
-  const [allNews, setAllNews] = useState([mostViewed, world]);
   useEffect(() => {
     const fetchAllNews = async () => {
       try {
         const response = await axios.get(`http://localhost:7001/news`);
         const newsData = response.data.data;
-        // newsData?.filter((article) => {
-        //   if (article.section === "mostViewed")
-        //     setAllNews((prev) => ());
-        // });
-        // console.log(response.data.data);
+        const sections = {};
+
+        newsData.forEach((article) => {
+          const { section } = article;
+          if (!sections[section]) {
+            sections[section] = [];
+            sections[section].push(article);
+          } else sections[section].push(article);
+        });
+        console.log("sections TADA^^", sections);
+        console.log("initial data", newsData);
       } catch (err) {
         console.log(err);
       }
