@@ -6,11 +6,21 @@ import { generateHtml } from "../template.js";
 import PQueue from "p-queue";
 
 export const getAllNews = async (req, res) => {
+  const { section } = req.query;
+  console.log(section);
+
   try {
-    const news = await NewsModel.find({});
-    res
-      .status(200)
-      .json({ status: "success", results: news.length, data: news });
+    if (section) {
+      const news = await NewsModel.find({ section: section });
+      res
+        .status(200)
+        .json({ status: "success", results: news.length, data: news });
+    } else {
+      const news = await NewsModel.find({});
+      res
+        .status(200)
+        .json({ status: "success", results: news.length, data: news });
+    }
   } catch (err) {
     console.log(err);
     res.status(204).json({ status: "error" });
@@ -149,8 +159,8 @@ export const fetchNews = async (req, res) => {
     const yesterday = new Date(today);
     yesterday.setDate(today.getDate());
     yesterday.setUTCHours(0, 0, 0, 0);
-    // console.log("today", today.getDate());
-    // console.log("yesterday", yesterday.getDate());
+    console.log("today", today.getDate());
+    console.log("yesterday", yesterday.getDate());
     const { section } = req.body;
     let apiUrl;
     let newsArr = [];
@@ -173,10 +183,14 @@ export const fetchNews = async (req, res) => {
             section === "space"
               ? new Date(article.published_at)
               : new Date(article.published_date);
-          // console.log("articleDate", articleDate.getDate(), articleDate);
+          console.log("articleDate", articleDate.getDate(), articleDate);
           return (
-            articleDate.getDate() === today.getDate() ||
-            articleDate.getDate() === yesterday.getDate()
+            (articleDate.getDate() === today.getDate() &&
+              articleDate.getFullYear() === today.getFullYear() &&
+              articleDate.getMonth() === today.getMonth()) ||
+            (articleDate.getDate() === yesterday.getDate() &&
+              articleDate.getFullYear() === yesterday.getFullYear() &&
+              articleDate.getMonth() === yesterday.getMonth())
           );
         })
         .map((el) => ({

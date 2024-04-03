@@ -3,6 +3,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import { userRouter } from "./routes/user-routes.js";
 import { newsRouter } from "./routes/newsRoutes.js";
+import { subRouter } from "./routes/subRoutes.js";
 
 const app = express();
 const port = 7001;
@@ -13,6 +14,7 @@ app.use(cors());
 //Routers
 app.use(userRouter);
 app.use(newsRouter);
+app.use(subRouter)
 
 const connectDB = async () => {
   await mongoose.connect(`mongodb+srv://enkhe:20050511131Enkhe@cluster0.knivtsw.mongodb.net/news`);

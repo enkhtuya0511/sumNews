@@ -11,34 +11,29 @@ import Footer from "@/components/Footer";
 import CarouselSlider from "@/components/CarouselSlider";
 
 export default function Home() {
-  useEffect(() => {
-    const fetchAllNews = async () => {
-      try {
-        const response = await axios.get(`http://localhost:7001/news`);
-        const newsData = response.data.data;
-        const sections = {};
+  // const sections = {};
+  const [sections, setSections] = useState({})
+  const fetchAllNews = async (section) => {
+    try {
+      const response = await axios.get(`http://localhost:7001/news?section=${section}`);
+      const newsData = response.data.data;
 
-        newsData.forEach((article) => {
-          const { section } = article;
-          if (!sections[section]) {
-            sections[section] = [];
-            sections[section].push(article);
-          } else sections[section].push(article);
-        });
-        console.log("sections TADA^^", sections);
-        console.log("initial data", newsData);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchAllNews();
+      return newsData
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+   const data =  fetchAllNews();
+   setSections(data)
   }, []);
   return (
     <div className="min-h-screen flex flex-col bg-[#f9f8f6]">
       <NavBar />
       <main className="bg-green-400 w-full scroll-smooth">
         <div className="flex flex-col w-[90vw] max-w-[1288px] m-auto my-[40px]">
-          <News1 />
+          <News1 fetchAllNews={fetchAllNews}/>
+          {/* <News1/> */}
           <News2 />
         </div>
         <GlobalNews />

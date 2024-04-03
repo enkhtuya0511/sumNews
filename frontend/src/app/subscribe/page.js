@@ -9,21 +9,19 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 
 export default function Home() {
   const router = useRouter();
-  //   const [signData, setSignData] = useState({});
+  const [subscribeData, setSubscribeData] = useState({});
 
-  //   const handleSignup = async () => {
-  //     const { data } = await axios.post(`http://localhost:7001/signup`, {
-  //       name: signData.name,
-  //       email: signData.email,
-  //       password: signData.password,
-  //     });
-  //     if (data?.user) {
-  //       localStorage.setItem("uid", data.user.id);
-  //     }
-  //   };
-  const submit = (event) => {
-    event.preventDefault();
-    console.log("first", event.target);
+  const submit = async (event) => {
+    try {
+      event.preventDefault();
+      console.log("data", subscribeData);
+      console.log("values", Object.values(subscribeData).includes(true));
+
+      const res = await axios.post(`http://localhost:7001/sub`, subscribeData);
+      console.log("afterReq", res)
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <div className="min-h-screen flex flex-col bg-[#f9f8f6]">
@@ -31,7 +29,8 @@ export default function Home() {
       <div className="w-[90vw] max-w-[1288px] flex flex-col bg-purple-300 m-auto text-[#0f151e]">
         <div className="w-full text-[15px] font-[400] flex justify-start">
           <div className="flex items-center cursor-pointer hover:underline">
-            <a href="/">Home</a> <MdKeyboardArrowRight className="text-[21px]" />
+            <a href="/">Home</a>{" "}
+            <MdKeyboardArrowRight className="text-[21px]" />
           </div>
           <h5 className="font-bold">Subscribe</h5>
         </div>
@@ -42,22 +41,39 @@ export default function Home() {
           </header>
 
           <div className="w-full bg-blue-500 box-border">
-            <p className="my-[40px] text-[18px]">Check the names of the newsletters you'd like to receive directly in your email</p>
+            <p className="my-[40px] text-[18px]">
+              Check the names of the newsletters you'd like to receive directly
+              in your email
+            </p>
             <div className="w-full box-border flex gap-[100px] bg-orange-400">
               <div className="max-w-[580px] min-w-[420px] basis-[50%] bg-blue-600">
-                <h3 className="text-[32px] font-[600] mb-[16px]">Newsletters to select</h3>
-                <Checkbox />
+                <h3 className="text-[32px] font-[600] mb-[16px]">
+                  Newsletters to select
+                </h3>
+                <Checkbox
+                  setSubscribeData={setSubscribeData}
+                  subscribeData={subscribeData}
+                />
               </div>
 
               <div className="max-w-[480px] basis-[50%] bg-blue-200 text-[#333]">
-                <h3 className="text-[32px] font-[600] mb-[16px]">Required Info</h3>
+                <h3 className="text-[32px] font-[600] mb-[16px]">
+                  Required Info
+                </h3>
                 <form onSubmit={submit}>
                   <div className="flex flex-col gap-[3px] text-[14px] mb-[16px]">
                     <label>Your E-mail Address*</label>
                     <input
                       name="email"
                       type="email"
+                      placeholder="required"
                       required
+                      onChange={(e) =>
+                        setSubscribeData((prev) => ({
+                          ...prev,
+                          email: e.target.value,
+                        }))
+                      }
                       className="px-[11px] py-[6px] border border-[#ccc] outline-none hover:border-[#333]"
                     />
                   </div>
@@ -66,16 +82,33 @@ export default function Home() {
                     <input
                       name="username"
                       type="text"
+                      placeholder="optional"
                       required
+                      onChange={(e) =>
+                        setSubscribeData((prev) => ({
+                          ...prev,
+                          username: e.target.value,
+                        }))
+                      }
                       className="px-[11px] py-[6px] border border-[#ccc] outline-none hover:border-[#333]"
                     />
                   </div>
-                  <input
-                    type="submit"
-                    className="bg-[#333] px-[24px] py-[10px] text-[#fff] text-[14px] font-[400] 
+                  {Object.values(subscribeData).includes(true) ? (
+                    <input
+                      type="submit"
+                      className="bg-[#333] px-[24px] py-[10px] text-[#fff] text-[14px] font-[400] 
                 rounded-[4px] h-[40px] w-[95px] flex justify-center items-center"
-                    value="Subscribe"
-                  />
+                      value="Subscribe"
+                    />
+                  ) : (
+                    <input
+                      type="submit"
+                      className="bg-[#333] px-[24px] py-[10px] text-[#fff] text-[14px] font-[400] 
+                  rounded-[4px] h-[40px] w-[95px] flex justify-center items-center opacity-[0.5]"
+                      value="Subscribe"
+                      disabled
+                    />
+                  )}
                 </form>
               </div>
             </div>

@@ -3,21 +3,27 @@ import { MdOutlineDateRange } from "react-icons/md";
 import { IoAddOutline } from "react-icons/io5";
 import { IoMdCheckmark } from "react-icons/io";
 
-const Checkbox = () => {
-  const [isChecked, setIsChecked] = useState({});
-  // console.log(isChecked[0], isChecked);
+const Checkbox = ({ setSubscribeData, subscribeData }) => {
+  console.log("0", subscribeData[0]);
   return (
     <>
       {testArr.map((el, idx) => (
         <label
           key={idx}
           className="max-w-[580px] mb-[14px] box-border text-[#FFFFFF] flex"
-          style={isChecked[idx] === true ? { backgroundColor: "red", color: "black" } : { backgroundColor: "white", color: "red" }}
+          style={
+            subscribeData[idx] === true
+              ? { backgroundColor: "#333", color: "#fff" }
+              : { backgroundColor: "#f1ddbf", color: "#000000" }
+          }
         >
           <input
             type="checkbox"
-            onChange={(e) => setIsChecked((prev) => ({ ...prev, [idx]: e.target.checked }))}
-            value="firstUP"
+            value={el.newsletter}
+            onChange={(e) => 
+              setSubscribeData((prev) => ({ ...prev,  [idx]: e.target.checked }))
+            }
+            
             className="invisible h-0 w-0"
           />
           <div className="py-[24px] px-[32px] flex gap-[8px]">
@@ -30,21 +36,27 @@ const Checkbox = () => {
               <p className="text-wrap">{el.description}</p>
             </div>
             <div>
-              {isChecked[idx] === true ? (
-                <div
-                  className="py-[5px] px-[10px] flex items-center justify-center whitespace-nowrap text-[14px] 
-          bg-[#FFFFFF] text-[#333] border-1 border-[#d9d9d9] rounded-[4px] gap-[4px] h-[40px] w-[100px]"
-                >
-                  <IoMdCheckmark className="text-[14px] text-[#000000]" /> <span>Selected</span>
-                </div>
-              ) : (
-                <div
-                  className="py-[5px] px-[10px] flex items-center justify-center whitespace-nowrap text-[14px] 
-          bg-[green] text-[#333] border-1 border-[#333] rounded-[4px] gap-[4px] h-[40px] w-[100px]"
-                >
-                  <IoAddOutline className="text-[14px] text-[#000000]" /> <span>Add</span>
-                </div>
-              )}
+              <div
+                style={
+                  subscribeData[idx] === true
+                    ? { backgroundColor: "#FFFFFF", borderColor: "#d9d9d9" }
+                    : { backgroundColor: "#ACA08E", borderColor: "#333" }
+                }
+                className="py-[5px] px-[10px] flex items-center justify-center whitespace-nowrap text-[14px] 
+          text-[#333] border-1 rounded-[4px] gap-[4px] h-[40px] w-[100px]"
+              >
+                {subscribeData[idx] === true ? (
+                  <>
+                    <IoMdCheckmark className="text-[14px] text-[#000000]" />{" "}
+                    <span>Selected</span>
+                  </>
+                ) : (
+                  <>
+                    <IoAddOutline className="text-[14px] text-[#000000]" />{" "}
+                    <span>Add</span>
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </label>
@@ -64,7 +76,8 @@ const testArr = [
   {
     newsletter: "Military.Space",
     deliveryDay: "Every Tuesday",
-    description: "Veteran defense journalist Sandra Erwin delivers news and insights for the military space professional.",
+    description:
+      "Veteran defense journalist Sandra Erwin delivers news and insights for the military space professional.",
   },
   {
     newsletter: "SpaceNews This Week",
