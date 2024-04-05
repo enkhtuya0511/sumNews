@@ -6,7 +6,7 @@ export const generateSubHtml = (userID) => {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Newsletter</title>
   </head>
-  <body style="margin: 0; padding: 0; background-color: #eff2f3">
+  <body style="margin-bottom: 50px; padding: 0; background-color: #eff2f3">
     <div
       style="
         margin: 0 auto;

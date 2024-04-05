@@ -8,9 +8,11 @@ export const createSub = async (req, res) => {
 
     // 1) Check if user exists
     const user = await SubModel.findOne({ email: body.email });
-    console.log(user, "user");
     if (user) {
-      res.status(200).json({ type: "already_subscribed", message: "Given email address is already subscribed, thank you!" });
+      res.status(200).json({
+        type: "already_subscribed",
+        message: "Given email address is already subscribed, thank you!",
+      });
       return;
     }
 
@@ -18,12 +20,12 @@ export const createSub = async (req, res) => {
     const newSubscriber = await SubModel.create({
       email: body.email,
       username: body.username,
-      firstUp: body["0"],
+      firstUP: body["0"],
       MilitarySpace: body["1"],
       SpaceNews: body["2"],
     });
+    const userID = newSubscriber._id;
 
-    console.log("newSub", newSubscriber, newSubscriber._id);
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -32,7 +34,6 @@ export const createSub = async (req, res) => {
       },
     });
 
-    const userID = newSubscriber._id;
     const mailOptions = {
       from: "newsletter.project03@gmail.com",
       to: body.email,
@@ -46,17 +47,10 @@ export const createSub = async (req, res) => {
         console.log(error);
       } else {
         console.log("Email sent: " + info.response);
-        console.log("Email sent to: " + body.email);
       }
     });
-    // console.log("data", body, body["0"]);
-    // console.log("sub", newSubscriber);
 
-    res.status(201).json({
-      status: "success",
-      data: newSubscriber,
-      message: "Thank you, your sign-up request was successful! Please check your email inbox to confirm.",
-    });
+    res.status(201).json({status: "success", data: newSubscriber});
   } catch (err) {
     console.log(err);
     res.status(400).json({ status: "error", message: err });
@@ -64,6 +58,22 @@ export const createSub = async (req, res) => {
 };
 
 export const confirmSub = async (req, res) => {
-  const body = req.params();
-  console.log(body);
+  try {
+    const id = req.params.id
+    // 1) Check if user exists
+    // const user = await SubModel.findById(id);
+    // if (!user) {
+    //   res.status(204).json({ message: "Invalid User ID"});
+    //   return;
+    // }
+
+    // 2)
+    const updatedData = await SubModel.findByIdAndUpdate(id,
+      { isConfirmed: true }
+    );
+    res.status(200).json({ status: "success", updatedData: updatedData });
+  } catch (err) {
+    console.log("error", err);
+    res.status(400).json({ status: "error" });
+  }
 };
