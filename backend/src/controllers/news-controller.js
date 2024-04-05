@@ -12,14 +12,10 @@ export const getAllNews = async (req, res) => {
   try {
     if (section) {
       const news = await NewsModel.find({ section: section });
-      res
-        .status(200)
-        .json({ status: "success", results: news.length, data: news });
+      res.status(200).json({ status: "success", results: news.length, data: news });
     } else {
       const news = await NewsModel.find({});
-      res
-        .status(200)
-        .json({ status: "success", results: news.length, data: news });
+      res.status(200).json({ status: "success", results: news.length, data: news });
     }
   } catch (err) {
     console.log(err);
@@ -125,19 +121,25 @@ const summarizeArticle = async (url, section, subsection, newsSite) => {
       return null;
     }
 
+    const date = new Date(response.data.article_pub_date);
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+
+    const formattedDate = `${year}-${month}-${day}`;
+    console.log(formattedDate); // Output: 2024-03-30
+
     if (response.data) {
       // Destructuring data
       const newData = await NewsModel.create({
         title: response.data.article_title,
         section,
         subsection,
-        author:
-          response.data.article_authors === null
-            ? newsSite
-            : response.data.article_authors,
+        author: response.data.article_authors === null ? newsSite : response.data.article_authors,
         summary: response.data.summary,
         imageUrl: response.data.article_image,
-        publishedDate: response.data.article_pub_date,
+        publishedDate: formattedDate,
         source: response.data.article_url,
       });
 
@@ -179,10 +181,7 @@ export const fetchNews = async (req, res) => {
       const articles = response.data.results;
       newsArr = articles
         .filter((article) => {
-          const articleDate =
-            section === "space"
-              ? new Date(article.published_at)
-              : new Date(article.published_date);
+          const articleDate = section === "space" ? new Date(article.published_at) : new Date(article.published_date);
           console.log("articleDate", articleDate.getDate(), articleDate);
           return (
             (articleDate.getDate() === today.getDate() &&
@@ -213,12 +212,7 @@ export const fetchNews = async (req, res) => {
             });
             await time;
           }
-          return await summarizeArticle(
-            cur.url,
-            section,
-            cur.subsection,
-            cur.newsSite
-          );
+          return await summarizeArticle(cur.url, section, cur.subsection, cur.newsSite);
         };
       })
     );

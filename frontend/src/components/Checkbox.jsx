@@ -4,7 +4,7 @@ import { IoAddOutline } from "react-icons/io5";
 import { IoMdCheckmark } from "react-icons/io";
 
 const Checkbox = ({ setSubscribeData, subscribeData }) => {
-  console.log("0", subscribeData[0]);
+  // console.log("0", subscribeData[0]);
   return (
     <>
       {testArr.map((el, idx) => (
@@ -12,18 +12,13 @@ const Checkbox = ({ setSubscribeData, subscribeData }) => {
           key={idx}
           className="max-w-[580px] mb-[14px] box-border text-[#FFFFFF] flex"
           style={
-            subscribeData[idx] === true
-              ? { backgroundColor: "#333", color: "#fff" }
-              : { backgroundColor: "#f1ddbf", color: "#000000" }
+            subscribeData[idx] === true ? { backgroundColor: "#333", color: "#fff" } : { backgroundColor: "#98bc62", color: "#000000" }
           }
         >
           <input
             type="checkbox"
             value={el.newsletter}
-            onChange={(e) => 
-              setSubscribeData((prev) => ({ ...prev,  [idx]: e.target.checked }))
-            }
-            
+            onChange={(e) => setSubscribeData((prev) => ({ ...prev, [idx]: e.target.checked }))}
             className="invisible h-0 w-0"
           />
           <div className="py-[24px] px-[32px] flex gap-[8px]">
@@ -40,20 +35,18 @@ const Checkbox = ({ setSubscribeData, subscribeData }) => {
                 style={
                   subscribeData[idx] === true
                     ? { backgroundColor: "#FFFFFF", borderColor: "#d9d9d9" }
-                    : { backgroundColor: "#ACA08E", borderColor: "#333" }
+                    : { backgroundColor: "#e4e8dc", borderColor: "#333" }
                 }
                 className="py-[5px] px-[10px] flex items-center justify-center whitespace-nowrap text-[14px] 
           text-[#333] border-1 rounded-[4px] gap-[4px] h-[40px] w-[100px]"
               >
                 {subscribeData[idx] === true ? (
                   <>
-                    <IoMdCheckmark className="text-[14px] text-[#000000]" />{" "}
-                    <span>Selected</span>
+                    <IoMdCheckmark className="text-[14px] text-[#000000]" /> <span>Selected</span>
                   </>
                 ) : (
                   <>
-                    <IoAddOutline className="text-[14px] text-[#000000]" />{" "}
-                    <span>Add</span>
+                    <IoAddOutline className="text-[14px] text-[#000000]" /> <span>Add</span>
                   </>
                 )}
               </div>
@@ -76,8 +69,7 @@ const testArr = [
   {
     newsletter: "Military.Space",
     deliveryDay: "Every Tuesday",
-    description:
-      "Veteran defense journalist Sandra Erwin delivers news and insights for the military space professional.",
+    description: "Veteran defense journalist Sandra Erwin delivers news and insights for the military space professional.",
   },
   {
     newsletter: "SpaceNews This Week",
