@@ -11,20 +11,12 @@ import Footer from "@/components/Footer";
 import CarouselSlider from "@/components/CarouselSlider";
 
 export default function Home() {
-  const [sections, setSections] = useState({});
+  const [allNews, setAllNews] = useState();
   const fetchAllNews = async () => {
     try {
-      const response = await axios.get(`http://localhost:7001/news`);
-      const newsData = response.data.data;
-      const updatedSections = {};
-
-      newsData.forEach((article) => {
-        const { section } = article;
-        if (!updatedSections[section]) updatedSections[section] = [];
-        return updatedSections[section].push(article);
-      });
-      console.log("initialData", updatedSections);
-      setSections(updatedSections);
+      const res = await axios.get(`http://localhost:7001/homepageNews`);
+      console.log("news", res.data);
+      setAllNews(res.data);
     } catch (err) {
       console.log(err);
     }
@@ -38,13 +30,13 @@ export default function Home() {
       <NavBar />
       <main className="bg-green-400 w-full scroll-smooth">
         <div className="flex flex-col w-[90vw] max-w-[1288px] m-auto my-[40px]">
-          <News1 sections={sections?.mostViewed} />
-          <News2 />
+          <News1 mostViewed={allNews?.mostViewed} />
+          <News2 sections={allNews?.sections} />
         </div>
-        <GlobalNews />
+        <GlobalNews globalNews={allNews?.globalNews} />
         <div className="flex flex-col w-[90vw] max-w-[1288px] m-auto my-[40px]">
-          <MostPopularNews />
-          <CarouselSlider />
+          <MostPopularNews MostPopular={allNews?.mostPopular} />
+          <CarouselSlider test={allNews?.upshot} />
         </div>
         <Footer />
       </main>

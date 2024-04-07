@@ -8,7 +8,7 @@ import { IoSearch } from "react-icons/io5";
 export default function NavBar() {
   const pathname = usePathname();
   const router = useRouter();
-  const categories = ["News", "Science", "Business", "Health", "Entertainment", "Tech", "About Us"];
+  const categories = ["News", "Science", "Education", "Health", "Space", "Technology", "About Us"];
   return (
     <header className="bg-[#F9F8F6] w-full">
       <div className="flex justify-between max-w-[1288px] w-[90vw] m-auto py-[24px]">

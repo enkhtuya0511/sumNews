@@ -7,8 +7,6 @@ import PQueue from "p-queue";
 
 export const getAllNews = async (req, res) => {
   const { section } = req.query;
-  console.log(section);
-
   try {
     if (section) {
       const news = await NewsModel.find({ section: section });
@@ -17,6 +15,54 @@ export const getAllNews = async (req, res) => {
       const news = await NewsModel.find({});
       res.status(200).json({ status: "success", results: news.length, data: news });
     }
+  } catch (err) {
+    console.log(err);
+    res.status(204).json({ status: "error" });
+  }
+};
+
+export const getHomepageNews = async (req, res) => {
+  try {
+    const news = await NewsModel.find({}).sort({ section: 1, publishedDate: -1 });
+    const updatedNews = {};
+
+    //Group news articles by section
+    news.forEach((article) => {
+      const { section } = article;
+      if (!updatedNews[section]) updatedNews[section] = [];
+      return updatedNews[section].push(article);
+    });
+
+    //1-mostViewed(get the first three)
+    const mostViewed = updatedNews.mostViewed?.slice(0, 3);
+
+    //2-Sections(get the first news article from each section)
+    const sections = [];
+    const sectionNames = ["health", "space", "science", "upshot", "travel"];
+    sectionNames.forEach((section) => {
+      const sortedArticles = updatedNews[section];
+      if (sortedArticles) {
+        sections.push(sortedArticles[0]);
+      }
+    });
+
+    //3-Global News (get the first four news article from each subsection)
+    const globalNews = {};
+    updatedNews.world?.forEach((article) => {
+      const { subsection } = article;
+      if (!globalNews[subsection]) globalNews[subsection] = [];
+      if (globalNews[subsection].length < 4) {
+        globalNews[subsection].push(article);
+      }
+    });
+
+    //4-Most Popular
+    const mostPopular = updatedNews.mostViewed?.slice(3, 9);
+
+    //5-Additional
+    const upshot = updatedNews.upshot?.slice(0, 10);
+
+    res.status(200).json({ status: "success", mostViewed, sections, globalNews, mostPopular, upshot });
   } catch (err) {
     console.log(err);
     res.status(204).json({ status: "error" });
@@ -168,7 +214,7 @@ export const fetchNews = async (req, res) => {
     let newsArr = [];
 
     if (section === "mostViewed")
-      apiUrl = `https://api.nytimes.com/svc/mostpopular/v2/viewed/1.json?api-key=XJQaY2RQ1ooOkfGGlZjAyCmBeMozzZn6`;
+      apiUrl = `https://api.nytimes.com/svc/mostpopular/v2/viewed/1.json?limit=10&api-key=XJQaY2RQ1ooOkfGGlZjAyCmBeMozzZn6`;
     else if (section === "space") {
       apiUrl = `https://api.spaceflightnewsapi.net/v4/articles?published_at_gte=${yesterday.toISOString()}`;
     } else

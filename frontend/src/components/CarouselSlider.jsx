@@ -1,22 +1,24 @@
 import React from "react";
 
-const CarouselSlider = () => {
+const CarouselSlider = ({ test }) => {
   return (
     <div className="w-full bg-purple-400 mt-[40px] box-border flex flex-col text-[#0f151e] relative">
       <div className="bg-green-200 flex flex-col">
-        <h1 className="font-[600] text-[25px] w-[100%] mb-[10px]">Science</h1>
+        <h1 className="font-[600] text-[25px] w-[100%] mb-[10px] first-letter:text-[25px] first-letter:uppercase">
+          {test?.[0].section}
+        </h1>
         <div className="w-full flex bg-plum gap-[30px] overflow-x-auto">
           <button className="absolute bg-[red] top-[50%] left-[30px]" onClick={() => console.log("clicked")}>
             Prev
           </button>
-          {testArr.map((el, idx) => (
+          {test?.map((article, idx) => (
             <article key={idx} className="basis-[20%] min-w-[215px]">
               <div className="pb-[8px] box-border">
-                <img src="testPic1.webp" alt="testPic1" className="h-auto w-[100%]" />
+                <img src={article.imageUrl} alt="upshotPic" className="h-auto w-[100%]" />
               </div>
-              <h2 className="text-[#0f151e] font-[600] text-[16px] mb-[8px]">{el.title}</h2>
+              <h2 className="text-[#0f151e] font-[600] text-[16px] mb-[8px]">{article.title}</h2>
               <div className="text-[12px] font-[400] text-[#333]">
-                {el.author} {el.date ? `| ${el.date}` : null}
+                {article.author} {article.publishedDate ? `| ${article.publishedDate}` : null}
               </div>
             </article>
           ))}
