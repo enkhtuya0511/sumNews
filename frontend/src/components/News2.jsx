@@ -13,9 +13,12 @@ const News2 = ({ sections }) => {
           >
             {article.section}
           </p>
-          <h2 className="text-[#0f151e] font-[600] text-[16px] mb-[8px]">{article.title}</h2>
+          <h2 className="text-[#0f151e] font-[600] text-[16px] mb-[8px]">
+            {article.title}
+          </h2>
           <div className="text-[12px] font-[400] text-[#333]">
-            {article.author} {article.publishedDate ? `| ${article.publishedDate}` : null}
+            {article.author}{" "}
+            {article.publishedDate ? `| ${article.publishedDate}` : null}
           </div>
         </article>
       ))}

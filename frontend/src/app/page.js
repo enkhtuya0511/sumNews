@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
-import axios from "axios";
 import { useState, useEffect } from "react";
+import axios from "axios";
 import NavBar from "@/components/NavBar";
 import News1 from "@/components/News1";
 import News2 from "@/components/News2";

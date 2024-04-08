@@ -60,7 +60,7 @@ export const getHomepageNews = async (req, res) => {
     const mostPopular = updatedNews.mostViewed?.slice(3, 9);
 
     //5-Additional
-    const upshot = updatedNews.upshot?.slice(0, 10);
+    const upshot = updatedNews.upshot?.slice(0, 14);
 
     res.status(200).json({ status: "success", mostViewed, sections, globalNews, mostPopular, upshot });
   } catch (err) {
