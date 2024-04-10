@@ -270,3 +270,40 @@ export const fetchNews = async (req, res) => {
     res.status(204).json({ status: "failed", message: err });
   }
 };
+
+{
+  /**
+const schedule = require('node-schedule');
+const nodemailer = require('nodemailer');
+
+// Create a nodemailer transporter with your email service credentials
+const transporter = nodemailer.createTransport({
+  service: 'your_email_service', // e.g., 'gmail'
+  auth: {
+    user: 'your_email...com',
+    pass: 'your_email_password'
+  }
+});
+
+// Define the email content
+const mailOptions = {
+  from: 'your_email...com',
+  to: 'recipient...com',
+  subject: 'Weekly Update',
+  text: 'This is your weekly update email.'
+};
+
+// Schedule the email sending task to run every Sunday at 6 PM
+const job = schedule.scheduleJob('0 18 * * 0', function() {
+  // Send the email
+  transporter.sendMail(mailOptions, function(error, info) {
+    if (error) {
+      console.error('Error sending email:', error);
+    } else {
+      console.log('Email sent:', info.response);
+    }
+  });
+});
+
+*/
+}
