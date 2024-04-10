@@ -5,10 +5,10 @@ import axios from "axios";
 import NavBar from "@/components/NavBar";
 import News1 from "@/components/News1";
 import News2 from "@/components/News2";
-import MostPopularNews from "@/components/MostPopular";
 import { GlobalNews } from "@/components/GlobalNews";
+import { MostPopularNews } from "@/components/MostPopular";
+import { CarouselSlider } from "@/components/CarouselSlider";
 import Footer from "@/components/Footer";
-import CarouselSlider from "@/components/CarouselSlider";
 
 export default function Home() {
   const [allNews, setAllNews] = useState();

@@ -22,25 +22,47 @@ export const GlobalNews = ({ globalNews }) => {
             ))}
           </div>
         </div>
-        <div className="flex flex-wrap w-[100%] gap-[1%]">
-          {globalNews?.[subsections[index]].map((article, idx) => (
-            <article key={idx} className="w-[24%] bg-[plum] flex flex-col">
-              <div className="pb-[8px] box-border">
-                <img src={article.imageUrl} alt="globalNewsPic" className="h-auto w-[100%]" />
-              </div>
-              <div className="basis-[40%] bg-lime-400 pb-[30px]">
-                <a href="#" className="text-[14px] font-[700] text-[#666] mb-[5px]">
-                  {article.subsection}
-                </a>
-                <h2 className="text-[#0f151e] font-[600] text-[16px] mb-[8px]">{article.title}</h2>
-                <div className="text-[12px] font-[400] text-[#333]">
-                  {article.author} | {article.publishedDate}
+        {!globalNews ? (
+          <div className="flex flex-wrap w-[100%] gap-[1%] bg-[plum]">
+            <Loading />
+            <Loading />
+            <Loading />
+            <Loading />
+          </div>
+        ) : (
+          <div className="flex flex-wrap w-[100%] gap-[1%] bg-[plum]">
+            {globalNews?.[subsections[index]].map((article, idx) => (
+              <article key={idx} className="w-[24%] bg-[plum] flex flex-col">
+                <div className="pb-[8px] box-border">
+                  <img src={article.imageUrl} alt="globalNewsPic" className="h-auto w-[100%]" />
                 </div>
-              </div>
-            </article>
-          ))}
-        </div>
+                <div className="basis-[40%] bg-lime-400 pb-[30px]">
+                  <a href="#" className="text-[14px] font-[700] text-[#666] mb-[5px]">
+                    {article.subsection}
+                  </a>
+                  <h2 className="text-[#0f151e] font-[600] text-[16px] mb-[8px]">{article.title}</h2>
+                  <div className="text-[12px] font-[400] text-[#333]">
+                    {article.author} | {article.publishedDate}
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
 };
+
+function Loading() {
+  return (
+    <article className="w-[24%] p-[8px] animate-pulse">
+      <div className="min-h-20 h-[110px] bg-[#eee] mb-[8px] rounded"></div>
+      <div className="basis-[40%]">
+        <p className="mb-[5px] bg-[#eee] h-[17px] rounded"></p>
+        <h2 className="mb-[8px] bg-[#eee] h-[60px] rounded"></h2>
+        <div className="bg-[#eee] h-[36px] rounded"></div>
+      </div>
+    </article>
+  );
+}
