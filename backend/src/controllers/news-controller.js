@@ -214,7 +214,7 @@ export const fetchNews = async (req, res) => {
     let newsArr = [];
 
     if (section === "mostViewed")
-      apiUrl = `https://api.nytimes.com/svc/mostpopular/v2/viewed/1.json?limit=10&api-key=XJQaY2RQ1ooOkfGGlZjAyCmBeMozzZn6`;
+      apiUrl = `https://api.nytimes.com/svc/mostpopular/v2/viewed/1.json?api-key=XJQaY2RQ1ooOkfGGlZjAyCmBeMozzZn6`;
     else if (section === "space") {
       apiUrl = `https://api.spaceflightnewsapi.net/v4/articles?published_at_gte=${yesterday.toISOString()}`;
     } else

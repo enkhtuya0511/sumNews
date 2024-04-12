@@ -10,7 +10,7 @@ export default function NavBar() {
   const router = useRouter();
   const categories = ["News", "Science", "Education", "Health", "Space", "Technology", "About Us"];
   return (
-    <header className="bg-[#F9F8F6] w-full">
+    <header className="bg-[#EBEAE8] w-full">
       <div className="flex justify-between max-w-[1288px] w-[90vw] m-auto py-[24px]">
         <a href="/">
           <h1 className="font-black text-[35px] text-[#000000]">NEWSLETTERS</h1>
