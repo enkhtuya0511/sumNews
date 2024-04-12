@@ -140,7 +140,7 @@ export const signInWithGoogle = async (req, res) => {
       res.status(200).json({ status: "success", token, filteredUser });
       return;
     }
-    // 2)
+    // 2) If user doesn't exist ->>>>> create acc ^^
     const newUser = await UserModel.create({
       email,
       name,

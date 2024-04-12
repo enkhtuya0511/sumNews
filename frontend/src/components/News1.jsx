@@ -9,7 +9,7 @@ const News1 = ({ mostViewed }) => {
         <Loading />
       ) : (
         <>
-          <div className="bg-teal-500 min-w-[25%] basis-[25%] flex flex-col justify-between pb-9">
+          <div className="min-w-[25%] basis-[25%] flex flex-col justify-between pb-9">
             {firstTwoArticle?.map((article, idx) => (
               <article className="mb-[10px] pb-[10px] pr-[16px]" key={idx}>
                 <img src={article?.imageUrl} alt="mostViewedPic" className="h-auto min-h-[130px] w-[100%] mb-[8px]" />
@@ -22,7 +22,7 @@ const News1 = ({ mostViewed }) => {
               </article>
             ))}
           </div>
-          <div className="bg-blue-400 basis-[50%]">
+          <div className="basis-[50%]">
             <article className="pb-[10px] px-[16px]">
               <img src={mostViewed?.[2].imageUrl} alt="mostViewedPic" className="h-auto w-[100%] mb-[8px]" />
               <div className="break-words text-left">
@@ -34,7 +34,7 @@ const News1 = ({ mostViewed }) => {
               </div>
             </article>
           </div>
-          <div className="bg-green-600 min-w-[25%] basis-[25%] text-black flex flex-col gap-[5px]">
+          <div className="border min-w-[25%] basis-[25%] text-black flex flex-col gap-[5px]">
             <a href="/createNews">write</a>
             <a href="/testApi">fetchNews</a>
           </div>

@@ -29,7 +29,7 @@ export default function NavBar() {
         </div>
       </div>
 
-      <div className="flex justify-between items-center max-w-[1288px] w-[90vw] m-auto bg-orange-200 text-[#000]">
+      <div className="flex justify-between items-center max-w-[1288px] w-[90vw] m-auto bg-[#C7C7C7] text-[#000]">
         {/* <div>categories</div> */}
         <ul className="flex gap-[5px] py-[6px]">
           {categories.map((category, idx) => (

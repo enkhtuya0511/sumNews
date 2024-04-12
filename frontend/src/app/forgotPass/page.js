@@ -1,47 +1,60 @@
 "use client";
 import axios from "axios";
 import { useState } from "react";
-import Reset from "../resetPass/page.js";
-import style from "./forgot-password.css";
-import { FaLock } from "react-icons/fa";
+import { useRouter } from "next/navigation.js";
 
 const ForgotPassword = () => {
+  const router = useRouter();
   const [email, setEmail] = useState("");
-  const [success, setSuccess] = useState(false);
-  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     try {
-      const response = await axios.post("http://localhost:7001/forgotPassword", { email });
-      setSuccess(true);
+      if (email) {
+        setLoading(true);
+        const response = await axios.post(
+          "http://localhost:7001/forgotPassword",
+          { email }
+        );
+        router.push("/resetPass");
+      } else {
+        alert("Please enter your email!");
+      }
     } catch (error) {
-      setMessage(error.response.data.message);
+      console.log("error", error.response.data.message);
     }
   };
   return (
-    <div className="forgot-main">
-      {!success ? (
-        <div className="forgot">
-          <div className="lock">
-            <FaLock />
-          </div>
-          <h1 className="text-[black]">Forgot Password</h1>
-          <form onSubmit={handleSubmit}>
+    <div className="w-full min-h-screen flex justify-center items-center bg-[#e0e4e5]">
+      {!loading ? (
+        <div className="bg-[#ffffff] px-[15px] py-[20px] flex flex-col text-[black] shadow-lg rounded-[10px] gap-[15px] max-w-[400px] w-full">
+          <h4 className="text-[20px] font-[400] ">Forgot your password ?</h4>
+          <div className="w-full">
+            <p className="font-[600] block">Email</p>
             <input
-              type="email"
-              placeholder="Enter your email"
-              value={email}
+              type="text"
               onChange={(e) => setEmail(e.target.value)}
-              className="email-input text-[black]"
+              placeholder="Enter your email"
+              className="px-[10px] py-[5px] border border-[#e0e0e1] rounded w-[80%] outline-none"
             />
-            <button type="submit" className="reset-button">
-              Reset Password
+          </div>
+          <div className="flex gap-[20px]">
+            <button
+              onClick={() => router.push("/login")}
+              className="py-[5px] px-[25px] text-[#0f151e] bg-[#787D82] rounded-[5px] w-[120px]"
+            >
+              Cancel
             </button>
-          </form>
+            <button
+              onClick={handleSubmit}
+              className="py-[5px] px-[25px] text-[#ffffff] bg-[#0f151e] rounded-[5px] w-[120px]"
+            >
+              Submit
+            </button>
+          </div>
         </div>
       ) : (
-        <Reset />
+        <p>loading...</p>
       )}
     </div>
   );

@@ -28,7 +28,7 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col bg-[#f9f8f6]">
       <NavBar />
-      <main className="bg-green-400 w-full scroll-smooth">
+      <main className="bg-[#f8f8f8] w-full scroll-smooth">
         <div className="flex flex-col w-[90vw] max-w-[1288px] m-auto my-[40px]">
           <News1 mostViewed={allNews?.mostViewed} />
           <News2 sections={allNews?.sections} />

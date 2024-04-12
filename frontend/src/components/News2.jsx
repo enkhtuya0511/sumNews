@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 const News2 = ({ sections }) => {
   const router = useRouter();
   return (
-    <div className="w-full flex my-[40px] gap-[64px] p-[8px] bg-lime-300 ">
+    <div className="w-full flex my-[40px] gap-[64px] p-[8px] bg-[#ebeae8]">
       {!sections ? (
         <>
           <Loading />

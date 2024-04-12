@@ -8,7 +8,7 @@ import "swiper/css/navigation";
 
 export const CarouselSlider = ({ test }) => {
   return (
-    <div className="w-full bg-purple-600 mt-[40px] box-border text-[#0f151e]">
+    <div className="w-full bg-[#ebeae8] mt-[40px] box-border text-[#0f151e]">
       <h1 className="font-[600] text-[25px] w-[100%] mb-[10px] first-letter:text-[25px] first-letter:uppercase">
         {test?.[0].section}
       </h1>

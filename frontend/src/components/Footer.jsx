@@ -13,8 +13,8 @@ const Footer = () => {
           </a>
         </div>
         <h1 className="w-full font-bold text-[#e9eaeb]">NEWSLETTERS.</h1>
-        <div className="w-full bg-blue-700 box-border mt-[35px] mb-[80px] flex justify-start">
-          <div className="flex flex-col bg-yellow-400 basis-[25%]">
+        <div className="w-full box-border mt-[35px] mb-[80px] flex justify-start text-[#fff]">
+          <div className="flex flex-col basis-[25%]">
             <h2 className="text-[16px] mb-[5px] font-[600]">About</h2>
             <ul className="border-box text-[14px] text-left">
               <li className="py-[8px]">
@@ -26,7 +26,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div className="flex flex-col bg-purple-400 basis-[25%]">
+          <div className="flex flex-col basis-[25%]">
             <h2 className="text-[16px] mb-[5px] font-[600]">Subscribe</h2>
             <ul className="border-box text-[14px] text-left">
               <li className="py-[8px]">
@@ -35,7 +35,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div className="flex flex-col bg-orange-400 basis-[25%] ml-[25%]">
+          <div className="flex flex-col basis-[25%] ml-[25%]">
             <h2 className="text-[16px] mb-[5px] font-[600]">Follow us on</h2>
             <ul className="bg-brown-300 flex mt-[8px] box-border gap-[5px]">
               <li className="bg-white rounded-[50%] h-[40px] w-[40px] flex justify-center items-center">

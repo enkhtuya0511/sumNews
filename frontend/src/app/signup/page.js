@@ -30,7 +30,7 @@ export default function Home() {
               type="text"
               placeholder="Email"
               onChange={(e) => setSignUpData((prev) => ({ ...prev, email: e.target.value }))}
-              className="px-[10px] py-[5px] border border-[#e0e0e1] rounded w-[80%]"
+              className="px-[10px] py-[5px] border border-[#e0e0e1] rounded w-[80%] outline-none"
             />
           </div>
           <div className="w-full my-[10px]">
@@ -39,7 +39,7 @@ export default function Home() {
               type="text"
               placeholder="Password"
               onChange={(e) => setSignUpData((prev) => ({ ...prev, password: e.target.value }))}
-              className="px-[10px] py-[5px] border border-[#e0e0e1] rounded w-[80%]"
+              className="px-[10px] py-[5px] border border-[#e0e0e1] rounded w-[80%] outline-none"
             />
           </div>
           <button onClick={handleSignup} className="py-[5px] px-[25px] text-[#ffffff] bg-[#0f151e] rounded-[5px] w-[120px]">

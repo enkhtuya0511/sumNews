@@ -70,7 +70,7 @@ export default function Home() {
               type="text"
               onChange={(e) => setLoginData((prev) => ({ ...prev, email: e.target.value }))}
               placeholder="Email"
-              className="px-[10px] py-[5px] border border-[#e0e0e1] rounded w-[80%]"
+              className="px-[10px] py-[5px] border border-[#e0e0e1] rounded w-[80%] outline-none"
             />
           </div>
           <div className="w-full mt-[10px]">
@@ -79,7 +79,7 @@ export default function Home() {
               type="text"
               onChange={(e) => setLoginData((prev) => ({ ...prev, password: e.target.value }))}
               placeholder="Password"
-              className="px-[10px] py-[5px] border border-[#e0e0e1] rounded w-[80%]"
+              className="px-[10px] py-[5px] border border-[#e0e0e1] rounded w-[80%] outline-none"
             />
           </div>
           <a href="/forgotPass" className="text-[#4483c5] my-[8px]">
