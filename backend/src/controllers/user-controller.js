@@ -131,6 +131,7 @@ export const currentUser = async (req, res) => {
 
 export const signInWithGoogle = async (req, res) => {
   try {
+    // uid
     const { email, name, photoURL } = req.body;
     const filteredUser = await UserModel.findOne({ email });
 

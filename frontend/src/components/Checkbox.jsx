@@ -4,7 +4,7 @@ import { IoAddOutline } from "react-icons/io5";
 import { IoMdCheckmark } from "react-icons/io";
 
 const Checkbox = ({ setSubscribeData, subscribeData }) => {
-  // console.log("0", subscribeData[0]);
+  console.log(subscribeData);
   return (
     <>
       {testArr.map((el, idx) => (
@@ -12,13 +12,15 @@ const Checkbox = ({ setSubscribeData, subscribeData }) => {
           key={idx}
           className="max-w-[580px] mb-[14px] box-border text-[#FFFFFF] flex"
           style={
-            subscribeData[idx] === true ? { backgroundColor: "#333", color: "#fff" } : { backgroundColor: "#98bc62", color: "#000000" }
+            subscribeData[el.newsletter] === true
+              ? { backgroundColor: "#333", color: "#fff" }
+              : { backgroundColor: "#98bc62", color: "#000000" }
           }
         >
           <input
             type="checkbox"
             value={el.newsletter}
-            onChange={(e) => setSubscribeData((prev) => ({ ...prev, [idx]: e.target.checked }))}
+            onChange={(e) => setSubscribeData((prev) => ({ ...prev, [el.newsletter]: e.target.checked }))}
             className="invisible h-0 w-0"
           />
           <div className="py-[24px] px-[32px] flex gap-[8px]">
