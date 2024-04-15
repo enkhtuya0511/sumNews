@@ -73,7 +73,7 @@ const Page = ({ searchParams }) => {
                 key={idx}
                 className="flex flex-row-reverse w-[65%] py-[20px] pr-[30px] gap-[25px] border-b-[2px] border-y-[#CCCCCC]"
               >
-                <div className="box-border w-[25%]">
+                <div className="box-border w-[30%]">
                   <img src={article.imageUrl} alt="searchPic" className="w-full h-auto aspect-[4/3]" />
                 </div>
                 <div className="flex flex-col w-full">

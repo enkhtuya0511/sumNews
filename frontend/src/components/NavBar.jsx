@@ -12,7 +12,7 @@ export default function NavBar() {
   const [searchInput, setSearchInput] = useState("");
   const pathname = usePathname();
   const router = useRouter();
-  const categories = ["News", "Science", "Education", "Health", "Space", "Technology", "About Us"];
+  const categories = ["News", "Science", "World", "Health", "Space", "Travel", "About Us"];
   // const [currentUser, setCurrentUser] = useState(null);
   // const token = window.localStorage.getItem("ui");
 

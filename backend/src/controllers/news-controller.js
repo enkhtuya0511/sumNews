@@ -10,7 +10,9 @@ export const getAllNews = async (req, res) => {
   try {
     if (section) {
       const news = await NewsModel.find({ section: section });
-      res.status(200).json({ status: "success", results: news.length, data: news });
+      res
+        .status(200)
+        .json({ status: "success", results: news.length, data: news });
     } else if (search) {
       const allArticles = await NewsModel.find({});
       const filteredArticle = allArticles.filter((article) => {
@@ -19,7 +21,9 @@ export const getAllNews = async (req, res) => {
       res.status(200).json({ status: "success", filteredArticle });
     } else {
       const news = await NewsModel.find({});
-      res.status(200).json({ status: "success", results: news.length, data: news });
+      res
+        .status(200)
+        .json({ status: "success", results: news.length, data: news });
     }
   } catch (err) {
     console.log(err);
@@ -27,9 +31,25 @@ export const getAllNews = async (req, res) => {
   }
 };
 
+// export const testPagination = async (req, res) => {
+//   try {
+
+//     const news = await NewsModel.find({});
+//     res
+//       .status(200)
+//       .json({ status: "success"});
+//   } catch (err) {
+//     console.log(err);
+//     res.status(204).json({ status: "error" });
+//   }
+// };
+
 export const getHomepageNews = async (req, res) => {
   try {
-    const news = await NewsModel.find({}).sort({ section: 1, publishedDate: -1 });
+    const news = await NewsModel.find({}).sort({
+      section: 1,
+      publishedDate: -1,
+    });
     const updatedNews = {};
 
     //Group news articles by section
@@ -68,7 +88,14 @@ export const getHomepageNews = async (req, res) => {
     //5-Additional
     const upshot = updatedNews.upshot?.slice(0, 14);
 
-    res.status(200).json({ status: "success", mostViewed, sections, globalNews, mostPopular, upshot });
+    res.status(200).json({
+      status: "success",
+      mostViewed,
+      sections,
+      globalNews,
+      mostPopular,
+      upshot,
+    });
   } catch (err) {
     console.log(err);
     res.status(204).json({ status: "error" });
@@ -188,7 +215,10 @@ const summarizeArticle = async (url, section, subsection, newsSite) => {
         title: response.data.article_title,
         section,
         subsection,
-        author: response.data.article_authors === null ? newsSite : response.data.article_authors,
+        author:
+          response.data.article_authors === null
+            ? newsSite
+            : response.data.article_authors,
         summary: response.data.summary,
         imageUrl: response.data.article_image,
         publishedDate: formattedDate,
@@ -233,7 +263,10 @@ export const fetchNews = async (req, res) => {
       const articles = response.data.results;
       newsArr = articles
         .filter((article) => {
-          const articleDate = section === "space" ? new Date(article.published_at) : new Date(article.published_date);
+          const articleDate =
+            section === "space"
+              ? new Date(article.published_at)
+              : new Date(article.published_date);
           console.log("articleDate", articleDate.getDate(), articleDate);
           return (
             (articleDate.getDate() === today.getDate() &&
@@ -264,7 +297,12 @@ export const fetchNews = async (req, res) => {
             });
             await time;
           }
-          return await summarizeArticle(cur.url, section, cur.subsection, cur.newsSite);
+          return await summarizeArticle(
+            cur.url,
+            section,
+            cur.subsection,
+            cur.newsSite
+          );
         };
       })
     );

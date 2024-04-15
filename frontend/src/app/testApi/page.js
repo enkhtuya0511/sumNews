@@ -4,7 +4,7 @@ import React, { useState } from "react";
 
 const page = () => {
   const [inputData, setInputData] = useState({});
-  const section = ["Choose ...", "health", "science", "education", "travel", "mostViewed", "world", "space", "upshot"];
+  const section = ["Choose ...", "health", "science", "travel", "mostViewed", "world", "space", "upshot"];
   const handleClick = async () => {
     const { data } = await axios.post(`http://localhost:7001/testAPI`, {
       section: inputData.section,
