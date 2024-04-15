@@ -48,17 +48,13 @@ export default function ResetPasswordPage() {
 
           <input
             type="password"
-            onChange={(e) =>
-              setData((prev) => ({ ...prev, newPassword: e.target.value }))
-            }
+            onChange={(e) => setData((prev) => ({ ...prev, newPassword: e.target.value }))}
             placeholder="Enter new password"
             className="w-full p-[10px] mb-[10px] border border-[#ccc] rounded box-border outline-none"
           />
           <input
             type="password"
-            onChange={(e) =>
-              setData((prev) => ({ ...prev, confirmPassword: e.target.value }))
-            }
+            onChange={(e) => setData((prev) => ({ ...prev, confirmPassword: e.target.value }))}
             placeholder="Confirm new password"
             className="w-full p-[10px] mb-[10px] border border-[#ccc] rounded box-border outline-none"
           />

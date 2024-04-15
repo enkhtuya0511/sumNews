@@ -5,7 +5,7 @@ const newsSchema = new mongoose.Schema({
   section: {
     type: String,
     required: true,
-    enum: { values: ["health", "technology", "science", "education", "mostViewed", "world", "travel", "space", "well", "upshot"] },
+    enum: { values: ["health", "science", "education", "mostViewed", "world", "travel", "space", "upshot"] },
   },
   imageUrl: String,
   author: {
@@ -22,7 +22,7 @@ const newsSchema = new mongoose.Schema({
   },
   publishedDate: Date,
   subsection: String,
-  newsSite: String
+  newsSite: String,
 });
 
 export const NewsModel = mongoose.model("news", newsSchema);

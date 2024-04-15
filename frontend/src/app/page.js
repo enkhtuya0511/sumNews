@@ -1,6 +1,5 @@
 "use client";
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import NavBar from "@/components/NavBar";
 import News1 from "@/components/News1";
@@ -43,3 +42,4 @@ export default function Home() {
     </div>
   );
 }
+///vercel url ->>>> https://newsletter-gilt-nu.vercel.app/ || http://localhost:7001

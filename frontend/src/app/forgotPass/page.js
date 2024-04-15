@@ -12,10 +12,7 @@ const ForgotPassword = () => {
     try {
       if (email) {
         setLoading(true);
-        const response = await axios.post(
-          "http://localhost:7001/forgotPassword",
-          { email }
-        );
+        const response = await axios.post("http://localhost:7001/forgotPassword", { email });
         router.push("/resetPass");
       } else {
         alert("Please enter your email!");
@@ -45,10 +42,7 @@ const ForgotPassword = () => {
             >
               Cancel
             </button>
-            <button
-              onClick={handleSubmit}
-              className="py-[5px] px-[25px] text-[#ffffff] bg-[#0f151e] rounded-[5px] w-[120px]"
-            >
+            <button onClick={handleSubmit} className="py-[5px] px-[25px] text-[#ffffff] bg-[#0f151e] rounded-[5px] w-[120px]">
               Submit
             </button>
           </div>

@@ -34,8 +34,7 @@ export default function Home() {
       <div className="w-[90vw] max-w-[1288px] flex flex-col m-auto text-[#0f151e]">
         <div className="w-full text-[15px] font-[400] flex justify-start">
           <div className="flex items-center cursor-pointer hover:underline">
-            <a href="/">Home</a>{" "}
-            <MdKeyboardArrowRight className="text-[21px]" />
+            <a href="/">Home</a> <MdKeyboardArrowRight className="text-[21px]" />
           </div>
           <h5 className="font-bold">Subscribe</h5>
         </div>
@@ -46,26 +45,16 @@ export default function Home() {
           </header>
 
           <div className="w-full bg-blue-500 box-border">
-            <p className="my-[40px] text-[18px]">
-              Check the names of the newsletters you'd like to receive directly
-              in your email.
-            </p>
+            <p className="my-[40px] text-[18px]">Check the names of the newsletters you'd like to receive directly in your email.</p>
             {message !== true ? (
               <div className="w-full box-border flex gap-[110px] ">
                 <div className="max-w-[580px] min-w-[420px] basis-[50%] bg-blue-600">
-                  <h3 className="text-[32px] font-[600] mb-[16px]">
-                    Newsletters to select
-                  </h3>
-                  <Checkbox
-                    setSubscribeData={setSubscribeData}
-                    subscribeData={subscribeData}
-                  />
+                  <h3 className="text-[32px] font-[600] mb-[16px]">Newsletters to select</h3>
+                  <Checkbox setSubscribeData={setSubscribeData} subscribeData={subscribeData} />
                 </div>
 
                 <div className="max-w-[480px] basis-[50%] bg-blue-200 text-[#333]">
-                  <h3 className="text-[32px] font-[600] mb-[16px]">
-                    Required Info
-                  </h3>
+                  <h3 className="text-[32px] font-[600] mb-[16px]">Required Info</h3>
                   <form onSubmit={submit}>
                     <div className="flex flex-col gap-[3px] text-[14px] mb-[16px]">
                       <label>Your E-mail Address*</label>
@@ -115,18 +104,13 @@ export default function Home() {
                         disabled
                       />
                     )}
-                    {error && (
-                      <div className="w-full flex justify-center">
-                        Given email address is already subscribed, thank you!
-                      </div>
-                    )}
+                    {error && <div className="w-full flex justify-center">Given email address is already subscribed, thank you!</div>}
                   </form>
                 </div>
               </div>
             ) : (
               <div className="flex justify-center items-center bg-green-400 py-[10px] px-[20px] text-[#fff] ">
-                Thank you, your sign-up request was successful! Please check
-                your email inbox to confirm.
+                Thank you, your sign-up request was successful! Please check your email inbox to confirm.
               </div>
             )}
           </div>

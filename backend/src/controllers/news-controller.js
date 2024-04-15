@@ -6,11 +6,17 @@ import { generateHtml } from "../template.js";
 import PQueue from "p-queue";
 
 export const getAllNews = async (req, res) => {
-  const { section } = req.query;
+  const { section, search } = req.query;
   try {
     if (section) {
       const news = await NewsModel.find({ section: section });
       res.status(200).json({ status: "success", results: news.length, data: news });
+    } else if (search) {
+      const allArticles = await NewsModel.find({});
+      const filteredArticle = allArticles.filter((article) => {
+        return article.title.toLowerCase().includes(search.toLowerCase());
+      });
+      res.status(200).json({ status: "success", filteredArticle });
     } else {
       const news = await NewsModel.find({});
       res.status(200).json({ status: "success", results: news.length, data: news });

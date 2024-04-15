@@ -41,4 +41,27 @@ export const autoMailSender = async (req, res) => {
     true, // start
     "Asia/Ulaanbaatar" // timeZone
   );
+
+  const mailOption = {
+    from: "newsletter.project03@gmail.com",
+    to: "enkhtuya.b511@gmail.com",
+    subject: "Weekly Update",
+    text: "testMail ^^",
+  };
+
+  const test = new CronJob(
+    "0 12 14 * * 1", // cronTime
+    function () {
+      // Send the email
+      try {
+        transporter.sendMail(mailOption);
+        console.log("Email sent successfully");
+      } catch (error) {
+        console.error("Error sending email:", error);
+      }
+    }, // onTick
+    null, // onComplete
+    true, // start
+    "Asia/Ulaanbaatar" // timeZone
+  );
 };

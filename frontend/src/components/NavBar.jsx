@@ -1,14 +1,43 @@
 "use client";
-import React from "react";
+// import axios from "axios";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import Button from "./Button";
 import { IoSearch } from "react-icons/io5";
+import { RxCross2 } from "react-icons/rx";
 
 export default function NavBar() {
+  const [show, setShow] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
   const pathname = usePathname();
   const router = useRouter();
   const categories = ["News", "Science", "Education", "Health", "Space", "Technology", "About Us"];
+  // const [currentUser, setCurrentUser] = useState(null);
+  // const token = window.localStorage.getItem("ui");
+
+  // const handleLogOut = () => {
+  //   localStorage.removeItem("ui");
+  //   setCurrentUser(null);
+  //   router.push("/login");
+  // };
+
+  // const getCurrentUser = async () => {
+  //   try {
+  //     const { data } = await axios.get(`http://localhost:7001/currentUser`, { headers: { "x-access-token": token } });
+  //     setCurrentUser(data.data);
+  //     console.log(data, data.data);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   if (token) {
+  //     getCurrentUser();
+  //   }
+  // }, [token]);
+
   return (
     <header className="bg-[#EBEAE8] w-full">
       <div className="flex justify-between max-w-[1288px] w-[90vw] m-auto py-[24px]">
@@ -16,6 +45,14 @@ export default function NavBar() {
           <h1 className="font-black text-[35px] text-[#000000]">NEWSLETTERS</h1>
         </a>
         <div className="flex gap-[20px]">
+          {/* {token ? (
+            <div className="flex justify-center items-center gap-[10px] text-[#000000]">
+              <div>{currentUser?.email}</div>
+              <button onClick={handleLogOut} className="py-[10px] px-[15px] justify-center items-center">
+                Log out
+              </button>
+            </div>
+          ) : ( */}
           <div className="flex items-center text-[#000000] gap-[10px]">
             <a href="/login" style={pathname === "/login" ? { textDecorationLine: "underline", textDecorationStyle: "wavy" } : null}>
               Log In
@@ -25,6 +62,7 @@ export default function NavBar() {
               Sign Up
             </a>
           </div>
+          {/** )}*/}
           <Button onClick={() => router.push("/subscribe")}>Subscribe to Our newsletter</Button>
         </div>
       </div>
@@ -34,11 +72,29 @@ export default function NavBar() {
         <ul className="flex gap-[5px] py-[6px]">
           {categories.map((category, idx) => (
             <li key={idx} className="mr-[8px] font-medium">
-              <a href="#">{category}</a>
+              {/* <a href="/section">{category}</a> */}
+              <button onClick={() => router.push(`/section?n=${category.toLowerCase()}`)}>{category}</button>
             </li>
           ))}
         </ul>
-        <IoSearch className="w-[22px] h-[22px]" />
+        {show ? (
+          <div className="w-[300px] h-[25px] bg-[#fff] flex items-center p-[8px] pl-[10px] mr-[10px] gap-[10px] rounded-[20px]">
+            <IoSearch style={{ color: "#586380" }} />
+            <input
+              type="text"
+              value={searchInput}
+              placeholder="Search by article name"
+              className="w-full h-[25px] outline-none"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") return router.push(`search?query=` + searchInput);
+              }}
+              onChange={(e) => setSearchInput(e.target.value)}
+            />
+            <RxCross2 style={{ color: "#586380" }} onClick={() => setShow(false)} />
+          </div>
+        ) : (
+          <IoSearch className="w-[22px] h-[22px]" onClick={() => setShow(true)} />
+        )}
       </div>
     </header>
   );
