@@ -75,6 +75,18 @@ export const getHomepageNews = async (req, res) => {
   }
 };
 
+export const getHomepageNew = async (req, res) => {
+  try {
+    const { id } = req.params
+    const oneNews = await NewsModel.findById(id)
+    res.status(200).json({ data: oneNews })
+  }
+  catch (err) {
+    console.log(err);
+    res.status(400).json({ status: "error", message: err });
+  }
+}
+
 export const createNews = async (req, res) => {
   try {
     const body = req.body;

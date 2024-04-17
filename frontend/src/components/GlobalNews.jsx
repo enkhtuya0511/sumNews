@@ -1,8 +1,11 @@
+"use client"
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export const GlobalNews = ({ globalNews }) => {
   const subsections = ["Asia Pacific", "Africa", "Europe", "Middle East"];
   const [index, setIndex] = useState(0);
+  const router = useRouter();
   return (
     <div className="w-full bg-[#ebeae8] box-border pt-[40px] border-y-4 border-[black] mb-[40px]">
       <div className="w-[90vw] max-w-[1288px] m-auto text-[#0f151e]">
@@ -13,9 +16,8 @@ export const GlobalNews = ({ globalNews }) => {
               <button
                 key={idx}
                 onClick={() => setIndex(idx)}
-                className={`py-[5px] px-[30px] border-r-2 ${
-                  index === idx ? "bg-[#3c3a30] text-[#f9f8f6]" : "bg-[#f9f8f6] text-[#333]"
-                }`}
+                className={`py-[5px] px-[30px] border-r-2 ${index === idx ? "bg-[#3c3a30] text-[#f9f8f6]" : "bg-[#f9f8f6] text-[#333]"
+                  }`}
               >
                 {section}
               </button>
@@ -40,7 +42,7 @@ export const GlobalNews = ({ globalNews }) => {
                   <a href="#" className="text-[14px] font-[700] text-[#666] mb-[5px]">
                     {article.subsection}
                   </a>
-                  <h2 className="text-[#0f151e] font-[600] text-[16px] mb-[8px]">{article.title}</h2>
+                  <h2 onClick={() => router.push(`/newsarticle?id=${article?._id}`)} className="text-[#0f151e] font-[600] text-[16px] mb-[8px] cursor-pointer">{article.title}</h2>
                   <div className="text-[12px] font-[400] text-[#333]">
                     {article.author} | {article.publishedDate}
                   </div>
