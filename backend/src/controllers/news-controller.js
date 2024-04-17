@@ -10,9 +10,7 @@ export const getAllNews = async (req, res) => {
   try {
     if (section) {
       const news = await NewsModel.find({ section: section });
-      res
-        .status(200)
-        .json({ status: "success", results: news.length, data: news });
+      res.status(200).json({ status: "success", results: news.length, data: news });
     } else if (search) {
       const allArticles = await NewsModel.find({});
       const filteredArticle = allArticles.filter((article) => {
@@ -21,9 +19,7 @@ export const getAllNews = async (req, res) => {
       res.status(200).json({ status: "success", filteredArticle });
     } else {
       const news = await NewsModel.find({});
-      res
-        .status(200)
-        .json({ status: "success", results: news.length, data: news });
+      res.status(200).json({ status: "success", results: news.length, data: news });
     }
   } catch (err) {
     console.log(err);
@@ -177,7 +173,7 @@ export const createNews = async (req, res) => {
   }
 };
 
-const summarizeArticle = async (url, section, subsection, newsSite) => {
+export const summarizeArticle = async (url, section, subsection, newsSite) => {
   const options = {
     method: "POST",
     url: "https://tldrthis.p.rapidapi.com/v1/model/abstractive/summarize-url/",
@@ -188,7 +184,7 @@ const summarizeArticle = async (url, section, subsection, newsSite) => {
     },
     data: {
       url,
-      min_length: 130,
+      min_length: 170,
       max_length: 300,
       is_detailed: true,
     },
@@ -196,42 +192,37 @@ const summarizeArticle = async (url, section, subsection, newsSite) => {
 
   try {
     const response = await axios.request(options);
+    if (!response.data || !response.data.summary) {
+      console.log(`${url}: Response data or summary is missing.`);
+      return null;
+    }
+
+    // Check if the summary contains a heading (indicating that it's a valid summary)
     if (response.data.summary[0]?.heading) {
+      console.log(`${url}: Summary contains a heading, indicating it's not valid.`);
       return null;
     }
 
     const date = new Date(response.data.article_pub_date);
+    const formattedDate = date.toISOString(); // Format the date as ISO string
 
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
+    // Store the summarized article in the database
+    const newData = await NewsModel.create({
+      title: response.data.article_title,
+      section,
+      subsection,
+      author: response.data.article_authors || newsSite, // Handle author appropriately
+      summary: response.data.summary,
+      imageUrl: response.data.article_image,
+      publishedDate: formattedDate,
+      source: response.data.article_url,
+    });
 
-    const formattedDate = `${year}-${month}-${day}`;
-    console.log(formattedDate); // Output: 2024-03-30
+    console.log(`Summarized article stored in the database: ${newData._id}`);
 
-    if (response.data) {
-      // Destructuring data
-      const newData = await NewsModel.create({
-        title: response.data.article_title,
-        section,
-        subsection,
-        author:
-          response.data.article_authors === null
-            ? newsSite
-            : response.data.article_authors,
-        summary: response.data.summary,
-        imageUrl: response.data.article_image,
-        publishedDate: formattedDate,
-        source: response.data.article_url,
-      });
-
-      return newData;
-    } else {
-      console.log(url, "data is null or undefined");
-      return null;
-    }
+    return newData;
   } catch (err) {
-    console.log(url, err.response.data.detail);
+    console.error(`${url}: Error summarizing article:`, err.response.data.detail);
     return null;
   }
 };
@@ -263,10 +254,7 @@ export const fetchNews = async (req, res) => {
       const articles = response.data.results;
       newsArr = articles
         .filter((article) => {
-          const articleDate =
-            section === "space"
-              ? new Date(article.published_at)
-              : new Date(article.published_date);
+          const articleDate = section === "space" ? new Date(article.published_at) : new Date(article.published_date);
           console.log("articleDate", articleDate.getDate(), articleDate);
           return (
             (articleDate.getDate() === today.getDate() &&
@@ -297,12 +285,7 @@ export const fetchNews = async (req, res) => {
             });
             await time;
           }
-          return await summarizeArticle(
-            cur.url,
-            section,
-            cur.subsection,
-            cur.newsSite
-          );
+          return await summarizeArticle(cur.url, section, cur.subsection, cur.newsSite);
         };
       })
     );

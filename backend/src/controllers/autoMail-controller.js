@@ -1,9 +1,11 @@
+import axios from "axios";
 import nodemailer from "nodemailer";
 import { CronJob } from "cron";
-// import PQueue from "p-queue";
+import PQueue from "p-queue";
 import { NewsModel } from "../models/news-models.js";
+import { SubModel } from "../models/sub-model.js";
 import { mailTemp1 } from "../mailTemp1.js";
-// import { summarizeArticle } from "../controllers/news-controller.js";
+import { summarizeArticle } from "../controllers/news-controller.js";
 
 export const autoMailSender = async (req, res) => {
   const articles = await NewsModel.find({
@@ -45,115 +47,110 @@ export const autoMailSender = async (req, res) => {
   );
 };
 
-export const testMail = async (req, res) => {
+export const testMail = async () => {
   try {
-    // await fetchNews("upshot");
+    // Schedule the email sending task to run every Wed at 12 PM
+    const testJob = new CronJob(
+      "28 12 * * 3",
+      async function () {
+        await fetchNews("upshot");
+      },
+      null,
+      true,
+      "Asia/Ulaanbaatar"
+    );
+
+    // Start the cron job
+    testJob.start();
   } catch (err) {
     console.log("error", err);
   }
 };
 
-// export const fetchNews = async (section) => {
-//   // ->>>
-//   const today = new Date();
-//   const todayD = today.getDate();
-//   const lastMon = today.getDate() - 7;
-//   console.log("date", todayD, lastWeek);
+export const fetchNews = async (section) => {
+  // Define last week and today's dates
+  const today = new Date();
+  const lastWeek = new Date(today);
+  lastWeek.setDate(today.getDate() - 7);
 
-//   let apiUrl;
-//   let newsArr = [];
+  // Define API URL based on section
+  let apiUrl;
+  if (section === "space") {
+    apiUrl = `https://api.spaceflightnewsapi.net/v4/articles?published_at_gte=${lastWeek.toISOString()}`;
+  } else {
+    apiUrl = `https://api.nytimes.com/svc/news/v3/content/all/${section}.json?limit=50&api-key=XJQaY2RQ1ooOkfGGlZjAyCmBeMozzZn6`;
+  }
 
-//   if (section === "space")
-//     apiUrl = `https://api.spaceflightnewsapi.net/v4/articles?published_at_gte=${yesterday.toISOString()}`;
-//   else
-//     apiUrl = `https://api.nytimes.com/svc/news/v3/content/all/${section}.json?limit=50&api-key=XJQaY2RQ1ooOkfGGlZjAyCmBeMozzZn6`;
+  try {
+    const response = await axios.get(apiUrl);
 
-//   const response = await axios.get(apiUrl);
+    // Handle response and filter articles based on date
+    if (response.data && response.data.results) {
+      const articles = response.data.results;
+      const newsArr = articles
+        .filter((article) => {
+          const articleDate = section === "space" ? new Date(article.published_at) : new Date(article.published_date);
+          return articleDate > lastWeek && articleDate <= today;
+        })
+        .map((el) => ({
+          url: el.url,
+          subsection: el.subsection,
+          newsSite: el.news_site,
+        }));
 
-//   //getting urls
-//   if (response.data && response.data.results) {
-//     const articles = response.data.results;
-//     newsArr = articles
-//       .filter((article) => {
-//         const articleDate =
-//           section === "space"
-//             ? new Date(article.published_at)
-//             : new Date(article.published_date);
-//         console.log("articleDate", articleDate.getDate(), articleDate);
-//         return (
-//           lastMon < articleDate.getDate() < today &&
-//           articleDate.getFullYear() === today.getFullYear() &&
-//           articleDate.getMonth() <= today.getMonth()
-//         );
-//       })
-//       .map((el) => ({
-//         url: el.url,
-//         subsection: el.subsection,
-//         newsSite: el.news_site,
-//       }));
-//   } else {
-//     console.error("No results found");
-//   }
+      // Summarize articles
+      const queue = new PQueue({ concurrency: 1 });
+      let summarizedNews = await queue.addAll(
+        newsArr.map((cur, index) => {
+          return async () => {
+            if (index % 5 === 0 && index !== 0) {
+              const time = new Promise((resolve, reject) => {
+                setTimeout(() => resolve(), 60000);
+              });
+              await time;
+            }
+            return await summarizeArticle(cur.url, section, cur.subsection, cur.newsSite);
+          };
+        })
+      );
 
-//   // summarizing articles
-//   const queue = new PQueue({ concurrency: 1 });
-//   let summarizedNews = await queue.addAll(
-//     newsArr.map((cur, index) => {
-//       return async () => {
-//         if (index % 5 === 0 && index !== 0) {
-//           const time = new Promise((resolve, reject) => {
-//             setTimeout(() => resolve(), 60000);
-//           });
-//           await time;
-//         }
-//         return await summarizeArticle(
-//           cur.url,
-//           section,
-//           cur.subsection,
-//           cur.newsSite
-//         );
-//       };
-//     })
-//   );
+      summarizedNews = summarizedNews.filter((el) => el !== null).map((el) => el);
 
-//   summarizedNews = summarizedNews.filter((el) => el !== null).map((el) => el);
+      // Fetch confirmed users and send email
+      const confirmedUsers = await SubModel.find({ isConfirmed: true });
+      console.log("users", confirmedUsers);
+      await sendEmails(confirmedUsers, summarizedNews);
+    } else {
+      console.error("No results found");
+    }
+  } catch (error) {
+    console.error("Error fetching news:", error);
+  }
+};
 
-//   ///maillll //nodemailer
-//   const subUsers = await UserModel.find({ role: "user" });
-//   console.log("users", subUsers);
+const sendEmails = async (users, news) => {
+  for (const user of users) {
+    try {
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: "newsletter.project03@gmail.com",
+          pass: "uncj scwg whbb fhxh",
+        },
+      });
 
-//   subUsers.forEach((user) => {
-//     const transporter = nodemailer.createTransport({
-//       service: "gmail",
-//       auth: {
-//         user: "newsletter.project03@gmail.com",
-//         pass: "uncj scwg whbb fhxh",
-//       },
-//     });
+      const mailOptions = {
+        from: "newsletter.project03@gmail.com",
+        to: user.email,
+        subject: "Subject",
+        text: "Test Mail",
+        html: mailTemp1(news),
+      };
 
-//     const mailOptions = {
-//       from: "newsletter.project03@gmail.com",
-//       to: user.email,
-//       subject: "Subject",
-//       text: "testMail",
-//       html: generateHtml({
-//         title: newData.title,
-//         text: newData.summary,
-//         category: newData.section,
-//         image: newData.imageUrl,
-//         author: newData.author,
-//         createdOn: newData.publishedDate,
-//         source: newData.source,
-//       }),
-//     };
-
-//     transporter.sendMail(mailOptions, function (error, info) {
-//       if (error) {
-//         console.log(error);
-//       } else {
-//         console.log("Email sent: " + info.response);
-//         console.log("Email sent to: " + user.email);
-//       }
-//     });
-//   });
-// };
+      await transporter.sendMail(mailOptions);
+      console.log("Email sent to:", user.email);
+    } catch (error) {
+      console.error("Error sending email to", user.email, ":", error);
+    }
+  }
+};

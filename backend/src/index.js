@@ -15,13 +15,13 @@ app.use(cors());
 //Routers
 app.use(userRouter);
 app.use(newsRouter);
-app.use(subRouter)
+app.use(subRouter);
 
 const connectDB = async () => {
   await mongoose.connect(`mongodb+srv://enkhe:20050511131Enkhe@cluster0.knivtsw.mongodb.net/news`);
   console.log("database connected!");
-  await autoMailSender();
-  testMail()
+  // await autoMailSender();
+  await testMail();
 };
 
 connectDB();
