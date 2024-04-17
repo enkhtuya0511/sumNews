@@ -49,11 +49,42 @@ import { summarizeArticle } from "../controllers/news-controller.js";
 
 export const testMail = async () => {
   try {
+    ///
+    let newsletter;
+    const today = new Date().getDay();
+    switch (today) {
+      // case 3:
+      //   newsletter = "upshot"
+      //   break;
+      case 2:
+        newsletter = "space";
+        break;
+      case 4:
+        newsletter = "space";
+        break;
+      case 6:
+        newsletter = "space";
+        break;
+    }
+
+    console.log("first", newsletter, today);
+
     // Schedule the email sending task to run every Wed at 12 PM
     const testJob = new CronJob(
       "40 15 * * 3",
       async function () {
-        await fetchNews("space");
+        await fetchNews(newsletter);
+      },
+      null,
+      true,
+      "Asia/Ulaanbaatar"
+    );
+
+    const dailyNews = new CronJob(
+      "0 10 * * *",
+      async function () {
+        // await fetchNews("mostViewed");
+        console.log("dailyNews");
       },
       null,
       true,
@@ -62,6 +93,7 @@ export const testMail = async () => {
 
     // Start the cron job
     testJob.start();
+    dailyNews.start();
   } catch (err) {
     console.log("error", err);
   }
@@ -72,6 +104,10 @@ export const fetchNews = async (section) => {
   const today = new Date();
   const lastWeek = new Date(today);
   lastWeek.setDate(today.getDate() - 5);
+ 
+  // section === upshot lastWeek.setDate(today.getDate() - 7);
+  // section === space yesterday.setDate(today.getDate() - 1); (today && yesterday)
+  // section === mostViewed const today = new Date();
 
   // Define API URL based on section
   let apiUrl;
@@ -89,8 +125,13 @@ export const fetchNews = async (section) => {
       const articles = response.data.results;
       const newsArr = articles
         .filter((article) => {
-          const articleDate = section === "space" ? new Date(article.published_at) : new Date(article.published_date);
+          const articleDate =
+            section === "space"
+              ? new Date(article.published_at)
+              : new Date(article.published_date);
           return articleDate > lastWeek && articleDate <= today;
+          // return articleDate >= yesterday || articleDate = today
+          // return articleDate === today
         })
         .map((el) => ({
           url: el.url,
@@ -109,12 +150,19 @@ export const fetchNews = async (section) => {
               });
               await time;
             }
-            return await summarizeArticle(cur.url, section, cur.subsection, cur.newsSite);
+            return await summarizeArticle(
+              cur.url,
+              section,
+              cur.subsection,
+              cur.newsSite
+            );
           };
         })
       );
 
-      summarizedNews = summarizedNews.filter((el) => el !== null).map((el) => el);
+      summarizedNews = summarizedNews
+        .filter((el) => el !== null)
+        .map((el) => el);
 
       // Fetch confirmed users and send email
       const confirmedUsers = await SubModel.find({ isConfirmed: true });
