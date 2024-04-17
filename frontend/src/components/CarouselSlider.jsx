@@ -37,13 +37,25 @@ export const CarouselSlider = ({ test }) => {
               modules={[Autoplay, Pagination, Navigation]}
             >
               {test?.map((article, idx) => (
-                <SwiperSlide key={idx} className="basis-[20%] min-w-[215px] mb-[30px]">
+                <SwiperSlide
+                  key={idx}
+                  className="basis-[20%] min-w-[215px] mb-[30px]"
+                >
                   <div className="pb-[8px] box-border">
-                    <img src={article.imageUrl} alt="upshotPic" className="h-auto w-[100%]" />
+                    <img
+                      src={article.imageUrl}
+                      alt="upshotPic"
+                      className="h-auto w-[100%]"
+                    />
                   </div>
-                  <h2 className="text-[#0f151e] font-[600] text-[16px] mb-[8px]">{article.title}</h2>
+                  <h2 className="text-[#0f151e] font-[600] text-[16px] mb-[8px]">
+                    {article.title}
+                  </h2>
                   <div className="text-[12px] font-[400] text-[#333]">
-                    {article.author} {article.publishedDate ? `| ${article.publishedDate}` : null}
+                    {article.author}{" "}
+                    {article.publishedDate
+                      ? `| ${article.publishedDate}`
+                      : null}
                   </div>
                 </SwiperSlide>
               ))}
