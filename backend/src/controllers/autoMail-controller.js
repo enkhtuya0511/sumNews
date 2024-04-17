@@ -7,53 +7,53 @@ import { SubModel } from "../models/sub-model.js";
 import { mailTemp1 } from "../mailTemp1.js";
 import { summarizeArticle } from "../controllers/news-controller.js";
 
-export const autoMailSender = async (req, res) => {
-  const articles = await NewsModel.find({
-    subsection: "Europe",
-    section: "world",
-  });
+// export const autoMailSender = async (req, res) => {
+//   // const articles = await NewsModel.find({
+//   //   subsection: "Europe",
+//   //   section: "world",
+//   // });
 
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: "newsletter.project03@gmail.com",
-      pass: "uncjscwgwhbbfhxh",
-    },
-  });
+//   const transporter = nodemailer.createTransport({
+//     service: "gmail",
+//     auth: {
+//       user: "newsletter.project03@gmail.com",
+//       pass: "uncjscwgwhbbfhxh",
+//     },
+//   });
 
-  const mailOptions = {
-    from: "newsletter.project03@gmail.com",
-    to: "enkhtuya.b511@gmail.com",
-    subject: "Weekly Update",
-    text: "testMail ^^",
-    html: mailTemp1(articles),
-  };
+//   const mailOptions = {
+//     from: "newsletter.project03@gmail.com",
+//     to: "enkhtuya.b511@gmail.com",
+//     subject: "Weekly Update",
+//     text: "testMail ^^ hheeeee",
+//     // html: mailTemp1(articles),
+//   };
 
-  // Schedule the email sending task to run every Wed at 6 PM
-  const job = new CronJob(
-    "0 33 22 * * 3", // cronTime
-    function () {
-      // Send the email
-      try {
-        transporter.sendMail(mailOptions);
-        console.log("Email sent successfully");
-      } catch (error) {
-        console.error("Error sending email:", error);
-      }
-    }, // onTick
-    null, // onComplete
-    true, // start
-    "Asia/Ulaanbaatar" // timeZone
-  );
-};
+//   // Schedule the email sending task to run every Wed at 6 PM
+//   const job = new CronJob(
+//     "* * * * *", // cronTime
+//     function () {
+//       // Send the email
+//       try {
+//         transporter.sendMail(mailOptions);
+//         console.log("Email sent successfully");
+//       } catch (error) {
+//         console.error("Error sending email:", error);
+//       }
+//     }, // onTick
+//     null, // onComplete
+//     true, // start
+//     "Asia/Ulaanbaatar" // timeZone
+//   );
+// };
 
 export const testMail = async () => {
   try {
     // Schedule the email sending task to run every Wed at 12 PM
     const testJob = new CronJob(
-      "28 12 * * 3",
+      "40 15 * * 3",
       async function () {
-        await fetchNews("upshot");
+        await fetchNews("space");
       },
       null,
       true,
@@ -71,7 +71,7 @@ export const fetchNews = async (section) => {
   // Define last week and today's dates
   const today = new Date();
   const lastWeek = new Date(today);
-  lastWeek.setDate(today.getDate() - 7);
+  lastWeek.setDate(today.getDate() - 5);
 
   // Define API URL based on section
   let apiUrl;

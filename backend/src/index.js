@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import { userRouter } from "./routes/user-routes.js";
 import { newsRouter } from "./routes/newsRoutes.js";
 import { subRouter } from "./routes/subRoutes.js";
-import { autoMailSender, testMail } from "./controllers/autoMail-controller.js";
+import { testMail } from "./controllers/autoMail-controller.js";
 
 const app = express();
 const port = 7001;
@@ -29,7 +29,3 @@ connectDB();
 app.listen(port, () => {
   console.log(`Your server is running on: http://localhost:${port}`);
 });
-
-// const job = schedule.scheduleJob({hour: 19, minute: 46, dayOfWeek: 1}, function(){
-//   console.log('Time for tea!');
-// });
