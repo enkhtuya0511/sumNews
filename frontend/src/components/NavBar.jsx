@@ -1,42 +1,43 @@
 "use client";
-// import axios from "axios";
+import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { usePathname } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import Button from "./Button";
 import { IoSearch } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 
 export default function NavBar() {
-  const [show, setShow] = useState(false);
-  const [searchInput, setSearchInput] = useState("");
   const pathname = usePathname();
   const router = useRouter();
+  const token = localStorage.getItem("ui");
+  const [show, setShow] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [searchInput, setSearchInput] = useState("");
   const categories = ["News", "Science", "World", "Health", "Space", "Travel", "About Us"];
-  // const [currentUser, setCurrentUser] = useState(null);
-  // const token = window.localStorage.getItem("ui");
 
-  // const handleLogOut = () => {
-  //   localStorage.removeItem("ui");
-  //   setCurrentUser(null);
-  //   router.push("/login");
-  // };
-
-  // const getCurrentUser = async () => {
-  //   try {
-  //     const { data } = await axios.get(`http://localhost:7001/currentUser`, { headers: { "x-access-token": token } });
-  //     setCurrentUser(data.data);
-  //     console.log(data, data.data);
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (token) {
-  //     getCurrentUser();
-  //   }
-  // }, [token]);
+  const handleLogOut = () => {
+    localStorage.removeItem("ui");
+    setCurrentUser(null);
+    router.push("/");
+  };
+  
+  const getCurrentUser = async () => {
+    try {
+      const { data } = await axios.get(`http://localhost:7001/currentUser`, {
+        headers: { "x-access-token": token },
+      });
+      setCurrentUser(data.data);
+      console.log(data, "currentUser", data.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  
+  useEffect(() => {
+    if (token) {
+      getCurrentUser();
+    }
+  }, [token]);
 
   return (
     <header className="bg-[#EBEAE8] w-full">
@@ -45,25 +46,50 @@ export default function NavBar() {
           <h1 className="font-black text-[35px] text-[#000000]">NEWSLETTERS</h1>
         </a>
         <div className="flex gap-[20px]">
-          {/* {token ? (
+          {token ? (
             <div className="flex justify-center items-center gap-[10px] text-[#000000]">
               <div>{currentUser?.email}</div>
-              <button onClick={handleLogOut} className="py-[10px] px-[15px] justify-center items-center">
+              <button
+                onClick={handleLogOut}
+                className="py-[10px] px-[15px] justify-center items-center"
+              >
                 Log out
               </button>
             </div>
-          ) : ( */}
-          <div className="flex items-center text-[#000000] gap-[10px]">
-            <a href="/login" style={pathname === "/login" ? { textDecorationLine: "underline", textDecorationStyle: "wavy" } : null}>
-              Log In
-            </a>{" "}
-            <span> / </span>{" "}
-            <a href="/signup" style={pathname === "/signup" ? { textDecorationLine: "underline", textDecorationStyle: "wavy" } : null}>
-              Sign Up
-            </a>
-          </div>
-          {/** )}*/}
-          <Button onClick={() => router.push("/subscribe")}>Subscribe to Our newsletter</Button>
+          ) : (
+            <div className="flex items-center text-[#000000] gap-[10px]">
+              <a
+                href="/login"
+                style={
+                  pathname === "/login"
+                    ? {
+                        textDecorationLine: "underline",
+                        textDecorationStyle: "wavy",
+                      }
+                    : null
+                }
+              >
+                Log In
+              </a>{" "}
+              <span> / </span>{" "}
+              <a
+                href="/signup"
+                style={
+                  pathname === "/signup"
+                    ? {
+                        textDecorationLine: "underline",
+                        textDecorationStyle: "wavy",
+                      }
+                    : null
+                }
+              >
+                Sign Up
+              </a>
+            </div>
+          )}
+          <Button onClick={() => router.push("/subscribe")}>
+            Subscribe to Our newsletter
+          </Button>
         </div>
       </div>
 
@@ -73,7 +99,13 @@ export default function NavBar() {
           {categories.map((category, idx) => (
             <li key={idx} className="mr-[8px] font-medium">
               {/* <a href="/section">{category}</a> */}
-              <button onClick={() => router.push(`/section?n=${category.toLowerCase()}`)}>{category}</button>
+              <button
+                onClick={() =>
+                  router.push(`/section?n=${category.toLowerCase()}`)
+                }
+              >
+                {category}
+              </button>
             </li>
           ))}
         </ul>
@@ -86,14 +118,21 @@ export default function NavBar() {
               placeholder="Search by article name"
               className="w-full h-[25px] outline-none"
               onKeyDown={(e) => {
-                if (e.key === "Enter") return router.push(`search?query=` + searchInput);
+                if (e.key === "Enter")
+                  return router.push(`search?query=` + searchInput);
               }}
               onChange={(e) => setSearchInput(e.target.value)}
             />
-            <RxCross2 style={{ color: "#586380" }} onClick={() => setShow(false)} />
+            <RxCross2
+              style={{ color: "#586380" }}
+              onClick={() => setShow(false)}
+            />
           </div>
         ) : (
-          <IoSearch className="w-[22px] h-[22px]" onClick={() => setShow(true)} />
+          <IoSearch
+            className="w-[22px] h-[22px]"
+            onClick={() => setShow(true)}
+          />
         )}
       </div>
     </header>
