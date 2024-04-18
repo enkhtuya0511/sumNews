@@ -13,19 +13,19 @@ const subSchema = new mongoose.Schema({
   username: {
     type: String,
   },
-  firstUP: {
-    type: Boolean,
-    default: false,
-  },
-  MilitarySpace: {
-    type: Boolean,
-    default: false,
-  },
-  SpaceNews: {
-    type: Boolean,
-    default: false,
-  },
-  // Newsletters: [newsletters],
+  // firstUP: {
+  //   type: Boolean,
+  //   default: false,
+  // },
+  // MilitarySpace: {
+  //   type: Boolean,
+  //   default: false,
+  // },
+  // SpaceNews: {
+  //   type: Boolean,
+  //   default: false,
+  // },
+  Newsletters: [newsletters],
   isConfirmed: {
     type: Boolean,
     default: false,

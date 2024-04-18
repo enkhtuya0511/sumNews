@@ -8,15 +8,20 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 
 export default function Home() {
   const [subscribeData, setSubscribeData] = useState({});
+  const [selectedNewsletters, setSelectedNewsletters] = useState([])
   const [error, setError] = useState(false);
   const [message, setMessage] = useState(false);
-  console.log(subscribeData);
+  console.log(subscribeData, "s",selectedNewsletters);
   const submit = async (event) => {
     try {
       event.preventDefault();
       // console.log("values", Object.values(subscribeData).includes(true));
 
-      const res = await axios.post(`http://localhost:7001/sub`, subscribeData);
+      const res = await axios.post(`http://localhost:7001/sub`, {
+        email: subscribeData.email,
+        username: subscribeData.username,
+        newsletters: [selectedNewsletters]
+      });
       if (res.data.type === "already_subscribed") setError(true);
       else if (res.data.status === "success") setMessage(true);
       else {
@@ -50,7 +55,7 @@ export default function Home() {
               <div className="w-full box-border flex gap-[110px] ">
                 <div className="max-w-[580px] min-w-[420px] basis-[50%] bg-blue-600">
                   <h3 className="text-[32px] font-[600] mb-[16px]">Newsletters to select</h3>
-                  <Checkbox setSubscribeData={setSubscribeData} subscribeData={subscribeData} />
+                  <Checkbox setSubscribeData={setSubscribeData} subscribeData={subscribeData} setSelectedNewsletters={setSelectedNewsletters} selectedNewsletters={selectedNewsletters}/>
                 </div>
 
                 <div className="max-w-[480px] basis-[50%] bg-blue-200 text-[#333]">
@@ -88,7 +93,7 @@ export default function Home() {
                         className="px-[11px] py-[6px] border border-[#ccc] outline-none hover:border-[#333]"
                       />
                     </div>
-                    {Object.values(subscribeData).includes(true) ? (
+                    {Object.values(selectedNewsletters).includes(true) ? (
                       <input
                         type="submit"
                         className="bg-[#333] px-[24px] py-[10px] text-[#fff] text-[14px] font-[400] 

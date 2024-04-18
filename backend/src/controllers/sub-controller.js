@@ -16,13 +16,15 @@ export const createSub = async (req, res) => {
       return;
     }
 
+    console.log("newSubscriber", newSubscriber)
     // 2)
     const newSubscriber = await SubModel.create({
       email: body.email,
       username: body.username,
-      firstUP: body["0"],
-      MilitarySpace: body["1"],
-      SpaceNews: body["2"],
+      Newsletters: body.newsletters
+      // firstUP: body["0"],
+      // MilitarySpace: body["1"],
+      // SpaceNews: body["2"],
     });
     const userID = newSubscriber._id;
 

@@ -27,9 +27,25 @@ export const getAllNews = async (req, res) => {
   }
 };
 
+// export const testPagination = async (req, res) => {
+//   try {
+
+//     const news = await NewsModel.find({});
+//     res
+//       .status(200)
+//       .json({ status: "success"});
+//   } catch (err) {
+//     console.log(err);
+//     res.status(204).json({ status: "error" });
+//   }
+// };
+
 export const getHomepageNews = async (req, res) => {
   try {
-    const news = await NewsModel.find({}).sort({ section: 1, publishedDate: -1 });
+    const news = await NewsModel.find({}).sort({
+      section: 1,
+      publishedDate: -1,
+    });
     const updatedNews = {};
 
     //Group news articles by section
@@ -68,7 +84,14 @@ export const getHomepageNews = async (req, res) => {
     //5-Additional
     const upshot = updatedNews.upshot?.slice(0, 14);
 
-    res.status(200).json({ status: "success", mostViewed, sections, globalNews, mostPopular, upshot });
+    res.status(200).json({
+      status: "success",
+      mostViewed,
+      sections,
+      globalNews,
+      mostPopular,
+      upshot,
+    });
   } catch (err) {
     console.log(err);
     res.status(204).json({ status: "error" });
@@ -162,7 +185,7 @@ export const createNews = async (req, res) => {
   }
 };
 
-const summarizeArticle = async (url, section, subsection, newsSite) => {
+export const summarizeArticle = async (url, section, subsection, newsSite) => {
   const options = {
     method: "POST",
     url: "https://tldrthis.p.rapidapi.com/v1/model/abstractive/summarize-url/",
@@ -173,7 +196,7 @@ const summarizeArticle = async (url, section, subsection, newsSite) => {
     },
     data: {
       url,
-      min_length: 130,
+      min_length: 170,
       max_length: 300,
       is_detailed: true,
     },
@@ -181,39 +204,37 @@ const summarizeArticle = async (url, section, subsection, newsSite) => {
 
   try {
     const response = await axios.request(options);
+    if (!response.data || !response.data.summary) {
+      console.log(`${url}: Response data or summary is missing.`);
+      return null;
+    }
+
+    // Check if the summary contains a heading (indicating that it's a valid summary)
     if (response.data.summary[0]?.heading) {
+      console.log(`${url}: Summary contains a heading, indicating it's not valid.`);
       return null;
     }
 
     const date = new Date(response.data.article_pub_date);
+    const formattedDate = date.toISOString(); // Format the date as ISO string
 
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
+    // Store the summarized article in the database
+    const newData = await NewsModel.create({
+      title: response.data.article_title,
+      section,
+      subsection,
+      author: response.data.article_authors || newsSite, // Handle author appropriately
+      summary: response.data.summary,
+      imageUrl: response.data.article_image,
+      publishedDate: formattedDate,
+      source: response.data.article_url,
+    });
 
-    const formattedDate = `${year}-${month}-${day}`;
-    console.log(formattedDate); // Output: 2024-03-30
+    console.log(`Summarized article stored in the database: ${newData._id}`);
 
-    if (response.data) {
-      // Destructuring data
-      const newData = await NewsModel.create({
-        title: response.data.article_title,
-        section,
-        subsection,
-        author: response.data.article_authors === null ? newsSite : response.data.article_authors,
-        summary: response.data.summary,
-        imageUrl: response.data.article_image,
-        publishedDate: formattedDate,
-        source: response.data.article_url,
-      });
-
-      return newData;
-    } else {
-      console.log(url, "data is null or undefined");
-      return null;
-    }
+    return newData;
   } catch (err) {
-    console.log(url, err.response.data.detail);
+    console.error(`${url}: Error summarizing article:`, err.response.data.detail);
     return null;
   }
 };

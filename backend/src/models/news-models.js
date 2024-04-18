@@ -5,7 +5,7 @@ const newsSchema = new mongoose.Schema({
   section: {
     type: String,
     required: true,
-    enum: { values: ["health", "science", "education", "mostViewed", "world", "travel", "space", "upshot"] },
+    enum: { values: ["health", "science", "mostViewed", "world", "travel", "space", "upshot"] },
   },
   imageUrl: String,
   author: {
