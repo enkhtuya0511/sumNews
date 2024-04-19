@@ -6,7 +6,7 @@ const page = ({ searchParams }) => {
   const userID = searchParams.id;
   const confirmUser = async () => {
     try {
-      const res = await axios.put(`https://newsletter-gilt-nu.vercel.app/sub/${userID}`);
+      const res = await axios.put(`https://newsletter-backend-xi.vercel.app/sub/${userID}`);
       console.log(res, "res");
       if (res.status === 204) alert("Invalid User ID");
     } catch (err) {

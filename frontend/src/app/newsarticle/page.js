@@ -9,7 +9,7 @@ export default function Page({ searchParams }) {
   const newsId = searchParams.id;
   const fetchArticle = async () => {
     try {
-      const res = await axios.get(`https://newsletter-gilt-nu.vercel.app/homepageNews/${newsId}`);
+      const res = await axios.get(`https://newsletter-backend-xi.vercel.app/homepageNews/${newsId}`);
       console.log(res.data.data);
       setArticle(res.data.data);
     } catch (err) {

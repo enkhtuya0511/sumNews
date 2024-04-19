@@ -12,7 +12,7 @@ export default function CreateNews() {
 
   const handleSubmit = async () => {
     try {
-      const data = await axios.post("https://newsletter-gilt-nu.vercel.app/news", {
+      const data = await axios.post("https://newsletter-backend-xi.vercel.app/news", {
         title: newData.title,
         category: newData.category,
         image: img,

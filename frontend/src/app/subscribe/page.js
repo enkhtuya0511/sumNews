@@ -16,7 +16,7 @@ export default function Home() {
     try {
       event.preventDefault();
 
-      const res = await axios.post(`https://newsletter-gilt-nu.vercel.app/sub`, {
+      const res = await axios.post(`https://newsletter-backend-xi.vercel.app/sub`, {
         email: subscribeData.email,
         username: subscribeData.username,
         newsletters: selectedNewsletters,
