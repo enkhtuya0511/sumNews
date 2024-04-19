@@ -1,14 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import axios from "axios";
 import NavBar from "@/components/NavBar";
 import Comment from "@/components/Comment";
 
-export default function Page() {
+export default function Page({ searchParams }) {
   const [article, setArticle] = useState([]);
-  const params = useSearchParams();
-  const newsId = params.get("id");
+  const newsId = searchParams.id;
   const fetchArticle = async () => {
     try {
       const res = await axios.get(`https://newsletter-gilt-nu.vercel.app/homepageNews/${newsId}`);
