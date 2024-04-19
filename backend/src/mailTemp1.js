@@ -1,5 +1,7 @@
 export const mailTemp1 = (testArr) => {
-  const articleHTML = testArr.map((article) => `
+  const articleHTML = testArr
+    .map(
+      (article) => `
     <div style="margin-bottom: 20px;">
       <h1 style="font-size: 24px; font-weight: bold; margin-bottom: 10px; color: black;">${article.title}</h1>
       <p style="font-size: 14px; color: gray; margin-bottom: 20px;">${article.author} * ${article.publishedDate}</p>
@@ -7,7 +9,9 @@ export const mailTemp1 = (testArr) => {
       <p style="font-size: 16px; line-height: 1.6; margin-bottom: 20px; color: black; padding-right: 30px;">${article.summary}</p>
       <p style="font-size: 14px; color: black;">source: <a href="${article.source}" style="color: #007bff;">${article.title}</a></p>
     </div>
-  `).join('');
+  `
+    )
+    .join("");
 
   return `
     <!DOCTYPE html>
@@ -19,7 +23,7 @@ export const mailTemp1 = (testArr) => {
       </head>
       <body style="margin: 0; padding: 0; background-color: #eff2f3;">
         <div style="margin: 0 auto; background-color: #ffffff; max-width: 600px; height: 70px; margin-bottom: 10px; padding: 20px; color: black;">
-          <h1>newsletter.</h1>
+          <h1>SumNews</h1>
         </div>
         <div id="container" style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #ffffff; margin-bottom: 20px;">
           ${articleHTML}
@@ -27,4 +31,3 @@ export const mailTemp1 = (testArr) => {
       </body>
     </html>`;
 };
-

@@ -60,7 +60,7 @@ export default function Home() {
       <NavBar />
       <main className="w-full h-[80vh] flex justify-center items-center">
         <div className="bg-[#ffffff] px-[15px] py-[20px] flex flex-col text-[black] shadow-lg rounded-[10px]">
-          <h1 className="text-[30px] font-bold mb-[15px] break-words">Welcome to your Newsletter. account</h1>
+          <h1 className="text-[30px] font-bold mb-[15px] break-words">Welcome to your SumNews account</h1>
           <h4 className="text-[20px] font-[400] mb-[10px]">Log in with your email and password ⋆𖦹°★</h4>
           <div className="w-full">
             <p className="font-[600] block">Email</p>

@@ -18,7 +18,7 @@ const Footer = () => {
             <h2 className="text-[16px] mb-[5px] font-[600]">About</h2>
             <ul className="border-box text-[14px] text-left">
               <li className="py-[8px]">
-                <a href="#">About Newsletters.</a>
+                <a href="#">About SumNews</a>
               </li>
               {/* <li className="pb-[8px]">
                 <a href="#">Advertise</a>

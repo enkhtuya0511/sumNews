@@ -1,13 +1,4 @@
-export const generateHtml = ({
-  title,
-  category,
-  image,
-  author,
-  text,
-  createdOn,
-  audio,
-  source,
-}) => {
+export const generateHtml = ({ title, category, image, author, text, createdOn, audio, source }) => {
   return `
   <!DOCTYPE html>
   <html lang="en">
@@ -18,7 +9,7 @@ export const generateHtml = ({
     </head>
     <body style="margin: 0; padding: 0; background-color: #eff2f3">
       <div style="margin: 0 auto; background-color: #ffffff; max-width: 600px; height: 70px; margin-bottom: 10px; padding: 20px; color: black">
-        <h1>newsletter.</h1>
+        <h1>SumNews</h1>
       </div>
       <div
         class="container"

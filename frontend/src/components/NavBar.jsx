@@ -44,7 +44,7 @@ export default function NavBar() {
     <header className="bg-[#EBEAE8] w-full">
       <div className="flex justify-between max-w-[1288px] w-[90vw] m-auto py-[24px]">
         <a href="/">
-          <h1 className="font-black text-[35px] text-[#000000]">NEWSLETTERS</h1>
+          <h1 className="font-black text-[35px] text-[#000000]">SumNews</h1>
         </a>
         <div className="flex gap-[20px]">
           {token ? (

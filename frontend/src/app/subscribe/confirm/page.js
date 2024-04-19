@@ -20,7 +20,7 @@ const page = ({ searchParams }) => {
   return (
     <main className="bg-[#eff2f3] m-0 p-0 min-h-screen">
       <div className="max-w-[600px] h-[80px] m-auto bg-[#ffffff] p-[20px] mb-[10px] text-[black]">
-        <h1 className="text-[28px] font-bold">newsletter.</h1>
+        <h1 className="text-[28px] font-bold">SumNews</h1>
       </div>
       <div className="max-w-[600px] m-auto bg-[#ffffff] p-[20px] mb-[20px] text-[#333]">
         {/* <h1 className="text-[28px] font-bold mb-[20px]">Science Newsletters</h1> */}
