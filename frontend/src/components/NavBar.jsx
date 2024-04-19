@@ -24,7 +24,7 @@ export default function NavBar() {
 
   const getCurrentUser = async () => {
     try {
-      const { data } = await axios.get(`https://newsletter-backend-xi.vercel.app/currentUser`, {
+      const { data } = await axios.get(`http://localhost:7001/currentUser`, {
         headers: { "x-access-token": token },
       });
       setCurrentUser(data.data);

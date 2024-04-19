@@ -11,7 +11,7 @@ export default function Home() {
 
   const handleSignup = async () => {
     try {
-      const { data } = await axios.post(`https://newsletter-backend-xi.vercel.app/signup`, {
+      const { data } = await axios.post(`http://localhost:7001/signup`, {
         email: signUpData.email,
         password: signUpData.password,
       });

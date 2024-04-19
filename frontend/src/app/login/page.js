@@ -14,7 +14,7 @@ export default function Home() {
   const [showHide, setShowHide] = useState(false);
 
   const handleLogin = async () => {
-    const { data } = await axios.post(`https://newsletter-backend-xi.vercel.app/login`, {
+    const { data } = await axios.post(`http://localhost:7001/login`, {
       email: loginData.email,
       password: loginData.password,
     });
@@ -37,7 +37,7 @@ export default function Home() {
       console.log("result:", result, credential, token, user);
 
       if (user) {
-        const { data } = await axios.post("https://newsletter-backend-xi.vercel.app/signInWithGoogle", {
+        const { data } = await axios.post("http://localhost:7001/signInWithGoogle", {
           email: user.email,
           name: user.displayName,
           photoURL: user.photoURL,

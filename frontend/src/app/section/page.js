@@ -14,8 +14,8 @@ const page = ({ searchParams }) => {
   const getArticlesBySection = async (section) => {
     try {
       let apiUrl;
-      if (section === "news") apiUrl = `https://newsletter-backend-xi.vercel.app/news`;
-      else apiUrl = `https://newsletter-backend-xi.vercel.app/news?section=${section}`;
+      if (section === "news") apiUrl = `http://localhost:7001/news`;
+      else apiUrl = `http://localhost:7001/news?section=${section}`;
       setLoading(true);
       const res = await axios.get(apiUrl);
       setResults(res.data.data);

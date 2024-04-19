@@ -16,7 +16,7 @@ export default function Home() {
     try {
       event.preventDefault();
 
-      const res = await axios.post(`https://newsletter-backend-xi.vercel.app/sub`, {
+      const res = await axios.post(`http://localhost:7001/sub`, {
         email: subscribeData.email,
         username: subscribeData.username,
         newsletters: selectedNewsletters,

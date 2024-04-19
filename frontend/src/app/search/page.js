@@ -16,7 +16,7 @@ const Page = ({ searchParams }) => {
   const Search = async (input) => {
     try {
       setIsLoading(true);
-      const response = await axios.get(`https://newsletter-backend-xi.vercel.app/news?search=${input}`);
+      const response = await axios.get(`http://localhost:7001/news?search=${input}`);
       setResults(response.data.filteredArticle);
     } catch (err) {
       console.log("err", err);
