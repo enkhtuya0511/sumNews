@@ -5,6 +5,8 @@ const newsletters = new mongoose.Schema({
   isSelected: Boolean,
 });
 
+export const NewslettersModel = mongoose.model("newsletters", newsletters);
+
 const subSchema = new mongoose.Schema({
   email: {
     required: true,
@@ -13,18 +15,6 @@ const subSchema = new mongoose.Schema({
   username: {
     type: String,
   },
-  // firstUP: {
-  //   type: Boolean,
-  //   default: false,
-  // },
-  // MilitarySpace: {
-  //   type: Boolean,
-  //   default: false,
-  // },
-  // SpaceNews: {
-  //   type: Boolean,
-  //   default: false,
-  // },
   Newsletters: [newsletters],
   isConfirmed: {
     type: Boolean,

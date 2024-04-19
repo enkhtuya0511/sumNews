@@ -56,7 +56,8 @@ export const getHomepageNews = async (req, res) => {
     });
 
     //1-mostViewed(get the first three)
-    const mostViewed = updatedNews.mostViewed?.slice(0, 3);
+    const mostViewed = updatedNews.mostViewed?.slice(0, 5);
+    // const mostViewed = updatedNews.mostViewed?.slice(0, 3);
 
     //2-Sections(get the first news article from each section)
     const sections = [];
@@ -79,7 +80,8 @@ export const getHomepageNews = async (req, res) => {
     });
 
     //4-Most Popular
-    const mostPopular = updatedNews.mostViewed?.slice(3, 9);
+    const mostPopular = updatedNews.mostViewed?.slice(5, 11);
+    // const mostPopular = updatedNews.mostViewed?.slice(3, 9);
 
     //5-Additional
     const upshot = updatedNews.upshot?.slice(0, 14);
@@ -100,15 +102,14 @@ export const getHomepageNews = async (req, res) => {
 
 export const getHomepageNew = async (req, res) => {
   try {
-    const { id } = req.params
-    const oneNews = await NewsModel.findById(id)
-    res.status(200).json({ data: oneNews })
-  }
-  catch (err) {
+    const { id } = req.params;
+    const oneNews = await NewsModel.findById(id);
+    res.status(200).json({ data: oneNews });
+  } catch (err) {
     console.log(err);
     res.status(400).json({ status: "error", message: err });
   }
-}
+};
 
 export const createNews = async (req, res) => {
   try {
@@ -196,7 +197,7 @@ export const summarizeArticle = async (url, section, subsection, newsSite) => {
     },
     data: {
       url,
-      min_length: 170,
+      min_length: 160,
       max_length: 300,
       is_detailed: true,
     },

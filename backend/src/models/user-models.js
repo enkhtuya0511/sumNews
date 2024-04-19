@@ -24,9 +24,3 @@ const userSchema = new mongoose.Schema({
 });
 
 export const UserModel = mongoose.model("user", userSchema);
-
-//   passwordConfirm: {
-//     type: String,
-//     required: [true, "Please confirm your password"],
-//     minlength: 7,
-//   },

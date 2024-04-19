@@ -3,8 +3,6 @@ import {
   getAllUsers,
   getUser,
   createUser,
-  updateUser,
-  deleteUser,
   forgotPassword,
   resetPassword,
   currentUser,

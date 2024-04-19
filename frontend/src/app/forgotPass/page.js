@@ -12,13 +12,13 @@ const ForgotPassword = () => {
     try {
       if (email) {
         setLoading(true);
-        const response = await axios.post("http://localhost:7001/forgotPassword", { email });
+        await axios.post("http://localhost:7001/forgotPassword", { email });
         router.push("/resetPass");
       } else {
         alert("Please enter your email!");
       }
     } catch (error) {
-      console.log("error", error.response.data.message);
+      console.log("error", error);
     }
   };
   return (

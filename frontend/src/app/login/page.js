@@ -1,12 +1,11 @@
 "use client";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import NavBar from "@/components/NavBar";
-import { FaGoogle } from "react-icons/fa";
-import { FaFacebook } from "react-icons/fa";
-import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth } from "@/firebase/firebase";
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { FaGoogle } from "react-icons/fa";
 
 export default function Home() {
   const provider = new GoogleAuthProvider();
@@ -21,6 +20,7 @@ export default function Home() {
     if (data?.token) {
       localStorage.setItem("ui", data.token);
       router.push("/");
+      window.location.reload();
     }
   };
 
@@ -31,7 +31,7 @@ export default function Home() {
       // This gives you a Google Access Token. You can use it to access the Google API.
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential.accessToken;
-      // The signed-in user info.
+
       const user = result.user;
       console.log("result:", result, credential, token, user);
 
@@ -45,15 +45,12 @@ export default function Home() {
         if (data?.token) {
           localStorage.setItem("ui", data.token);
           router.push("/");
+          window.location.reload();
         }
       }
     } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // The email of the user's account used.
-      const email = error.customData.email;
       // The AuthCredential type that was used.
-      const credential = GoogleAuthProvider.credentialFromError(error);
+      // const credential = GoogleAuthProvider.credentialFromError(error);
       console.log("err", error);
     }
   };
@@ -88,20 +85,15 @@ export default function Home() {
           <button onClick={handleLogin} className="py-[5px] px-[25px] text-[#ffffff] bg-[#0f151e] rounded-[5px] w-[120px]">
             Log In
           </button>
-          <div className="w-full flex flex-col justify-center items-center mt-[10px] gap-[10px]">
+          <div className="w-full flex justify-center items-center mt-[10px] gap-[10px]">
             <p>or login with</p>
-            <div className="flex gap-[15px]">
-              <button onClick={handleGoogleAuth} className="bg-[black] p-[10px] rounded-[50%]">
-                <FaGoogle className="text-[white]" />
-              </button>
-              <button className="bg-[black] p-[10px] rounded-[50%]">
-                <FaFacebook className="text-[white]" />
-              </button>
-            </div>
+            <button onClick={handleGoogleAuth} className="bg-[black] p-[10px] rounded-[50%]">
+              <FaGoogle className="text-[white]" />
+            </button>
           </div>
           <h4 className="mt-[20px] flex gap-[5px]">
             Need an account ?
-            <a href="#" className="text-[#4483c5]">
+            <a href="/signup" className="text-[#4483c5]">
               Sign Up
             </a>
           </h4>

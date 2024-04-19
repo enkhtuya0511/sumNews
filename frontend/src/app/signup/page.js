@@ -8,13 +8,17 @@ export default function Home() {
   const router = useRouter();
   const [signUpData, setSignUpData] = useState({});
   const handleSignup = async () => {
-    const { data } = await axios.post(`http://localhost:7001/signup`, {
-      email: signUpData.email,
-      password: signUpData.password,
-    });
-    if (data?.token) {
-      localStorage.setItem("ui", data.token);
-      router.push("/");
+    try {
+      const { data } = await axios.post(`http://localhost:7001/signup`, {
+        email: signUpData.email,
+        password: signUpData.password,
+      });
+      if (data?.token) {
+        localStorage.setItem("ui", data.token);
+        window.location.reload();
+      }
+    } catch (err) {
+      console.log("error", err);
     }
   };
   return (

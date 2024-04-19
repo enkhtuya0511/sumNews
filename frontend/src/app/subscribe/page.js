@@ -8,19 +8,19 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 
 export default function Home() {
   const [subscribeData, setSubscribeData] = useState({});
-  const [selectedNewsletters, setSelectedNewsletters] = useState([])
+  const [selectedNewsletters, setSelectedNewsletters] = useState([]);
   const [error, setError] = useState(false);
   const [message, setMessage] = useState(false);
-  console.log(subscribeData, "s",selectedNewsletters);
+  // console.log("subscribeData", subscribeData, "selectedNewsletters", selectedNewsletters);
+
   const submit = async (event) => {
     try {
       event.preventDefault();
-      // console.log("values", Object.values(subscribeData).includes(true));
 
       const res = await axios.post(`http://localhost:7001/sub`, {
         email: subscribeData.email,
         username: subscribeData.username,
-        newsletters: [selectedNewsletters]
+        newsletters: selectedNewsletters,
       });
       if (res.data.type === "already_subscribed") setError(true);
       else if (res.data.status === "success") setMessage(true);
@@ -34,7 +34,7 @@ export default function Home() {
     }
   };
   return (
-    <div className="min-h-screen flex flex-col bg-[#E6E9EA]">
+    <div className="min-h-screen flex flex-col bg-[#f8f8f8]">
       <NavBar />
       <div className="w-[90vw] max-w-[1288px] flex flex-col m-auto text-[#0f151e]">
         <div className="w-full text-[15px] font-[400] flex justify-start">
@@ -49,16 +49,16 @@ export default function Home() {
             <h1>Subscribe to Our Newsletter</h1>
           </header>
 
-          <div className="w-full bg-blue-500 box-border">
+          <div className="w-full box-border">
             <p className="my-[40px] text-[18px]">Check the names of the newsletters you'd like to receive directly in your email.</p>
             {message !== true ? (
               <div className="w-full box-border flex gap-[110px] ">
-                <div className="max-w-[580px] min-w-[420px] basis-[50%] bg-blue-600">
+                <div className="max-w-[580px] min-w-[420px] basis-[50%]">
                   <h3 className="text-[32px] font-[600] mb-[16px]">Newsletters to select</h3>
-                  <Checkbox setSubscribeData={setSubscribeData} subscribeData={subscribeData} setSelectedNewsletters={setSelectedNewsletters} selectedNewsletters={selectedNewsletters}/>
+                  <Checkbox setSelectedNewsletters={setSelectedNewsletters} selectedNewsletters={selectedNewsletters} />
                 </div>
 
-                <div className="max-w-[480px] basis-[50%] bg-blue-200 text-[#333]">
+                <div className="max-w-[480px] basis-[50%] text-[#333]">
                   <h3 className="text-[32px] font-[600] mb-[16px]">Required Info</h3>
                   <form onSubmit={submit}>
                     <div className="flex flex-col gap-[3px] text-[14px] mb-[16px]">

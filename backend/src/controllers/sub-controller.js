@@ -4,10 +4,23 @@ import { generateSubHtml } from "../subTemp.js";
 
 export const createSub = async (req, res) => {
   try {
-    const body = req.body;
+    const { email, username, newsletters } = req.body;
+    const newsletterObjects = [];
+
+    for (const key in newsletters) {
+      if (newsletters.hasOwnProperty(key)) {
+        const newsletter = {
+          newsletterName: key,
+          isSelected: newsletters[key],
+        };
+        // Add the object to the array
+        newsletterObjects.push(newsletter);
+      }
+    }
+    console.log("newsletterObjects:", newsletterObjects);
 
     // 1) Check if user exists
-    const user = await SubModel.findOne({ email: body.email });
+    const user = await SubModel.findOne({ email });
     if (user) {
       res.status(200).json({
         type: "already_subscribed",
@@ -16,16 +29,13 @@ export const createSub = async (req, res) => {
       return;
     }
 
-    console.log("newSubscriber", newSubscriber)
     // 2)
     const newSubscriber = await SubModel.create({
-      email: body.email,
-      username: body.username,
-      Newsletters: body.newsletters
-      // firstUP: body["0"],
-      // MilitarySpace: body["1"],
-      // SpaceNews: body["2"],
+      email,
+      username,
+      Newsletters: newsletterObjects,
     });
+    console.log("newSubscriber", newSubscriber);
     const userID = newSubscriber._id;
 
     const transporter = nodemailer.createTransport({
@@ -38,7 +48,7 @@ export const createSub = async (req, res) => {
 
     const mailOptions = {
       from: "newsletter.project03@gmail.com",
-      to: body.email,
+      to: email,
       subject: "Newsletter.: Please Confirm Subscription",
       text: "testMail",
       html: generateSubHtml(userID),
@@ -52,7 +62,7 @@ export const createSub = async (req, res) => {
       }
     });
 
-    res.status(201).json({status: "success", data: newSubscriber});
+    res.status(201).json({ status: "success", data: newSubscriber });
   } catch (err) {
     console.log(err);
     res.status(400).json({ status: "error", message: err });
@@ -61,7 +71,7 @@ export const createSub = async (req, res) => {
 
 export const confirmSub = async (req, res) => {
   try {
-    const id = req.params.id
+    const id = req.params.id;
     // 1) Check if user exists
     // const user = await SubModel.findById(id);
     // if (!user) {
@@ -70,9 +80,7 @@ export const confirmSub = async (req, res) => {
     // }
 
     // 2)
-    const updatedData = await SubModel.findByIdAndUpdate(id,
-      { isConfirmed: true }
-    );
+    const updatedData = await SubModel.findByIdAndUpdate(id, { isConfirmed: true });
     res.status(200).json({ status: "success", updatedData: updatedData });
   } catch (err) {
     console.log("error", err);

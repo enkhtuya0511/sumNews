@@ -1,62 +1,44 @@
-import { Comment } from "../models/comment-models.js";
+import { NewsModel } from "../models/news-models.js";
 
-export const getAllComment = async (req, res) => {
-  try {
-    const comments = await Comment.find();
-
-    const formattedResults = comments.map((comment) => ({
-      name: comment.name,
-      comment: comment.comment,
-      createdOn: comment.createdOn,
-      CommentId: comment.CommentId,
-      id: comment.id,
-    }));
-    res.status(200).json({ results: formattedResults });
-  } catch (error) {
-    console.error("Error in getAllComment:", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-};
 export const createComment = async (req, res) => {
   try {
-    const { name, id, comment, CommentId } = req.body;
+    const { comment, email } = req.body;
 
-    const user = await Comment.create({
-      id: req.user.user_id,
-      name: req.user.email,
-      comment: comment,
-      CommentId: CommentId,
-    });
-    if (user) {
-      res.status(200).json({ data: user, message: "success" });
+    const article = await NewsModel.findById(req.params.id);
+    if (!article) {
+      return res.status(404).json({ status: "failed", message: "Article not found" });
     }
+
+    // Create a new comment
+    const newComment = { comment, email };
+    article.Comments.push(newComment);
+
+    // Save the updated article back to the database
+    const updatedArticle = await article.save();
+    res.status(200).json({ status: "success", newComment, updatedArticle });
   } catch (err) {
-    res.status(400).json({ message: err });
+    console.log("error", err);
+    res.status(400).json({ status: "failed", message: err });
   }
 };
+
 export const deleteComment = async (req, res) => {
-  // console.log(req);
-  const commentId = req.params.CommentId;
-
   try {
-    const quizExists = await Comment.findOne({ CommentId: commentId });
+    const { articleID } = req.query;
 
-    if (!quizExists) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Comment not found" });
+    const article = await NewsModel.findById(articleID);
+    if (!article) {
+      return res.status(404).json({ status: "failed", message: "Article not found" });
     }
-    const result = await Comment.deleteOne({ CommentId: commentId });
-    if (result.deletedCount > 0) {
-      res.json({ success: true, message: "Comment delete success" });
-    } else {
-      res.status(404).json({
-        success: false,
-        message: "No comment found or unable to delete",
-      });
-    }
+
+    const filteredComments = article.Comments.filter((comment) => comment.CommentId !== req.params.CommentId);
+
+    article.Comments = filteredComments;
+    await article.save();
+
+    res.status(200).json({ status: "success", message: "Comment has been deleted", filteredComments });
   } catch (error) {
-    console.error("Error deleting comment:", error);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
+    console.log("Error deleting comment:", error);
+    res.status(500).json({ status: "failed", message: error });
   }
 };

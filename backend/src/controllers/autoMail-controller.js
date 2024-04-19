@@ -2,78 +2,30 @@ import axios from "axios";
 import nodemailer from "nodemailer";
 import { CronJob } from "cron";
 import PQueue from "p-queue";
-import { NewsModel } from "../models/news-models.js";
 import { SubModel } from "../models/sub-model.js";
 import { mailTemp1 } from "../mailTemp1.js";
 import { summarizeArticle } from "../controllers/news-controller.js";
 
-// export const autoMailSender = async (req, res) => {
-//   // const articles = await NewsModel.find({
-//   //   subsection: "Europe",
-//   //   section: "world",
-//   // });
-
-//   const transporter = nodemailer.createTransport({
-//     service: "gmail",
-//     auth: {
-//       user: "newsletter.project03@gmail.com",
-//       pass: "uncjscwgwhbbfhxh",
-//     },
-//   });
-
-//   const mailOptions = {
-//     from: "newsletter.project03@gmail.com",
-//     to: "enkhtuya.b511@gmail.com",
-//     subject: "Weekly Update",
-//     text: "testMail ^^ hheeeee",
-//     // html: mailTemp1(articles),
-//   };
-
-//   // Schedule the email sending task to run every Wed at 6 PM
-//   const job = new CronJob(
-//     "* * * * *", // cronTime
-//     function () {
-//       // Send the email
-//       try {
-//         transporter.sendMail(mailOptions);
-//         console.log("Email sent successfully");
-//       } catch (error) {
-//         console.error("Error sending email:", error);
-//       }
-//     }, // onTick
-//     null, // onComplete
-//     true, // start
-//     "Asia/Ulaanbaatar" // timeZone
-//   );
-// };
-
 export const testMail = async () => {
   try {
-    ///
     let newsletter;
+    let cronTime;
     const today = new Date().getDay();
-    switch (today) {
-      // case 3:
-      //   newsletter = "upshot"
-      //   break;
-      case 2:
-        newsletter = "space";
-        break;
-      case 4:
-        newsletter = "space";
-        break;
-      case 6:
-        newsletter = "space";
-        break;
+    if (today === 2 || today === 4 || today === 6) {
+      newsletter = "space";
+      cronTime = `0 11 * * ${today}`;
+    } else if (today === 1 || today === 3 || today === 5) {
+      newsletter = "upshot";
+      cronTime = `0 11 * * ${today}`;
     }
+    console.log("first", newsletter, today, cronTime);
 
-    console.log("first", newsletter, today);
-
-    // Schedule the email sending task to run every Wed at 12 PM
     const testJob = new CronJob(
-      "40 15 * * 3",
+      cronTime,
       async function () {
-        await fetchNews(newsletter);
+        if (newsletter) {
+          await fetchNews(newsletter);
+        }
       },
       null,
       true,
@@ -83,7 +35,7 @@ export const testMail = async () => {
     const dailyNews = new CronJob(
       "0 10 * * *",
       async function () {
-        // await fetchNews("mostViewed");
+        await fetchNews("mostViewed");
         console.log("dailyNews");
       },
       null,
@@ -100,19 +52,17 @@ export const testMail = async () => {
 };
 
 export const fetchNews = async (section) => {
-  // Define last week and today's dates
+  // Define yesterday and today's dates
   const today = new Date();
-  const lastWeek = new Date(today);
-  lastWeek.setDate(today.getDate() - 5);
- 
-  // section === upshot lastWeek.setDate(today.getDate() - 7);
-  // section === space yesterday.setDate(today.getDate() - 1); (today && yesterday)
-  // section === mostViewed const today = new Date();
+  let yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1);
 
   // Define API URL based on section
   let apiUrl;
   if (section === "space") {
     apiUrl = `https://api.spaceflightnewsapi.net/v4/articles?published_at_gte=${lastWeek.toISOString()}`;
+  } else if (section === "mostViewed") {
+    apiUrl = `https://api.nytimes.com/svc/mostpopular/v2/viewed/1.json?api-key=XJQaY2RQ1ooOkfGGlZjAyCmBeMozzZn6`;
   } else {
     apiUrl = `https://api.nytimes.com/svc/news/v3/content/all/${section}.json?limit=50&api-key=XJQaY2RQ1ooOkfGGlZjAyCmBeMozzZn6`;
   }
@@ -125,13 +75,12 @@ export const fetchNews = async (section) => {
       const articles = response.data.results;
       const newsArr = articles
         .filter((article) => {
-          const articleDate =
-            section === "space"
-              ? new Date(article.published_at)
-              : new Date(article.published_date);
-          return articleDate > lastWeek && articleDate <= today;
-          // return articleDate >= yesterday || articleDate = today
-          // return articleDate === today
+          const articleDate = section === "space" ? new Date(article.published_at) : new Date(article.published_date);
+          if (section === "space" || section === "upshot") {
+            return articleDate >= yesterday || articleDate === today;
+          } else if (section === "mostViewed") {
+            return articleDate === today;
+          }
         })
         .map((el) => ({
           url: el.url,
@@ -150,24 +99,24 @@ export const fetchNews = async (section) => {
               });
               await time;
             }
-            return await summarizeArticle(
-              cur.url,
-              section,
-              cur.subsection,
-              cur.newsSite
-            );
+            return await summarizeArticle(cur.url, section, cur.subsection, cur.newsSite);
           };
         })
       );
 
-      summarizedNews = summarizedNews
-        .filter((el) => el !== null)
-        .map((el) => el);
+      summarizedNews = summarizedNews.filter((el) => el !== null).map((el) => el);
 
       // Fetch confirmed users and send email
       const confirmedUsers = await SubModel.find({ isConfirmed: true });
-      console.log("users", confirmedUsers);
-      await sendEmails(confirmedUsers, summarizedNews);
+      console.log("confirmedUsers", confirmedUsers);
+
+      const filteredUsers = confirmedUsers.filter((user) => {
+        return user.Newsletters.some((newsletter) => {
+          return newsletter.newsletterName === section && newsletter.isSelected === true;
+        });
+      });
+      console.log("filteredUsers", filteredUsers);
+      await sendEmails(filteredUsers, summarizedNews);
     } else {
       console.error("No results found");
     }

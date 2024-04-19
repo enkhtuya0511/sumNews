@@ -1,5 +1,18 @@
 import mongoose from "mongoose";
 
+const comments = new mongoose.Schema({
+  email: String,
+  comment: { type: String, required: true },
+  createdOn: { type: Date, default: Date.now },
+  CommentId: {
+    type: String,
+    unique: true,
+    default: () => Math.floor(10000 + Math.random() * 90000).toString(),
+  },
+});
+
+export const CommentModel = mongoose.model("comment", comments);
+
 const newsSchema = new mongoose.Schema({
   title: { type: String, required: true },
   section: {
@@ -23,6 +36,7 @@ const newsSchema = new mongoose.Schema({
   publishedDate: Date,
   subsection: String,
   newsSite: String,
+  Comments: [comments],
 });
 
 export const NewsModel = mongoose.model("news", newsSchema);

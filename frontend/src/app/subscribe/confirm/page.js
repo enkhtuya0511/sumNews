@@ -30,12 +30,12 @@ const page = ({ searchParams }) => {
             Your subscription to our list has been confirmed. <br></br>
             Thank you for subscribing ⋆⭒˚｡⋆
           </p>
-          <div className="flex gap-[15px]">
+          <div>
             <a href="/" className="bg-[#4d4d4d] hover:bg-[#333333] text-[#fff] px-[20px] py-[10px] rounded-[4px]">
               continue to our website
-            </a>{" "}
-            or{" "}
-            <button className="bg-[#4d4d4d] hover:bg-[#333333] text-[#fff] px-[20px] py-[10px] rounded-[4px]">manage your list</button>
+            </a>
+            {/* {" "}or{" "}
+            <button className="bg-[#4d4d4d] hover:bg-[#333333] text-[#fff] px-[20px] py-[10px] rounded-[4px]">manage your list</button> */}
           </div>
         </div>
       </div>

@@ -6,9 +6,10 @@ import ImgInput from "@/components/ImgInput";
 
 export default function CreateNews() {
   const router = useRouter();
-  const category = ["Choose a Category", "Health", "Sports", "Tech", "Entertainment", "Other"];
-  const [newData, setNewData] = useState({});
   const [img, setImg] = useState(null);
+  const [newData, setNewData] = useState({});
+  const category = ["Choose a Category", "Health", "Science", "Travel", "World", "Space", "Other"];
+
   const handleSubmit = async () => {
     try {
       const data = await axios.post("http://localhost:7001/news", {
