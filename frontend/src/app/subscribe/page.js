@@ -114,7 +114,7 @@ export default function Home() {
               </div>
             ) : (
               <div className="flex justify-center items-center bg-green-400 py-[10px] px-[20px] text-[#fff] ">
-                Thank you, your sign-up request was successful! Please check your email inbox to confirm.
+                Thank you, your sign-up request was successful!
               </div>
             )}
           </div>
@@ -123,4 +123,8 @@ export default function Home() {
       <Footer />
     </div>
   );
+}
+
+{
+  /**Please check your email inbox to confirm. */
 }

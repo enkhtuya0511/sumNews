@@ -16,9 +16,9 @@ const subSchema = new mongoose.Schema({
     type: String,
   },
   Newsletters: [newsletters],
-  isConfirmed: {
-    type: Boolean,
-    default: false,
-  },
+  // isConfirmed: {
+  //   type: Boolean,
+  //   default: false,
+  // },
 });
 export const SubModel = mongoose.model("Sub", subSchema);

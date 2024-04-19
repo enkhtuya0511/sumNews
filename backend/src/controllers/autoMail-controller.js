@@ -16,7 +16,7 @@ export const testMail = async () => {
       cronTime = `0 11 * * ${today}`;
     } else if (today === 1 || today === 3 || today === 5) {
       newsletter = "space";
-      cronTime = `28 13 * * ${today}`;
+      cronTime = `40 14 * * ${today}`;
     }
     console.log("first", newsletter, today, cronTime);
 
@@ -33,7 +33,7 @@ export const testMail = async () => {
     );
 
     const dailyNews = new CronJob(
-      "0 14 * * *",
+      "20 15 * * *",
       async function () {
         await fetchNews("mostViewed");
         console.log("dailyNews ^-^");
@@ -60,7 +60,7 @@ export const fetchNews = async (section) => {
   // Define API URL based on section
   let apiUrl;
   if (section === "space") {
-    apiUrl = `https://api.spaceflightnewsapi.net/v4/articles?published_at_gte=${lastWeek.toISOString()}`;
+    apiUrl = `https://api.spaceflightnewsapi.net/v4/articles?published_at_gte=${yesterday.toISOString()}`;
   } else if (section === "mostViewed") {
     apiUrl = `https://api.nytimes.com/svc/mostpopular/v2/viewed/1.json?api-key=XJQaY2RQ1ooOkfGGlZjAyCmBeMozzZn6`;
   } else {
@@ -107,10 +107,11 @@ export const fetchNews = async (section) => {
       summarizedNews = summarizedNews.filter((el) => el !== null).map((el) => el);
 
       // Fetch confirmed users and send email
-      const confirmedUsers = await SubModel.find({ isConfirmed: true });
-      console.log("confirmedUsers", confirmedUsers);
+      // const confirmedUsers = await SubModel.find({ isConfirmed: true });
+      const subscribers = await SubModel.find({});
+      console.log("subscribers", subscribers);
 
-      const filteredUsers = confirmedUsers.filter((user) => {
+      const filteredUsers = subscribers.filter((user) => {
         return user.Newsletters.some((newsletter) => {
           return newsletter.newsletterName === section && newsletter.isSelected === true;
         });
