@@ -34,7 +34,6 @@ const Checkbox = ({ setSelectedNewsletters, selectedNewsletters }) => {
                 <MdOutlineDateRange />
                 <h5>{el.deliveryDay}</h5>
               </div>
-              {/* <p className="text-wrap">{el.description}</p> */}
             </div>
             <div>
               <div
@@ -68,11 +67,11 @@ export default Checkbox;
 const testArr = [
   {
     newsletter: "space",
-    deliveryDay: "Every Tue, Thurs, Sat",
+    deliveryDay: "Every Mon, Wed, Fri",
   },
   {
     newsletter: "upshot",
-    deliveryDay: "Every Mon, Wed, Fri",
+    deliveryDay: "Every Tue, Thurs, Sat",
   },
   {
     newsletter: "mostViewed",

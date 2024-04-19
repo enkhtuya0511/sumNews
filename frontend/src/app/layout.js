@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const UserDataContext = createContext({});
 
 export default function RootLayout({ children }) {
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState(false);
 
   const checkToken = () => {
     if (window) {
@@ -22,7 +22,7 @@ export default function RootLayout({ children }) {
 
   useEffect(() => {
     checkToken();
-  }, [token]);
+  }, []);
 
   return (
     <html lang="en" className="scroll-smooth">

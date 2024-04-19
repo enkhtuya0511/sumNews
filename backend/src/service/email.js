@@ -10,14 +10,14 @@ const transporter = nodemailer.createTransport({
 
 export async function sendResetCodeByEmail(email, code) {
   //   const randomCode = generateRandomNumber();
-  const mailOptions = {
-    from: "newsletter.project03@gmail.com",
-    to: email,
-    subject: "Password Reset Code",
-    text: `Your verification code for
-     password reset is: ${code}`,
-  };
   try {
+    const mailOptions = {
+      from: "newsletter.project03@gmail.com",
+      to: email,
+      subject: "Password Reset Code",
+      text: `Your verification code for
+       password reset is: ${code}`,
+    };
     await transporter.sendMail(mailOptions);
     return code;
   } catch (error) {

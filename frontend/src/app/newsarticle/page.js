@@ -11,7 +11,7 @@ export default function Page() {
   const newsId = params.get("id");
   const fetchArticle = async () => {
     try {
-      const res = await axios.get(`http://localhost:7001/homepageNews/${newsId}`);
+      const res = await axios.get(`https://newsletter-gilt-nu.vercel.app/homepageNews/${newsId}`);
       console.log(res.data.data);
       setArticle(res.data.data);
     } catch (err) {

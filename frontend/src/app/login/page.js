@@ -11,9 +11,10 @@ export default function Home() {
   const provider = new GoogleAuthProvider();
   const router = useRouter();
   const [loginData, setLoginData] = useState({});
+  const [showHide, setShowHide] = useState(false);
 
   const handleLogin = async () => {
-    const { data } = await axios.post(`http://localhost:7001/login`, {
+    const { data } = await axios.post(`https://newsletter-gilt-nu.vercel.app/login`, {
       email: loginData.email,
       password: loginData.password,
     });
@@ -36,7 +37,7 @@ export default function Home() {
       console.log("result:", result, credential, token, user);
 
       if (user) {
-        const { data } = await axios.post("http://localhost:7001/signInWithGoogle", {
+        const { data } = await axios.post("https://newsletter-gilt-nu.vercel.app/signInWithGoogle", {
           email: user.email,
           name: user.displayName,
           photoURL: user.photoURL,
@@ -72,12 +73,15 @@ export default function Home() {
           </div>
           <div className="w-full mt-[10px]">
             <p className="font-[600] block">Password</p>
-            <input
-              type="text"
-              onChange={(e) => setLoginData((prev) => ({ ...prev, password: e.target.value }))}
-              placeholder="Password"
-              className="px-[10px] py-[5px] border border-[#e0e0e1] rounded w-[80%] outline-none"
-            />
+            <div className="bg-[#ffffff] w-[80%] px-[10px] py-[5px] flex justify-between border border-[#e0e0e1] rounded">
+              <input
+                type={showHide ? "text" : "password"}
+                onChange={(e) => setLoginData((prev) => ({ ...prev, password: e.target.value }))}
+                placeholder="Password"
+                className="outline-none"
+              />
+              <button onClick={() => setShowHide(!showHide)}>{showHide ? "Hide" : "Show"}</button>
+            </div>
           </div>
           <a href="/forgotPass" className="text-[#4483c5] my-[8px]">
             Forgot your password?

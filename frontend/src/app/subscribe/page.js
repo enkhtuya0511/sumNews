@@ -11,13 +11,12 @@ export default function Home() {
   const [selectedNewsletters, setSelectedNewsletters] = useState([]);
   const [error, setError] = useState(false);
   const [message, setMessage] = useState(false);
-  // console.log("subscribeData", subscribeData, "selectedNewsletters", selectedNewsletters);
 
   const submit = async (event) => {
     try {
       event.preventDefault();
 
-      const res = await axios.post(`http://localhost:7001/sub`, {
+      const res = await axios.post(`https://newsletter-gilt-nu.vercel.app/sub`, {
         email: subscribeData.email,
         username: subscribeData.username,
         newsletters: selectedNewsletters,

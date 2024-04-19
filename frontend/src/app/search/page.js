@@ -16,7 +16,7 @@ const Page = ({ searchParams }) => {
   const Search = async (input) => {
     try {
       setIsLoading(true);
-      const response = await axios.get(`http://localhost:7001/news?search=${input}`);
+      const response = await axios.get(`https://newsletter-gilt-nu.vercel.app/news?search=${input}`);
       setResults(response.data.filteredArticle);
     } catch (err) {
       console.log("err", err);
@@ -71,7 +71,8 @@ const Page = ({ searchParams }) => {
             {results.map((article, idx) => (
               <article
                 key={idx}
-                className="flex flex-row-reverse w-[65%] py-[20px] pr-[30px] gap-[25px] border-b-[2px] border-y-[#CCCCCC]"
+                onClick={() => router.push(`/newsarticle?id=${article?._id}`)}
+                className="flex flex-row-reverse w-[65%] py-[20px] pr-[30px] gap-[25px] border-b-[2px] border-y-[#CCCCCC] cursor-pointer"
               >
                 <div className="box-border w-[30%]">
                   <img src={article.imageUrl} alt="searchPic" className="w-full h-auto aspect-[4/3]" />

@@ -7,9 +7,11 @@ import NavBar from "@/components/NavBar";
 export default function Home() {
   const router = useRouter();
   const [signUpData, setSignUpData] = useState({});
+  const [showHide, setShowHide] = useState(false);
+
   const handleSignup = async () => {
     try {
-      const { data } = await axios.post(`http://localhost:7001/signup`, {
+      const { data } = await axios.post(`https://newsletter-gilt-nu.vercel.app/signup`, {
         email: signUpData.email,
         password: signUpData.password,
       });
@@ -39,12 +41,15 @@ export default function Home() {
           </div>
           <div className="w-full my-[10px]">
             <p className="font-[600] block">Password</p>
-            <input
-              type="text"
-              placeholder="Password"
-              onChange={(e) => setSignUpData((prev) => ({ ...prev, password: e.target.value }))}
-              className="px-[10px] py-[5px] border border-[#e0e0e1] rounded w-[80%] outline-none"
-            />
+            <div className="bg-[#ffffff] w-[80%] px-[10px] py-[5px] flex justify-between border border-[#e0e0e1] rounded">
+              <input
+                type={showHide ? "text" : "password"}
+                placeholder="Password"
+                onChange={(e) => setSignUpData((prev) => ({ ...prev, password: e.target.value }))}
+                className="outline-none"
+              />
+              <button onClick={() => setShowHide(!showHide)}>{showHide ? "Hide" : "Show"}</button>
+            </div>
           </div>
           <button onClick={handleSignup} className="py-[5px] px-[25px] text-[#ffffff] bg-[#0f151e] rounded-[5px] w-[120px]">
             Sign Up

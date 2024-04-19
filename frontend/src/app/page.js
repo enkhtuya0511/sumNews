@@ -13,7 +13,7 @@ export default function Home() {
   const [allNews, setAllNews] = useState();
   const fetchAllNews = async () => {
     try {
-      const res = await axios.get(`http://localhost:7001/homepageNews`);
+      const res = await axios.get(`https://newsletter-gilt-nu.vercel.app/homepageNews`);
       console.log("news", res.data);
       setAllNews(res.data);
     } catch (err) {

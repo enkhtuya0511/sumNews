@@ -27,19 +27,6 @@ export const getAllNews = async (req, res) => {
   }
 };
 
-// export const testPagination = async (req, res) => {
-//   try {
-
-//     const news = await NewsModel.find({});
-//     res
-//       .status(200)
-//       .json({ status: "success"});
-//   } catch (err) {
-//     console.log(err);
-//     res.status(204).json({ status: "error" });
-//   }
-// };
-
 export const getHomepageNews = async (req, res) => {
   try {
     const news = await NewsModel.find({}).sort({

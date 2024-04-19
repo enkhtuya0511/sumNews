@@ -12,10 +12,10 @@ export const testMail = async () => {
     let cronTime;
     const today = new Date().getDay();
     if (today === 2 || today === 4 || today === 6) {
-      newsletter = "space";
+      newsletter = "upshot";
       cronTime = `0 11 * * ${today}`;
     } else if (today === 1 || today === 3 || today === 5) {
-      newsletter = "upshot";
+      newsletter = "space";
       cronTime = `0 11 * * ${today}`;
     }
     console.log("first", newsletter, today, cronTime);
@@ -33,10 +33,10 @@ export const testMail = async () => {
     );
 
     const dailyNews = new CronJob(
-      "0 10 * * *",
+      "30 10 * * *",
       async function () {
         await fetchNews("mostViewed");
-        console.log("dailyNews");
+        console.log("dailyNews ^-^");
       },
       null,
       true,

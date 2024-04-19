@@ -14,7 +14,7 @@ const Comment = ({ newsId, articleComments }) => {
   const getCurrentUser = async () => {
     try {
       //get current user's data
-      const { data } = await axios.get(`http://localhost:7001/currentUser`, {
+      const { data } = await axios.get(`https://newsletter-gilt-nu.vercel.app/currentUser`, {
         headers: { "x-access-token": token },
       });
       setUser(data.data);
@@ -27,7 +27,7 @@ const Comment = ({ newsId, articleComments }) => {
   const handleDelete = async (CommentId) => {
     if (CommentId !== null) {
       try {
-        const response = await axios.delete(`http://localhost:7001/commentDelete/${CommentId}?articleID=${newsId}`);
+        const response = await axios.delete(`https://newsletter-gilt-nu.vercel.app/commentDelete/${CommentId}?articleID=${newsId}`);
         if (response.status === 200) {
           window.location.reload();
         }
@@ -39,7 +39,7 @@ const Comment = ({ newsId, articleComments }) => {
 
   const createComment = async () => {
     try {
-      const response = await axios.post(`http://localhost:7001/commentCreate/${newsId}`, {
+      const response = await axios.post(`https://newsletter-gilt-nu.vercel.app/commentCreate/${newsId}`, {
         comment: comment,
         email: user?.email,
       });
