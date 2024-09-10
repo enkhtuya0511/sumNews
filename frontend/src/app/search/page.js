@@ -16,7 +16,7 @@ const Page = ({ searchParams }) => {
   const Search = async (input) => {
     try {
       setIsLoading(true);
-      const response = await axios.get(`http://localhost:7001/news?search=${input}`);
+      const response = await axios.get(`https://newsletter-backend-xi.vercel.app/news?search=${input}`);
       setResults(response.data.filteredArticle);
     } catch (err) {
       console.log("err", err);
@@ -40,7 +40,7 @@ const Page = ({ searchParams }) => {
   return (
     <div className="min-h-screen flex flex-col bg-[#f9f8f6]">
       <NavBar />
-      <main className="w-[90vw] max-w-[1288px] flex items-start mx-auto flex flex-col text-[#0f151e] gap-[15px] mb-[50px]">
+      <main className="w-[90vw] max-w-[1288px] flex items-start mx-auto flex-col text-[#0f151e] gap-[15px] mb-[50px]">
         <div className="w-full text-[15px] font-[400] flex justify-start mb-[20px]">
           <div className="flex items-center cursor-pointer hover:underline">
             <a href="/">Home</a> <MdKeyboardArrowRight className="text-[21px]" />

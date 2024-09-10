@@ -14,8 +14,8 @@ const page = ({ searchParams }) => {
   const getArticlesBySection = async (section) => {
     try {
       let apiUrl;
-      if (section === "news") apiUrl = `http://localhost:7001/news`;
-      else apiUrl = `http://localhost:7001/news?section=${section}`;
+      if (section === "news") apiUrl = `https://newsletter-backend-xi.vercel.app/news`;
+      else apiUrl = `https://newsletter-backend-xi.vercel.app/news?section=${section}`;
       setLoading(true);
       const res = await axios.get(apiUrl);
       setResults(res.data.data);
@@ -36,7 +36,7 @@ const page = ({ searchParams }) => {
   return (
     <div className="min-h-screen flex flex-col bg-[#f9f8f6]">
       <NavBar />
-      <div className="w-[90vw] max-w-[1288px] flex items-start mx-auto flex flex-col text-[#0f151e] gap-[15px] mb-[50px]">
+      <div className="w-[90vw] max-w-[1288px] flex items-start mx-auto flex-col text-[#0f151e] gap-[15px] mb-[50px]">
         <div className="w-full text-[15px] font-[400] flex justify-start mb-[20px]">
           <div className="flex items-center cursor-pointer hover:underline">
             <a href="/">Home</a> <MdKeyboardArrowRight className="text-[21px]" />

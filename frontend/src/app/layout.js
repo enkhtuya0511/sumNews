@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const UserDataContext = createContext({});
 
 export default function RootLayout({ children }) {
-  const [token, setToken] = useState(false);
+  const [token, setToken] = useState(null);
 
   const checkToken = () => {
     if (window) {

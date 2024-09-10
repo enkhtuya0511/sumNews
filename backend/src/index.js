@@ -20,7 +20,7 @@ app.use(subRouter);
 app.use(commentRouter);
 
 const connectDB = async () => {
-  await mongoose.connect(`mongodb+srv://enkhe:20050511131Enkhe@cluster0.knivtsw.mongodb.net/news`);
+  await mongoose.connect(process.env.MONGODB_URI);
   console.log("database connected!");
   await testMail();
 };

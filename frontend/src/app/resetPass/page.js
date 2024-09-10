@@ -18,7 +18,7 @@ export default function ResetPasswordPage() {
       return;
     }
     try {
-      const response = await axios.post("http://localhost:7001/resetPassword", {
+      const response = await axios.post("https://newsletter-backend-xi.vercel.app/resetPassword", {
         resetPasswordToken: data.resetPasswordToken,
         newPassword: data.newPassword,
       });

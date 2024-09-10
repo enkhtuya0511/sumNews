@@ -108,7 +108,7 @@ export const createNews = async (req, res) => {
       url: "https://tldrthis.p.rapidapi.com/v1/model/abstractive/summarize-text/",
       headers: {
         "content-type": "application/json",
-        "X-RapidAPI-Key": "9044b65ef6msh161e4b8397cde59p1ce13ejsn4d3175aaaae7",
+        "X-RapidAPI-Key": process.env.RAPID_API_KEY,
         "X-RapidAPI-Host": "tldrthis.p.rapidapi.com",
       },
       data: { text: body.description, min_length: 150, max_length: 300 },
@@ -136,7 +136,7 @@ export const createNews = async (req, res) => {
         service: "gmail",
         auth: {
           user: "newsletter.project03@gmail.com",
-          pass: "uncj scwg whbb fhxh",
+          pass: process.env.NEWS_AUTH_KEY,
         },
       });
 
@@ -179,7 +179,7 @@ export const summarizeArticle = async (url, section, subsection, newsSite) => {
     url: "https://tldrthis.p.rapidapi.com/v1/model/abstractive/summarize-url/",
     headers: {
       "content-type": "application/json",
-      "X-RapidAPI-Key": "3ec94a6abdmsh459f2b595599252p12a984jsnb5191ed3a754",
+      "X-RapidAPI-Key": process.env.RAPID_API_KEY2,
       "X-RapidAPI-Host": "tldrthis.p.rapidapi.com",
     },
     data: {
@@ -241,11 +241,10 @@ export const fetchNews = async (req, res) => {
     let newsArr = [];
 
     if (section === "mostViewed")
-      apiUrl = `https://api.nytimes.com/svc/mostpopular/v2/viewed/1.json?api-key=XJQaY2RQ1ooOkfGGlZjAyCmBeMozzZn6`;
+      apiUrl = `https://api.nytimes.com/svc/mostpopular/v2/viewed/1.json?api-key=${process.env.NYTIMES_KEY}`;
     else if (section === "space") {
       apiUrl = `https://api.spaceflightnewsapi.net/v4/articles?published_at_gte=${yesterday.toISOString()}`;
-    } else
-      apiUrl = `https://api.nytimes.com/svc/news/v3/content/all/${section}.json?limit=50&api-key=XJQaY2RQ1ooOkfGGlZjAyCmBeMozzZn6`;
+    } else apiUrl = `https://api.nytimes.com/svc/news/v3/content/all/${section}.json?limit=50&api-key=${process.env.NYTIMES_KEY}`;
 
     const response = await axios.get(apiUrl);
 

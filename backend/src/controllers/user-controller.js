@@ -6,9 +6,7 @@ import { sendResetCodeByEmail } from "../service/email.js";
 export const getAllUsers = async (req, res) => {
   try {
     const users = await UserModel.find({});
-    res
-      .status(200)
-      .json({ status: "success", results: users.length, data: users });
+    res.status(200).json({ status: "success", results: users.length, data: users });
   } catch (err) {
     console.log(err);
     res.status(204).json({ status: "error" });
@@ -21,9 +19,7 @@ export const getUser = async (req, res) => {
     res.status(200).json({ status: "success", data: filteredUser });
   } catch (err) {
     console.log(err);
-    res
-      .status(204)
-      .json({ status: "error", message: "No user found with that ID" });
+    res.status(204).json({ status: "error", message: "No user found with that ID" });
   }
 };
 
@@ -48,11 +44,7 @@ export const createUser = async (req, res) => {
       password: hashedPassword,
       createdOn: new Date(),
     });
-    const token = jwt.sign(
-      { user_id: newUser._id, email: newUser.email },
-      "MeAndBrother",
-      { expiresIn: "3d" }
-    );
+    const token = jwt.sign({ user_id: newUser._id, email: newUser.email }, process.env.PRIVATEKEY, { expiresIn: "15d" });
     res.status(200).json({ status: "success", token });
   } catch (err) {
     console.log(err);
@@ -100,9 +92,7 @@ export const forgotPassword = async (req, res) => {
     user.resetPasswordExpires = Date.now() + 3600000;
     await user.save();
     await sendResetCodeByEmail(email, resetToken);
-    res
-      .status(200)
-      .json({ status: "success", message: "Reset token sent to your email" });
+    res.status(200).json({ status: "success", message: "Reset token sent to your email" });
   } catch (error) {
     console.error("Error in forgot password:", error);
     res.status(500).json({ message: error });
@@ -124,9 +114,7 @@ export const resetPassword = async (req, res) => {
     user.resetPasswordToken = undefined;
     user.resetPasswordExpires = undefined;
     await user.save();
-    res
-      .status(200)
-      .json({ status: "success", message: "Password reset successful" });
+    res.status(200).json({ status: "success", message: "Password reset successful" });
   } catch (error) {
     console.error("Error in reset password:", error);
     res.status(500).json({ message: error });
@@ -146,11 +134,7 @@ export const signInWithGoogle = async (req, res) => {
 
     // 1) Check if user exists
     if (filteredUser) {
-      const token = jwt.sign(
-        { user_id: filteredUser._id, email: filteredUser.email },
-        "MeAndBrother",
-        { expiresIn: "3d" }
-      );
+      const token = jwt.sign({ user_id: filteredUser._id, email: filteredUser.email }, process.env.PRIVATEKEY, { expiresIn: "15d" });
       res.status(200).json({ status: "success", token, filteredUser });
       return;
     }
@@ -161,11 +145,7 @@ export const signInWithGoogle = async (req, res) => {
       image: photoURL,
       createdOn: new Date(),
     });
-    const token = jwt.sign(
-      { user_id: newUser._id, email: newUser.email },
-      "MeAndBrother",
-      { expiresIn: "3d" }
-    );
+    const token = jwt.sign({ user_id: newUser._id, email: newUser.email }, process.env.PRIVATEKEY, { expiresIn: "15d" });
     res.status(200).json({ status: "success", token, newUser });
   } catch (err) {
     console.log("error", err);

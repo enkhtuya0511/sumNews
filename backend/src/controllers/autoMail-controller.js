@@ -16,7 +16,7 @@ export const testMail = async () => {
       cronTime = `0 11 * * ${today}`;
     } else if (today === 1 || today === 3 || today === 5) {
       newsletter = "space";
-      cronTime = `40 14 * * ${today}`;
+      cronTime = `0 15 * * ${today}`;
     }
     console.log("first", newsletter, today, cronTime);
 
@@ -24,6 +24,7 @@ export const testMail = async () => {
       cronTime,
       async function () {
         if (newsletter) {
+          console.log("newsletter", newsletter);
           await fetchNews(newsletter);
         }
       },
@@ -33,7 +34,7 @@ export const testMail = async () => {
     );
 
     const dailyNews = new CronJob(
-      "20 15 * * *",
+      "46 15 * * *",
       async function () {
         await fetchNews("mostViewed");
         console.log("dailyNews ^-^");
@@ -62,9 +63,9 @@ export const fetchNews = async (section) => {
   if (section === "space") {
     apiUrl = `https://api.spaceflightnewsapi.net/v4/articles?published_at_gte=${yesterday.toISOString()}`;
   } else if (section === "mostViewed") {
-    apiUrl = `https://api.nytimes.com/svc/mostpopular/v2/viewed/1.json?api-key=XJQaY2RQ1ooOkfGGlZjAyCmBeMozzZn6`;
+    apiUrl = `https://api.nytimes.com/svc/mostpopular/v2/viewed/1.json?api-key=${process.env.NYTIMES_KEY}`;
   } else {
-    apiUrl = `https://api.nytimes.com/svc/news/v3/content/all/${section}.json?limit=50&api-key=XJQaY2RQ1ooOkfGGlZjAyCmBeMozzZn6`;
+    apiUrl = `https://api.nytimes.com/svc/news/v3/content/all/${section}.json?limit=50&api-key=${process.env.NYTIMES_KEY}`;
   }
 
   try {
@@ -87,6 +88,11 @@ export const fetchNews = async (section) => {
           subsection: el.subsection,
           newsSite: el.news_site,
         }));
+      console.log("newsArr", newsArr);
+      if (newsArr.length === 0) {
+        console.log("no articles today!");
+        return;
+      }
 
       // Summarize articles
       const queue = new PQueue({ concurrency: 1 });
@@ -133,7 +139,7 @@ const sendEmails = async (users, news) => {
         service: "gmail",
         auth: {
           user: "newsletter.project03@gmail.com",
-          pass: "uncj scwg whbb fhxh",
+          pass: process.env.NEWS_AUTH_KEY,
         },
       });
 

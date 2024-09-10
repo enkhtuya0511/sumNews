@@ -20,11 +20,7 @@ export const login = async (req, res) => {
       return;
     }
 
-    const token = jwt.sign(
-      { user_id: user._id, email: user.email },
-      "MeAndBrother",
-      { expiresIn: "3d" }
-    );
+    const token = jwt.sign({ user_id: user._id, email: user.email }, process.env.PRIVATEKEY, { expiresIn: "3d" });
     res.status(200).json({ status: "success", token });
   } catch (error) {
     console.error("login error:", error);

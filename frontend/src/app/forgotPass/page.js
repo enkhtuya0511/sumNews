@@ -12,7 +12,7 @@ const ForgotPassword = () => {
     try {
       if (email) {
         setLoading(true);
-        await axios.post("http://localhost:7001/forgotPassword", { email });
+        await axios.post("https://newsletter-backend-xi.vercel.app/forgotPassword", { email });
         router.push("/resetPass");
       } else {
         alert("Please enter your email!");

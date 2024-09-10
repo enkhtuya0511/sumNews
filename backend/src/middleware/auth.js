@@ -10,7 +10,7 @@ export const verifyToken = (req, res, next) => {
     });
   }
   try {
-    const decoded = jwt.verify(token, "MeAndBrother");
+    const decoded = jwt.verify(token, process.env.PRIVATEKEY);
     req.user = decoded;
   } catch (err) {
     console.log("errorV", err);
